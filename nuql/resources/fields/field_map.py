@@ -17,7 +17,7 @@ def create_field_map(
 
     :arg fields: Dict of field configurations.
     :arg parent: Parent Table instance.
-    :param field_types: Additional field types defined outside of the library.
+    :param field_types: Additional field types that are defined outside the library.
     :return: Field map dict.
     """
     all_field_types = get_field_types(field_types)
@@ -42,7 +42,7 @@ def get_field_types(field_types: List[Type['types.FieldType']] | None = None) ->
     """
     Dynamically generates a dict of all available field types.
 
-    :param field_types: Additional field types defined outside of the library.
+    :param field_types: Additional field types that are defined outside the library.
     :return: Field type dict.
     """
     if not isinstance(field_types, list):
@@ -51,7 +51,7 @@ def get_field_types(field_types: List[Type['types.FieldType']] | None = None) ->
     output = {}
 
     def is_valid(_obj: Any) -> bool:
-        """Check provided object is a valid field type."""
+        """Check the provided object is a valid field type."""
         if not inspect.isclass(obj):
             return False
 
@@ -67,7 +67,7 @@ def get_field_types(field_types: List[Type['types.FieldType']] | None = None) ->
         if is_valid(obj):
             output[obj.type] = obj
 
-    # Import custom defined field types
+    # Import custom-defined field types
     for field_type in field_types:
         if is_valid(field_type):
             output[field_type.type] = field_type

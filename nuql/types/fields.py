@@ -15,13 +15,9 @@ FieldType = TypeVar('FieldType', bound=resources.FieldBase)
 
 class FieldConfig(TypedDict):
     type: str
-    hash_key: NotRequired[bool]
-    range_key: NotRequired[bool]
     required: NotRequired[bool]
     default: NotRequired[Any]
     value: NotRequired[Any]
-    index_type: NotRequired[IndexType]
-    index_name: NotRequired[str]
     on_create: NotRequired[GeneratorCallback]
     on_update: NotRequired[GeneratorCallback]
     on_write: NotRequired[GeneratorCallback]

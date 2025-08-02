@@ -28,18 +28,6 @@ class FieldBase:
         self.on_init()
 
     @property
-    def hash_key(self) -> bool:
-        return self.config.get('hash_key', False)
-
-    @property
-    def range_key(self) -> bool:
-        return self.config.get('range_key', False)
-
-    @property
-    def is_key(self) -> bool:
-        return self.hash_key or self.range_key
-
-    @property
     def required(self) -> bool:
         return self.config.get('required', False)
 
@@ -50,14 +38,6 @@ class FieldBase:
     @property
     def value(self) -> Any:
         return self.config.get('value', None)
-
-    @property
-    def index_type(self) -> Optional['types.IndexType']:
-        return self.config.get('index_type', None)
-
-    @property
-    def index_name(self) -> str | None:
-        return self.config.get('index_name', None)
 
     @property
     def on_create(self) -> Optional['types.GeneratorCallback']:

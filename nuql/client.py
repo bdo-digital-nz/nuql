@@ -1,19 +1,20 @@
 __all__ = ['Nuql']
 
-from typing import Dict, Any, List, Type
+from typing import List, Type
 
 from boto3 import Session
 
 from nuql import types
 from . import Connection, exceptions
-from .resources import Table
+from .resources import Table, Indexes
 
 
 class Nuql:
     def __init__(
             self,
             name: str,
-            schema: Dict[str, Any],
+            indexes: 'types.IndexesType',
+            schema: 'types.SchemaConfig',
             boto3_session: Session | None = None,
             fields: List[Type['types.FieldType']] | None = None,
     ) -> None:
@@ -22,15 +23,28 @@ class Nuql:
         the single table model pattern.
 
         :arg name: DynamoDB table name.
+        :arg indexes: Table index definition.
         :arg schema: Table design.
         :param boto3_session: Boto3 Session instance.
         """
-        if boto3_session is None: boto3_session = Session()
-        if fields is None: fields = []
+        if boto3_session is None:
+            boto3_session = Session()
+
+        if fields is None:
+            fields = []
 
         self.connection = Connection(name, boto3_session)
         self.fields = fields
         self.__schema = schema
+        self.__indexes = Indexes(indexes)
+
+    @property
+    def indexes(self) -> Indexes:
+        return self.__indexes
+
+    @property
+    def schema(self) -> 'types.SchemaConfig':
+        return self.__schema
 
     def get_table(self, name: str) -> Table:
         """
