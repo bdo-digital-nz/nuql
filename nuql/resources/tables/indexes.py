@@ -94,7 +94,7 @@ class Indexes:
         if name not in self._indexes:
             raise nuql.NuqlError(
                 code='InvalidIndex',
-                message=f'Index \'{name}\' is not defined for this table'
+                message=f'Index \'{name}\' is not defined for this DynamoDB table'
             )
 
         return cast(types.SecondaryIndex, self._indexes[name])

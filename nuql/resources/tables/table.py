@@ -26,3 +26,4 @@ class Table:
         self.provider = provider
         self.indexes = indexes
         self.fields = resources.create_field_map(schema, self, provider.fields)
+        self.serialiser = resources.Serialiser(self)

@@ -1,6 +1,6 @@
 __all__ = ['FieldBase']
 
-from typing import Any, List, Optional
+from typing import Any, List, Optional, Callable
 
 import nuql
 from nuql import resources, types
@@ -9,17 +9,25 @@ from nuql import resources, types
 class FieldBase:
     type: str = None
 
-    def __init__(self, name: str, config: 'types.FieldConfig', parent: resources.Table) -> None:
+    def __init__(
+            self,
+            name: str,
+            config: 'types.FieldConfig',
+            parent: 'resources.Table',
+            init_callback: Callable[[Callable], None] | None = None
+    ) -> None:
         """
         Wrapper for the handling of field serialisation and deserialisation.
 
         :arg name: Field name.
         :arg config: Field config dict.
         :arg parent: Parent instance.
+        :param init_callback: Optional init callback.
         """
         self.name = name
         self.config = config
         self.parent = parent
+        self.init_callback = init_callback
 
         # Handle 'KEY' field type
         self.projected_from = []
@@ -59,7 +67,7 @@ class FieldBase:
     def enum(self) -> List[Any] | None:
         return self.config.get('enum', None)
 
-    def __call__(self, value: Any, action: 'types.SerialisationType', validator: resources.Validator) -> Any:
+    def __call__(self, value: Any, action: 'types.SerialisationType', validator: 'resources.Validator') -> Any:
         """
         Encapsulates the internal serialisation logic to prepare for
         sending the record to DynamoDB.

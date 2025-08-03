@@ -60,4 +60,4 @@ class Nuql:
             )
 
         schema = self.__schema[name]
-        return Table(name=name, provider=self, schema=schema)
+        return Table(name=name, provider=self, schema=schema, indexes=self.indexes)

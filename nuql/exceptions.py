@@ -2,7 +2,7 @@ __all__ = ['NuqlError', 'ValidationError']
 
 from typing import List
 
-from nuql.types import ValidationErrorItem
+from nuql import types
 
 
 class NuqlError(Exception):
@@ -12,7 +12,7 @@ class NuqlError(Exception):
 
         :arg code: Error code.
         :arg message: Error message.
-        :param details: Arbitrary details to add to exception.
+        :param details: Arbitrary details to add to the exception.
         """
         self.code = code
         self.message = message
@@ -22,7 +22,7 @@ class NuqlError(Exception):
 
 
 class ValidationError(NuqlError):
-    def __init__(self, errors: List[ValidationErrorItem]):
+    def __init__(self, errors: List['types.ValidationErrorItem']):
         """
         Exception for validation errors during the serialisation process.
 

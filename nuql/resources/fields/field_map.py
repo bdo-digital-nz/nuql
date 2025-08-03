@@ -1,10 +1,10 @@
 __all__ = ['create_field_map']
 
 import inspect
-from typing import Dict, List, Type, Any
+from typing import Dict, List, Type, Any, Callable
 
 import nuql
-from nuql import fields as builtin_fields, resources, types
+from nuql import resources, types
 
 
 def create_field_map(
@@ -23,6 +23,10 @@ def create_field_map(
     all_field_types = get_field_types(field_types)
 
     output = {}
+    callbacks = []
+
+    def init_callback(fn: Callable[[Dict[str, Any]], None]) -> None:
+        callbacks.append(fn)
 
     for key, config in fields.items():
         if config['type'] not in all_field_types:
@@ -33,7 +37,11 @@ def create_field_map(
 
         field_type = all_field_types[config['type']]
 
-        output[key] = field_type(key, config, parent)
+        output[key] = field_type(key, config, parent, init_callback=init_callback)
+
+    # Run any applicable callbacks on the output
+    for callback in callbacks:
+        callback(output)
 
     return output
 
@@ -45,6 +53,8 @@ def get_field_types(field_types: List[Type['types.FieldType']] | None = None) ->
     :param field_types: Additional field types that are defined outside the library.
     :return: Field type dict.
     """
+    from nuql import fields as builtin_fields
+
     if not isinstance(field_types, list):
         field_types = []
 
@@ -73,4 +83,3 @@ def get_field_types(field_types: List[Type['types.FieldType']] | None = None) ->
             output[field_type.type] = field_type
 
     return output
-
