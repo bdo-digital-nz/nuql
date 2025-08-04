@@ -24,7 +24,7 @@ class Condition:
         self.variables = variables
 
         query = builder.build_query(condition)
-        self.parsed_conditions = query['conditions']
+        self.parsed_conditions = query['condition']
         self.condition = self.resolve(self.parsed_conditions)
 
     def resolve(self, part: Any) -> ComparisonCondition:
@@ -38,29 +38,30 @@ class Condition:
             attr = Attr(part['field'])
 
             if part['value_type'] == 'function':
-                expression = getattr(attr, part['operator'])()
+                expression = getattr(attr, part['operand'])()
             else:
-                expression = getattr(attr, part['operator'])(part['value'])
+                expression = getattr(attr, part['operand'])(part['value'])
 
             return expression
 
-        elif isinstance(part, dict) and part['type'] == 'parenthesis':
+        elif isinstance(part, dict) and part['type'] == 'parentheses':
             condition = None
-            last_expression = None
+            last_operator = None
 
             for item in part['conditions']:
                 if isinstance(item, dict) and item['type'] == 'logical_operator':
-                    if item['operator'] == 'and' and condition is None:
-                        condition = last_expression
-                    elif item['operator'] == 'and' and condition is not None:
-                        condition &= last_expression
-                    elif item['operator'] == 'or' and condition is None:
-                        condition = last_expression
-                    elif item['operator'] == 'or' and condition is not None:
-                        condition |= last_expression
+                    last_operator = item['operator']
 
                 else:
-                    last_expression = self.resolve(item)
+                    expression = self.resolve(item)
 
+                    if last_operator is None:
+                        condition = expression
+                    elif last_operator == 'and':
+                        condition &= expression
+                    elif last_operator == 'or':
+                        condition |= expression
 
+            return condition
 
+        raise ValueError('TODO invalid query')
