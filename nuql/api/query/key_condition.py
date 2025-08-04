@@ -2,7 +2,7 @@ __all__ = ['KeyCondition']
 
 from typing import Dict, Any
 
-from boto3.dynamodb.conditions import ComparisonCondition, Key
+from boto3.dynamodb.conditions import Key
 
 import nuql
 from nuql import resources
@@ -44,14 +44,17 @@ KEY_OPERANDS = {
 
 
 class KeyCondition:
-    def __init__(self, table: 'resources.Table', condition: Dict[str, Any] | None, index_name: str = 'primary'):
+    def __init__(self, table: 'resources.Table', condition: Dict[str, Any] | None = None, index_name: str = 'primary'):
         """
         DynamoDB key condition builder.
 
         :arg table: Table instance.
-        :arg condition: Condition dict.
+        :param condition: Condition dict.
         :param index_name: Optional index name.
         """
+        if not condition:
+            condition = {}
+
         self.index_name = index_name
 
         if index_name == 'primary':
@@ -86,9 +89,11 @@ class KeyCondition:
 
             operand, condition_value = self.extract_condition(key, value)
 
+            # Directly set the key field where not projected
             if is_hash_key or is_sort_key:
                 parsed_conditions[key] = [operand, condition_value]
 
+            # Process projected field
             else:
                 key_name = self.index['hash'] if is_hash_key else self.index['sort']
 
@@ -110,22 +115,38 @@ class KeyCondition:
         self.condition = None
         validator = resources.Validator()
 
+        # Generate key condition
         for key, (operand, value) in parsed_conditions.items():
             field = table.fields[key]
             key_obj = Key(key)
-            serialised_value = field(value, 'query', validator)
+
+            if operand == 'between':
+                if len(value) != 2:
+                    raise nuql.NuqlError(
+                        code='KeyConditionError',
+                        message=f'Between operator requires exactly two values for the key \'{key}\'.'
+                    )
+                serialised_value = (field(value[0], 'query', validator), field(value[1], 'query', validator))
+                key_condition = getattr(key_obj, operand)(*serialised_value)
+            else:
+                serialised_value = field(value, 'query', validator)
+                key_condition = getattr(key_obj, operand)(serialised_value)
 
             if self.condition is None:
-                self.condition = getattr(key_obj, operand)(serialised_value)
+                self.condition = key_condition
             else:
-                self.condition &= getattr(key_obj, operand)(serialised_value)
+                self.condition &= key_condition
 
     @property
     def args(self) -> Dict[str, Any]:
         """Query request args."""
+        if self.condition is None:
+            raise nuql.NuqlError(code='KeyConditionError', message='Key condition is empty.')
+
         args: Dict[str, Any] = {'KeyConditionExpression': self.condition}
         if self.index_name != 'primary':
             args['IndexName'] = self.index_name
+
         return args
 
     @staticmethod
