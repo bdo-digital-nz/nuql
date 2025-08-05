@@ -27,9 +27,17 @@ class Update(api.Boto3Adapter):
         key = self.table.serialiser.serialise_key(data)
         serialised_data = {k: v for k, v in self.table.serialiser.serialise('update', data).items() if k not in key}
 
+        # Generate the update condition
+        condition = api.Condition(
+            table=self.table,
+            condition=condition['where'] if condition else None,
+            variables=condition['variables'] if condition and condition.get('variables') else None,
+            condition_type='ConditionExpression'
+        )
+
         # Generate the update expression
         update = api.UpdateExpressionBuilder(serialised_data, shallow=shallow)
-        args = {'Key': key, **update.args, 'ReturnValues': 'ALL_NEW'}
+        args = {'Key': key, **update.args, **condition.args, 'ReturnValues': 'ALL_NEW'}
 
         try:
             response = self.connection.table.update_item(**args)
