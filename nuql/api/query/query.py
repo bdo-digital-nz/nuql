@@ -37,8 +37,7 @@ class Query(api.Boto3Adapter):
         # Filter condition is parsed from a string and validated
         filter_condition = api.Condition(
             table=self.table,
-            condition=filter_condition['where'] if filter_condition else None,
-            variables=filter_condition['variables'] if filter_condition else None,
+            condition=filter_condition,
             condition_type='FilterExpression'
         )
 

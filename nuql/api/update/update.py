@@ -30,8 +30,7 @@ class Update(api.Boto3Adapter):
         # Generate the update condition
         condition = api.Condition(
             table=self.table,
-            condition=condition['where'] if condition else None,
-            variables=condition['variables'] if condition and condition.get('variables') else None,
+            condition=condition,
             condition_type='ConditionExpression'
         )
 

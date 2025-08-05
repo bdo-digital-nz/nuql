@@ -75,16 +75,16 @@ class Table:
     def delete(
             self,
             key: Dict[str, Any],
-            condition_expression: Optional['types.QueryWhere'] = None,
+            condition: Optional['types.QueryWhere'] = None,
     ) -> None:
         """
         Performs a delete operation for an item on the table.
 
         :arg key: Record key as a dict.
-        :param condition_expression: Condition expression as a dict.
+        :param condition: Condition expression as a dict.
         """
         delete = api.Delete(self.provider, self)
-        return delete.invoke_sync(key=key, condition_expression=condition_expression)
+        return delete.invoke_sync(key=key, condition=condition)
 
     def update(
             self,

@@ -1,11 +1,11 @@
 __all__ = ['Condition']
 
-from typing import Dict, Any, Literal
+from typing import Dict, Any, Literal, Optional
 
 from boto3.dynamodb.conditions import ComparisonCondition, Attr
 
 import nuql
-from nuql import resources
+from nuql import resources, types
 from . import condition_builder
 
 
@@ -13,29 +13,25 @@ class Condition:
     def __init__(
             self,
             table: 'resources.Table',
-            condition: str | None = None,
-            variables: Dict[str, Any] | None = None,
+            condition: Optional['types.QueryWhere'] = None,
             condition_type: Literal['FilterExpression', 'ConditionExpression'] = 'FilterExpression',
     ) -> None:
         """
         Base condition builder helper to resolve queries.
 
         :arg table: Table instance.
-        :param condition: Condition string.
-        :param variables: Condition variables.
+        :param condition: Condition dict.
         :param condition_type: Condition type (FilterExpression or ConditionExpression).
         """
-        if variables is None:
-            variables = {}
 
         self.table = table
-        self.variables = variables
+        self.variables = condition['variables'] if condition and condition.get('variables') else {}
         self.type = condition_type
         self.condition = None
         self.validator = resources.Validator()
 
         if condition:
-            query = condition_builder.build_query(condition)
+            query = condition_builder.build_query(condition['where'])
             self.condition = self.resolve(query['condition'])
 
     @property

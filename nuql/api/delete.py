@@ -13,18 +13,17 @@ class Delete(Boto3Adapter):
     def invoke_sync(
             self,
             key: Dict[str, Any],
-            condition_expression: Optional['types.QueryWhere'] = None,
+            condition: Optional['types.QueryWhere'] = None,
     ) -> None:
         """
         Performs a delete operation for an item on the table.
 
         :arg key: Record key as a dict.
-        :param condition_expression: Condition expression as a dict.
+        :param condition: Condition expression as a dict.
         """
         condition_expression = Condition(
             table=self.table,
-            condition=condition_expression['where'] if condition_expression else None,
-            variables=condition_expression['variables'] if condition_expression else None,
+            condition=condition,
             condition_type='ConditionExpression'
         )
         args = {'Key': self.table.serialiser.serialise_key(key), **condition_expression.args}
