@@ -92,10 +92,15 @@ class Key(FieldBase):
         if value is None:
             return output
 
-        for item in value.split('|'):
-            key, value = item.split(':')
-            template_value = self.value.get(key)
-            projected_name = self.parse_projected_name(template_value)
+        deserialised = {
+            key: serialised_value
+            if serialised_value else None
+            for key, serialised_value in [item.split(':') for item in value.split('|')]
+        }
+
+        for key, value in self.value.items():
+            provided_value = deserialised.get(key)
+            projected_name = self.parse_projected_name(value)
 
             if projected_name in self.projects_fields:
                 projected_field = self.parent.fields.get(projected_name)
@@ -107,10 +112,9 @@ class Key(FieldBase):
                                 f'\'{self.name}\') is not defined in the schema'
                     )
 
-                output[key] = projected_field.deserialise(value)
-
+                output[key] = projected_field.deserialise(provided_value)
             else:
-                output[key] = value
+                output[key] = provided_value
 
         return output
 
@@ -122,6 +126,8 @@ class Key(FieldBase):
         :arg value: Value to parse.
         :return: Field name if it matches the format.
         """
+        if not isinstance(value, str):
+            return None
         match = re.search(r'\$\{([a-zA-Z0-9_]+)}', value)
         if not match:
             return None
