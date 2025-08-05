@@ -27,7 +27,7 @@ class Nuql:
         :arg schema: Table design.
         :param boto3_session: Boto3 Session instance.
         """
-        if boto3_session is None:
+        if not isinstance(boto3_session, Session):
             boto3_session = Session()
 
         if fields is None:

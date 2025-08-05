@@ -31,6 +31,77 @@ wheels = [
 ]
 
 [[package]]
+name = "colorama"
+version = "0.4.6"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/colorama/0.4.6/colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/colorama/0.4.6/colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6" },
+]
+
+[[package]]
+name = "coverage"
+version = "7.10.2"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2.tar.gz", hash = "sha256:5d6e6d84e6dd31a8ded64759626627247d676a23c1b892e1326f7c55c8d61055" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp313-cp313-macosx_10_13_x86_64.whl", hash = "sha256:aca7b5645afa688de6d4f8e89d30c577f62956fefb1bad021490d63173874186" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp313-cp313-macosx_11_0_arm64.whl", hash = "sha256:96e5921342574a14303dfdb73de0019e1ac041c863743c8fe1aa6c2b4a257226" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp313-cp313-manylinux1_i686.manylinux_2_28_i686.manylinux_2_5_i686.whl", hash = "sha256:11333094c1bff621aa811b67ed794865cbcaa99984dedea4bd9cf780ad64ecba" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp313-cp313-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:6eb586fa7d2aee8d65d5ae1dd71414020b2f447435c57ee8de8abea0a77d5074" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp313-cp313-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:2d358f259d8019d4ef25d8c5b78aca4c7af25e28bd4231312911c22a0e824a57" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:5250bda76e30382e0a2dcd68d961afcab92c3a7613606e6269855c6979a1b0bb" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp313-cp313-musllinux_1_2_i686.whl", hash = "sha256:a91e027d66eff214d88d9afbe528e21c9ef1ecdf4956c46e366c50f3094696d0" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:228946da741558904e2c03ce870ba5efd9cd6e48cbc004d9a27abee08100a15a" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp313-cp313-win32.whl", hash = "sha256:95e23987b52d02e7c413bf2d6dc6288bd5721beb518052109a13bfdc62c8033b" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp313-cp313-win_amd64.whl", hash = "sha256:f35481d42c6d146d48ec92d4e239c23f97b53a3f1fbd2302e7c64336f28641fe" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp313-cp313-win_arm64.whl", hash = "sha256:65b451949cb789c346f9f9002441fc934d8ccedcc9ec09daabc2139ad13853f7" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp313-cp313t-macosx_10_13_x86_64.whl", hash = "sha256:e8415918856a3e7d57a4e0ad94651b761317de459eb74d34cc1bb51aad80f07e" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp313-cp313t-macosx_11_0_arm64.whl", hash = "sha256:f287a25a8ca53901c613498e4a40885b19361a2fe8fbfdbb7f8ef2cad2a23f03" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp313-cp313t-manylinux1_i686.manylinux_2_28_i686.manylinux_2_5_i686.whl", hash = "sha256:75cc1a3f8c88c69bf16a871dab1fe5a7303fdb1e9f285f204b60f1ee539b8fc0" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp313-cp313t-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:ca07fa78cc9d26bc8c4740de1abd3489cf9c47cc06d9a8ab3d552ff5101af4c0" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp313-cp313t-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:c2e117e64c26300032755d4520cd769f2623cde1a1d1c3515b05a3b8add0ade1" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp313-cp313t-musllinux_1_2_aarch64.whl", hash = "sha256:daaf98009977f577b71f8800208f4d40d4dcf5c2db53d4d822787cdc198d76e1" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp313-cp313t-musllinux_1_2_i686.whl", hash = "sha256:ea8d8fe546c528535c761ba424410bbeb36ba8a0f24be653e94b70c93fd8a8ca" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp313-cp313t-musllinux_1_2_x86_64.whl", hash = "sha256:fe024d40ac31eb8d5aae70215b41dafa264676caa4404ae155f77d2fa95c37bb" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp313-cp313t-win32.whl", hash = "sha256:8f34b09f68bdadec122ffad312154eda965ade433559cc1eadd96cca3de5c824" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp313-cp313t-win_amd64.whl", hash = "sha256:71d40b3ac0f26fa9ffa6ee16219a714fed5c6ec197cdcd2018904ab5e75bcfa3" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp313-cp313t-win_arm64.whl", hash = "sha256:abb57fdd38bf6f7dcc66b38dafb7af7c5fdc31ac6029ce373a6f7f5331d6f60f" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp314-cp314-macosx_10_13_x86_64.whl", hash = "sha256:a3e853cc04987c85ec410905667eed4bf08b1d84d80dfab2684bb250ac8da4f6" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:0100b19f230df72c90fdb36db59d3f39232391e8d89616a7de30f677da4f532b" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp314-cp314-manylinux1_i686.manylinux_2_28_i686.manylinux_2_5_i686.whl", hash = "sha256:9c1cd71483ea78331bdfadb8dcec4f4edfb73c7002c1206d8e0af6797853f5be" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp314-cp314-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:9f75dbf4899e29a37d74f48342f29279391668ef625fdac6d2f67363518056a1" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp314-cp314-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:a7df481e7508de1c38b9b8043da48d94931aefa3e32b47dd20277e4978ed5b95" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp314-cp314-musllinux_1_2_aarch64.whl", hash = "sha256:835f39e618099325e7612b3406f57af30ab0a0af350490eff6421e2e5f608e46" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp314-cp314-musllinux_1_2_i686.whl", hash = "sha256:12e52b5aa00aa720097d6947d2eb9e404e7c1101ad775f9661ba165ed0a28303" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:718044729bf1fe3e9eb9f31b52e44ddae07e434ec050c8c628bf5adc56fe4bdd" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp314-cp314-win32.whl", hash = "sha256:f256173b48cc68486299d510a3e729a96e62c889703807482dbf56946befb5c8" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp314-cp314-win_amd64.whl", hash = "sha256:2e980e4179f33d9b65ac4acb86c9c0dde904098853f27f289766657ed16e07b3" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp314-cp314-win_arm64.whl", hash = "sha256:14fb5b6641ab5b3c4161572579f0f2ea8834f9d3af2f7dd8fbaecd58ef9175cc" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp314-cp314t-macosx_10_13_x86_64.whl", hash = "sha256:e96649ac34a3d0e6491e82a2af71098e43be2874b619547c3282fc11d3840a4b" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp314-cp314t-macosx_11_0_arm64.whl", hash = "sha256:1a2e934e9da26341d342d30bfe91422bbfdb3f1f069ec87f19b2909d10d8dcc4" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp314-cp314t-manylinux1_i686.manylinux_2_28_i686.manylinux_2_5_i686.whl", hash = "sha256:651015dcd5fd9b5a51ca79ece60d353cacc5beaf304db750407b29c89f72fe2b" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp314-cp314t-manylinux1_x86_64.manylinux_2_28_x86_64.manylinux_2_5_x86_64.whl", hash = "sha256:81bf6a32212f9f66da03d63ecb9cd9bd48e662050a937db7199dbf47d19831de" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp314-cp314t-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:d800705f6951f75a905ea6feb03fff8f3ea3468b81e7563373ddc29aa3e5d1ca" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp314-cp314t-musllinux_1_2_aarch64.whl", hash = "sha256:248b5394718e10d067354448dc406d651709c6765669679311170da18e0e9af8" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp314-cp314t-musllinux_1_2_i686.whl", hash = "sha256:5c61675a922b569137cf943770d7ad3edd0202d992ce53ac328c5ff68213ccf4" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp314-cp314t-musllinux_1_2_x86_64.whl", hash = "sha256:52d708b5fd65589461381fa442d9905f5903d76c086c6a4108e8e9efdca7a7ed" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp314-cp314t-win32.whl", hash = "sha256:916369b3b914186b2c5e5ad2f7264b02cff5df96cdd7cdad65dccd39aa5fd9f0" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp314-cp314t-win_amd64.whl", hash = "sha256:5b9d538e8e04916a5df63052d698b30c74eb0174f2ca9cd942c981f274a18eaf" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-cp314-cp314t-win_arm64.whl", hash = "sha256:04c74f9ef1f925456a9fd23a7eef1103126186d0500ef9a0acb0bd2514bdc7cc" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/coverage/7.10.2/coverage-7.10.2-py3-none-any.whl", hash = "sha256:95db3750dd2e6e93d99fa2498f3a1580581e49c494bddccc6f85c5c21604921f" },
+]
+
+[[package]]
+name = "iniconfig"
+version = "2.1.0"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/iniconfig/2.1.0/iniconfig-2.1.0.tar.gz", hash = "sha256:3abbd2e30b36733fee78f9c7f7308f2d0050e88f0087fd25c2645f63c773e1c7" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/iniconfig/2.1.0/iniconfig-2.1.0-py3-none-any.whl", hash = "sha256:9deba5723312380e77435581c6bf4935c94cbfab9b1ed33ef8d238ea168eb760" },
+]
+
+[[package]]
 name = "jmespath"
 version = "1.0.1"
 source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
@@ -48,10 +119,49 @@ dependencies = [
     { name = "pyparsing" },
 ]
 
+[package.dev-dependencies]
+dev = [
+    { name = "coverage" },
+    { name = "pytest" },
+]
+
 [package.metadata]
 requires-dist = [
     { name = "boto3", specifier = ">=1.40.0" },
     { name = "pyparsing", specifier = ">=3.2.3" },
+]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "coverage", specifier = ">=7.10.2" },
+    { name = "pytest", specifier = ">=8.4.1" },
+]
+
+[[package]]
+name = "packaging"
+version = "25.0"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/packaging/25.0/packaging-25.0.tar.gz", hash = "sha256:d443872c98d677bf60f6a1f2f8c1cb748e8fe762d2bf9d3148b5599295b0fc4f" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/packaging/25.0/packaging-25.0-py3-none-any.whl", hash = "sha256:29572ef2b1f17581046b3a2227d5c611fb25ec70ca1ba8554b24b0e69331a484" },
+]
+
+[[package]]
+name = "pluggy"
+version = "1.6.0"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/pluggy/1.6.0/pluggy-1.6.0.tar.gz", hash = "sha256:7dcc130b76258d33b90f61b658791dede3486c3e6bfb003ee5c9bfb396dd22f3" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/pluggy/1.6.0/pluggy-1.6.0-py3-none-any.whl", hash = "sha256:e920276dd6813095e9377c0bc5566d94c932c33b27a3e3945d8389c374dd4746" },
+]
+
+[[package]]
+name = "pygments"
+version = "2.19.2"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/pygments/2.19.2/pygments-2.19.2.tar.gz", hash = "sha256:636cb2477cec7f8952536970bc533bc43743542f70392ae026374600add5b887" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/pygments/2.19.2/pygments-2.19.2-py3-none-any.whl", hash = "sha256:86540386c03d588bb81d44bc3928634ff26449851e99741617ecb9037ee5ec0b" },
 ]
 
 [[package]]
@@ -61,6 +171,22 @@ source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.
 sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/pyparsing/3.2.3/pyparsing-3.2.3.tar.gz", hash = "sha256:b9c13f1ab8b3b542f72e28f634bad4de758ab3ce4546e4301970ad6fa77c38be" }
 wheels = [
     { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/pyparsing/3.2.3/pyparsing-3.2.3-py3-none-any.whl", hash = "sha256:a749938e02d6fd0b59b356ca504a24982314bb090c383e3cf201c95ef7e2bfcf" },
+]
+
+[[package]]
+name = "pytest"
+version = "8.4.1"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+dependencies = [
+    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "iniconfig" },
+    { name = "packaging" },
+    { name = "pluggy" },
+    { name = "pygments" },
+]
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/pytest/8.4.1/pytest-8.4.1.tar.gz", hash = "sha256:7c67fd69174877359ed9371ec3af8a3d2b04741818c51e5e99cc1742251fa93c" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/pytest/8.4.1/pytest-8.4.1-py3-none-any.whl", hash = "sha256:539c70ba6fcead8e78eebbf1115e8b589e7565830d7d006a8723f19ac8a0afb7" },
 ]
 
 [[package]]

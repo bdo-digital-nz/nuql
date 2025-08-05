@@ -1,6 +1,7 @@
 from typing import Any, Dict
 
 from nuql import resources, types
+from nuql.fields import Key
 
 
 class Projections:
@@ -39,10 +40,8 @@ class Projections:
         :arg action: Serialisation type.
         :arg validator: Validator instance.
         """
-        for name, projections in self._store.items():
-            field = self.serialiser.get_field(name)
+        key_fields = {key: field for key, field in self.parent.fields.items() if isinstance(field, Key)}
 
-            has_values = any([x is not None for x in projections.values()])
-
-            if has_values:
-                data[name] = field(projections, action, validator)
+        for key, field in key_fields.items():
+            projections = self._store.get(key)
+            data[key] = field(projections, action, validator)

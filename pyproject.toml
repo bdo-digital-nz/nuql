@@ -10,3 +10,9 @@ dependencies = [
 
 [[tool.uv.index]]
 url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/"
+
+[dependency-groups]
+testing = [
+    "coverage>=7.10.2",
+    "pytest>=8.4.1",
+]
