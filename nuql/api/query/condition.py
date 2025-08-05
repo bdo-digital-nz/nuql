@@ -2,7 +2,7 @@ __all__ = ['Condition']
 
 from typing import Dict, Any, Literal, Optional
 
-from boto3.dynamodb.conditions import ComparisonCondition, Attr
+from boto3.dynamodb.conditions import ComparisonCondition, Attr, ConditionExpressionBuilder
 
 import nuql
 from nuql import resources, types
@@ -35,11 +35,31 @@ class Condition:
             self.condition = self.resolve(query['condition'])
 
     @property
-    def args(self) -> Dict[str, Any]:
+    def resource_args(self) -> Dict[str, Any]:
+        """Boto3 resource args for the condition."""
         args = {}
         if self.condition:
             args[self.type] = self.condition
         return args
+
+    @property
+    def client_args(self) -> Dict[str, Any]:
+        """Boto3 client args for the condition."""
+        if not self.condition:
+            return {}
+
+        builder = ConditionExpressionBuilder()
+        expression = builder.build_expression(self.condition, is_key_condition=False)
+
+        expression_string = getattr(expression, 'condition_expression')
+        attribute_name_placeholders = getattr(expression, 'attribute_name_placeholders')
+        attribute_value_placeholders = getattr(expression, 'attribute_value_placeholders')
+
+        return {
+            'ConditionExpression': expression_string,
+            'ExpressionAttributeNames': attribute_name_placeholders,
+            'ExpressionAttributeValues': attribute_value_placeholders,
+        }
 
     def append(self, condition: str) -> None:
         """

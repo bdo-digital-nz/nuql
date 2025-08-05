@@ -26,7 +26,7 @@ class PutItem(Boto3Adapter):
         # Implement ability to modify condition before the request
         self.on_condition(condition)
 
-        return {'Item': serialised_data, **condition.args, 'ReturnValues': 'NONE'}
+        return {'Item': serialised_data, **condition.resource_args, 'ReturnValues': 'NONE'}
 
     def on_condition(self, condition: 'api.Condition') -> None:
         """

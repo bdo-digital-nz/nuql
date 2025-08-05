@@ -26,7 +26,7 @@ class Delete(Boto3Adapter):
             condition=condition,
             condition_type='ConditionExpression'
         )
-        return {'Key': self.table.serialiser.serialise_key(key), **condition_expression.args}
+        return {'Key': self.table.serialiser.serialise_key(key), **condition_expression.resource_args}
 
     def invoke_sync(
             self,

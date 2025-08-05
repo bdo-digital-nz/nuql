@@ -33,6 +33,7 @@ class Query(api.Boto3Adapter):
         """
         # Key condition is parsed from a dict and validated
         key_condition = api.KeyCondition(self.table, key_condition, index_name)
+        print(key_condition.client_args)
 
         # Filter condition is parsed from a string and validated
         filter_condition = api.Condition(
@@ -42,8 +43,8 @@ class Query(api.Boto3Adapter):
         )
 
         args: Dict[str, Any] = {
-            **key_condition.args,
-            **filter_condition.args,
+            **key_condition.resource_args,
+            **filter_condition.resource_args,
             'ScanIndexForward': scan_index_forward,
             'ConsistentRead': consistent_read,
         }

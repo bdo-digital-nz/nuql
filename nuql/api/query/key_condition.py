@@ -2,7 +2,7 @@ __all__ = ['KeyCondition']
 
 from typing import Dict, Any
 
-from boto3.dynamodb.conditions import Key
+from boto3.dynamodb.conditions import Key, ConditionExpressionBuilder
 
 import nuql
 from nuql import resources
@@ -138,7 +138,7 @@ class KeyCondition:
                 self.condition &= key_condition
 
     @property
-    def args(self) -> Dict[str, Any]:
+    def resource_args(self) -> Dict[str, Any]:
         """Query request args."""
         if self.condition is None:
             raise nuql.NuqlError(code='KeyConditionError', message='Key condition is empty.')
@@ -146,6 +146,26 @@ class KeyCondition:
         args: Dict[str, Any] = {'KeyConditionExpression': self.condition}
         if self.index_name != 'primary':
             args['IndexName'] = self.index_name
+
+        return args
+
+    @property
+    def client_args(self) -> Dict[str, Any]:
+        """Boto3 client args for the condition."""
+        if self.condition is None:
+            raise nuql.NuqlError(code='KeyConditionError', message='Key condition is empty.')
+
+        args = {}
+
+        if self.index_name != 'primary':
+            args['IndexName'] = self.index_name
+
+        builder = ConditionExpressionBuilder()
+        expression = builder.build_expression(self.condition, is_key_condition=True)
+
+        args['KeyConditionExpression'] = getattr(expression, 'condition_expression')
+        args['ExpressionAttributeNames'] = getattr(expression, 'attribute_name_placeholders')
+        args['ExpressionAttributeValues'] = getattr(expression, 'attribute_value_placeholders')
 
         return args
 
