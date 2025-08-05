@@ -78,6 +78,37 @@ class Serialiser:
 
         return data
 
+    def serialise_key(self, key: Dict[str, Any], index_name: str = 'primary') -> Dict[str, Any]:
+        """
+        Serialises the key for an item on a given index.
+
+        :arg key: Key to serialise.
+        :param index_name: Index name to serialise key for.
+        :return: Serialised key.
+        """
+        # Check parent is of a valid type
+        if not isinstance(self.parent, resources.Table):
+            raise nuql.NuqlError(
+                code='InvalidTable',
+                message='Serialisation of keys is only supported for Table resources.'
+            )
+
+        # Get applicable index
+        if index_name == 'primary':
+            index = self.parent.indexes.primary
+        else:
+            index = self.parent.indexes.get_index(index_name)
+
+        # Serialise provided data according the the schema
+        serialised_key = self.serialise('query', key)
+
+        # Produce a key from the serialised result and for the given index
+        return {
+            key: value
+            for key, value in serialised_key.items()
+            if key == index['hash'] or ('sort' not in index or key == index['sort'])
+        }
+
     def deserialise(self, data: Dict[str, Any]) -> Dict[str, Any]:
         """
         Deserialises/unmarshalls data from DynamoDB.
