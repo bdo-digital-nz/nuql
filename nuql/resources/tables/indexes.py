@@ -13,6 +13,7 @@ class Indexes:
 
         :arg indexes: List of indexes.
         """
+        self.index_keys = set()
         self._indexes = self.validate_indexes(indexes)
 
     @property
@@ -20,8 +21,7 @@ class Indexes:
         """Retrieve the primary index for the table"""
         return cast(types.PrimaryIndex, self._indexes['primary'])
 
-    @staticmethod
-    def validate_indexes(indexes: 'types.IndexesType') -> Dict[str, Dict[str, Any]]:
+    def validate_indexes(self, indexes: 'types.IndexesType') -> Dict[str, Dict[str, Any]]:
         """
         Processes, validates and generates index dict for the table.
 
@@ -35,6 +35,10 @@ class Indexes:
 
         for index in indexes:
             index_name = index.get('name', 'primary')
+            self.index_keys.add(index['hash'])
+
+            if 'sort' in index:
+                self.index_keys.add(index['sort'])
 
             # Validate only one primary index
             if index_name == 'primary' and 'primary' in index_dict:
