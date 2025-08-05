@@ -71,3 +71,17 @@ class Table:
         """
         get = api.Get(self.provider, self)
         return get.invoke_sync(key=key, consistent_read=consistent_read)
+
+    def delete(
+            self,
+            key: Dict[str, Any],
+            condition_expression: Optional['types.QueryWhere'] = None,
+    ) -> None:
+        """
+        Performs a delete operation for an item on the table.
+
+        :arg key: Record key as a dict.
+        :param condition_expression: Condition expression as a dict.
+        """
+        delete = api.Delete(self.provider, self)
+        return delete.invoke_sync(key=key, condition_expression=condition_expression)
