@@ -17,6 +17,10 @@ class Boto3Adapter:
         self.connection = client.connection
         self.table = table
 
+    def prepare_client_args(self, *args, **kwargs) -> Dict[str, Any]:
+        """Prepares the arguments for boto3 API invocation (for the client API)."""
+        raise NotImplementedError('Argument preparation for the client API has not been implemented for this method.')
+
     def prepare_args(self, *args, **kwargs) -> Dict[str, Any]:
         """Prepares the arguments for boto3 API invocation."""
         raise NotImplementedError('Argument preparation has not been implemented for this method.')
