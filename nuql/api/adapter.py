@@ -1,6 +1,6 @@
 __all__ = ['Boto3Adapter']
 
-from typing import Any
+from typing import Any, Dict
 
 import nuql
 from nuql import resources
@@ -16,6 +16,10 @@ class Boto3Adapter:
         self.client = client
         self.connection = client.connection
         self.table = table
+
+    def prepare_args(self, *args, **kwargs) -> Dict[str, Any]:
+        """Prepares the arguments for boto3 API invocation."""
+        raise NotImplementedError('Argument preparation has not been implemented for this method.')
 
     def invoke_sync(self, *args, **kwargs) -> Any:
         """Synchronously invokes boto3 API."""

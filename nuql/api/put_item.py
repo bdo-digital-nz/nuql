@@ -12,6 +12,22 @@ from nuql.api import Boto3Adapter
 class PutItem(Boto3Adapter):
     serialisation_action: Literal['create', 'update', 'write'] = 'write'
 
+    def prepare_args(self, data: Dict[str, Any], condition: Optional['types.QueryWhere'] = None) -> Dict[str, Any]:
+        """
+        Prepare the request args for a put operation against the table.
+
+        :arg data: Data to put.
+        :param condition: Optional condition expression dict.
+        :return: New item dict.
+        """
+        serialised_data = self.table.serialiser.serialise(self.serialisation_action, data)
+        condition = api.Condition(self.table, condition, 'ConditionExpression')
+
+        # Implement ability to modify condition before the request
+        self.on_condition(condition)
+
+        return {'Item': serialised_data, **condition.args, 'ReturnValues': 'NONE'}
+
     def on_condition(self, condition: 'api.Condition') -> None:
         """
         Make changes to the condition expression before request.
@@ -28,17 +44,11 @@ class PutItem(Boto3Adapter):
         :param condition: Optional condition expression dict.
         :return: New item dict.
         """
-        serialised_data = self.table.serialiser.serialise(self.serialisation_action, data)
-        condition = api.Condition(self.table, condition, 'ConditionExpression')
-
-        # Implement ability to modify condition before the request
-        self.on_condition(condition)
-
-        args = {'Item': serialised_data, **condition.args, 'ReturnValues': 'NONE'}
+        args = self.prepare_args(data=data, condition=condition)
 
         try:
             self.connection.table.put_item(**args)
         except ClientError as exc:
             raise nuql.Boto3Error(exc, args)
 
-        return self.table.serialiser.deserialise(serialised_data)
+        return self.table.serialiser.deserialise(args['Item'])
