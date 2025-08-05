@@ -1,0 +1,44 @@
+__all__ = ['PutItem']
+
+from typing import Any, Dict, Optional, Literal
+
+from botocore.exceptions import ClientError
+
+import nuql
+from nuql import types, api
+from nuql.api import Boto3Adapter
+
+
+class PutItem(Boto3Adapter):
+    serialisation_action: Literal['create', 'update', 'write'] = 'write'
+
+    def on_condition(self, condition: 'api.Condition') -> None:
+        """
+        Make changes to the condition expression before request.
+
+        :arg condition: Condition instance.
+        """
+        pass
+
+    def invoke_sync(self, data: Dict[str, Any], condition: Optional['types.QueryWhere'] = None) -> Dict[str, Any]:
+        """
+        Perform a put operation against the table.
+
+        :arg data: Data to put.
+        :param condition: Optional condition expression dict.
+        :return: New item dict.
+        """
+        serialised_data = self.table.serialiser.serialise(self.serialisation_action, data)
+        condition = api.Condition(self.table, condition, 'ConditionExpression')
+
+        # Implement ability to modify condition before the request
+        self.on_condition(condition)
+
+        args = {'Item': serialised_data, **condition.args, 'ReturnValues': 'NONE'}
+
+        try:
+            self.connection.table.put_item(**args)
+        except ClientError as exc:
+            raise nuql.Boto3Error(exc, args)
+
+        return self.table.serialiser.deserialise(serialised_data)

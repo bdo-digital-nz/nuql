@@ -72,6 +72,17 @@ class Table:
         get = api.Get(self.provider, self)
         return get.invoke_sync(key=key, consistent_read=consistent_read)
 
+    def create(self, data: Dict[str, Any], condition: Optional['types.QueryWhere'] = None) -> Dict[str, Any]:
+        """
+        Create a new item on the table.
+
+        :arg data: Data to create.
+        :param condition: Optional condition expression dict.
+        :return: New item dict.
+        """
+        create = api.Create(self.provider, self)
+        return create.invoke_sync(data=data, condition=condition)
+
     def delete(
             self,
             key: Dict[str, Any],
@@ -100,5 +111,31 @@ class Table:
         :param shallow: Activates shallow update mode (so that whole nested items are updated at once).
         :return: New item dict.
         """
-        update = api.Update(self.provider, self)
+        update = api.UpdateItem(self.provider, self)
         return update.invoke_sync(data=data, condition=condition, shallow=shallow)
+
+    def put_item(self, data: Dict[str, Any], condition: Optional['types.QueryWhere'] = None) -> Dict[str, Any]:
+        """
+        Perform a put operation against the table.
+
+        :arg data: Data to put.
+        :param condition: Optional condition expression dict.
+        :return: New item dict.
+        """
+        put = api.PutItem(self.provider, self)
+        return put.invoke_sync(data=data, condition=condition)
+
+    def upsert(self, data: Dict[str, Any], shallow: bool = False) -> Dict[str, Any]:
+        """
+        Updates an item in the table if it exists, otherwise creates a new one.
+
+        [NOTE]
+        Conditions aren't allowed for this API to avoid ambiguous
+        ConditionCheckFailedException (as this is a catch-all for any condition).
+
+        :arg data: Data to upsert.
+        :param shallow: Activates shallow update mode (so that whole nested items are updated at once).
+        :return: New item dict.
+        """
+        upsert = api.Upsert(self.provider, self)
+        return upsert.invoke_sync(data=data, shallow=shallow)

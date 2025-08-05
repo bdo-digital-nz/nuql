@@ -1,6 +1,6 @@
-__all__ = ['Update']
+__all__ = ['UpdateItem']
 
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Literal
 
 from botocore.exceptions import ClientError
 
@@ -8,7 +8,27 @@ import nuql
 from nuql import types, api
 
 
-class Update(api.Boto3Adapter):
+class UpdateItem(api.Boto3Adapter):
+    serialisation_action: Literal['create', 'update'] = 'update'
+
+    def on_condition(self, condition: 'api.Condition') -> None:
+        """
+        Make changes to the condition expression before request.
+
+        :arg condition: Condition instance.
+        """
+        index = self.table.indexes.primary
+        keys = [index['hash']]
+
+        # Append sort key if defined in primary index, but only if it exists in the schema
+        if 'sort' in index and index['sort'] and index['sort'] in self.table.fields:
+            keys.append(index['sort'])
+
+        expression = ' and '.join([f'attribute_exists({key})' for key in keys])
+
+        # Add the expression to the existing condition
+        condition.append(expression)
+
     def invoke_sync(
             self,
             data: Dict[str, Any],
