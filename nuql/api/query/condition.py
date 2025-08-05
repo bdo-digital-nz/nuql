@@ -6,7 +6,7 @@ from boto3.dynamodb.conditions import ComparisonCondition, Attr
 
 import nuql
 from nuql import resources
-from . import builder
+from . import condition_builder
 
 
 class Condition:
@@ -35,7 +35,7 @@ class Condition:
         self.validator = resources.Validator()
 
         if condition:
-            query = builder.build_query(condition)
+            query = condition_builder.build_query(condition)
             self.condition = self.resolve(query['condition'])
 
     @property
@@ -52,7 +52,7 @@ class Condition:
         :arg condition: Condition string.
         """
         if isinstance(condition, str):
-            condition = builder.build_query(condition)['condition']
+            condition = condition_builder.build_query(condition)['condition']
         condition = self.resolve(condition)
         if self.condition:
             self.condition &= condition
@@ -66,6 +66,7 @@ class Condition:
         :arg part: Part to resolve.
         :return: ComparisonCondition instance.
         """
+        # Direct condition/function handling
         if isinstance(part, dict) and part['type'] in ['condition', 'function']:
             attr = Attr(part['field'])
             field_name = part['field']
@@ -81,8 +82,11 @@ class Condition:
                     message=f'Field \'{field_name}\' cannot be used in a condition query'
                 )
 
+            # Functions are called differently
             if part['type'] == 'function':
                 expression = getattr(attr, part['function'])()
+
+            # Handle basic conditions
             else:
                 if not field:
                     raise nuql.NuqlError(
@@ -90,6 +94,7 @@ class Condition:
                         message=f'Field \'{field_name}\' is not defined in the schema'
                     )
 
+                # Variables provided outside of the query string
                 if part['value_type'] == 'variable':
                     if part['variable'] not in self.variables:
                         raise nuql.NuqlError(
@@ -97,18 +102,23 @@ class Condition:
                             message=f'Variable \'{part["variable"]}\' is not defined in the condition'
                         )
                     value = self.variables[part['variable']]
+
+                # Rudimentary values passed in the query string
                 else:
                     value = part['value']
 
+                # Value is serialised for a query
                 expression = getattr(attr, part['operand'])(field(value, action='query', validator=self.validator))
 
             return expression
 
+        # Handle grouped conditions
         elif isinstance(part, dict) and part['type'] == 'parentheses':
             condition = None
             last_operator = None
 
             for item in part['conditions']:
+                # Logical operator is stored outside of the loop so that it is used
                 if isinstance(item, dict) and item['type'] == 'logical_operator':
                     last_operator = item['operator']
 
@@ -124,4 +134,8 @@ class Condition:
 
             return condition
 
-        raise ValueError('TODO invalid query')
+        raise nuql.NuqlError(
+            code='ConditionParsingError',
+            message='Unresolvable condition part was provided',
+            part=part
+        )

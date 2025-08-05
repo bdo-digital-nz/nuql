@@ -60,6 +60,7 @@ ATTR_OPERATORS = {
 
 field = Word(alphas + '_' + alphanums + '.').set_results_name('field')
 
+# Operands and functions
 operand = oneOf('''
     = == equals eq is
     != <> not_equals ne is_not
@@ -72,18 +73,20 @@ operand = oneOf('''
     between
     is_in in
 ''', caseless=True).set_results_name('operand')
-
 func = oneOf('attribute_exists attribute_not_exists', caseless=True).set_results_name('func')
 
+# Value parsing
 variable = Regex(r'\$\{[^}]*\}').set_results_name('variable')
-quoted_string = (QuotedString('"', unquote_results=False).set_results_name('string') |
-                 QuotedString("'", unquote_results=False).set_results_name('string'))
+quoted_string = (
+        QuotedString('"', unquote_results=False).set_results_name('string') |
+        QuotedString("'", unquote_results=False).set_results_name('string')
+)
 integer = pyparsing_common.integer.set_results_name('integer')
 number = pyparsing_common.number.set_results_name('number')
 boolean = oneOf('true false', caseless=True)
-
 value = variable | quoted_string | number | integer | boolean
 
+# Equation groups
 condition_group = Group(field + operand + value)
 function_group = Group(func + '(' + field + ')')
 
@@ -108,12 +111,19 @@ def build_query(query: str | None) -> Dict[str, Any]:
     except ParseException as e:
         raise nuql.NuqlError(
             code='ConditionParsingError',
-            message=f'Unable to parse condition: {e}'
+            message=f'Unable to parse condition: {e}',
         )
 
     variables = []
 
     def recursive_unpack(part: Any, captured_variables: List[str]) -> Dict[str, Any]:
+        """
+        Recursively unpacks condition parts.
+
+        :arg part: Condition part.
+        :arg captured_variables: List of variables captured in query.
+        :return: Dict representation of condition.
+        """
         if is_condition(part):
             value_is_variable = isinstance(part[2], str) and part[2].startswith('${') and part[2].endswith('}')
             if value_is_variable:
