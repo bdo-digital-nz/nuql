@@ -43,7 +43,7 @@ class Serialiser:
         """
         validator = resources.Validator() if validator is None else validator
         projections = resources.Projections(self.parent, self)
-        data = data if data else {}
+        output = {}
 
         # Serialise provided fields
         for key, deserialised_value in data.items():
@@ -53,7 +53,7 @@ class Serialiser:
             if field.projected_from:
                 projections.add(key, serialised_value, action, validator)
             else:
-                data[key] = serialised_value
+                output[key] = serialised_value
 
         # Serialise fields not provided (i.e. could have defaults)
         untouched = {name: field for name, field in self.parent.fields.items() if name not in data}
@@ -68,15 +68,15 @@ class Serialiser:
                 continue
 
             if serialised_value:
-                data[name] = serialised_value
+                output[name] = serialised_value
 
         # Set projections
-        projections.merge(data, action, validator)
+        projections.merge(output, action, validator)
 
         if action in ['create', 'update', 'write']:
             validator.raise_for_validation_errors()
 
-        return data
+        return output
 
     def serialise_key(self, key: Dict[str, Any], index_name: str = 'primary') -> Dict[str, Any]:
         """

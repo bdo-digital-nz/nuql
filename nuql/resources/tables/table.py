@@ -85,3 +85,20 @@ class Table:
         """
         delete = api.Delete(self.provider, self)
         return delete.invoke_sync(key=key, condition_expression=condition_expression)
+
+    def update(
+            self,
+            data: Dict[str, Any],
+            condition: Optional['types.QueryWhere'] = None,
+            shallow: bool = False
+    ) -> Dict[str, Any]:
+        """
+        Updates an item in the table.
+
+        :arg data: Data to update.
+        :param condition: Optional condition expression.
+        :param shallow: Activates shallow update mode (so that whole nested items are updated at once).
+        :return: New item dict.
+        """
+        update = api.Update(self.provider, self)
+        return update.invoke_sync(data=data, condition=condition, shallow=shallow)
