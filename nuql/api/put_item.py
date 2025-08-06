@@ -31,6 +31,7 @@ class PutItem(Boto3Adapter):
         """
         serialised_data = self.table.serialiser.serialise(self.serialisation_action, data)
         condition = api.Condition(self.table, condition, 'ConditionExpression')
+        condition_args = condition.client_args
 
         # Marshall into the DynamoDB format
         serialiser = TypeSerializer()
@@ -39,10 +40,19 @@ class PutItem(Boto3Adapter):
         # Implement ability to modify condition before the request
         self.on_condition(condition)
 
+        # Serialise ExpressionAttributeValues into DynamoDB format
+        if 'ExpressionAttributeValues' in condition_args:
+            condition_args = {**condition_args}
+            for k, v in condition_args['ExpressionAttributeValues'].items():
+                condition_args['ExpressionAttributeValues'][k] = serialiser.serialize(v)
+
         args: Dict[str, Any] = {'Item': marshalled_data, **kwargs}
 
         if not exclude_condition:
             args.update(condition.client_args)
+
+        if 'ExpressionAttributeValues' in args and not args['ExpressionAttributeValues']:
+            args.pop('ExpressionAttributeValues')
 
         return args
 

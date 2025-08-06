@@ -33,7 +33,7 @@ class Connection:
         """Creates a `boto3` DynamoDB client if it doesn't exist."""
         if self.__client is None:
             self.__client = self.session.client('dynamodb', **self.__connection_args)
-        return self.__resource
+        return self.__client
 
     @property
     def table(self):

@@ -6,7 +6,7 @@ from boto3.dynamodb.types import TypeSerializer
 from botocore.exceptions import ClientError
 
 import nuql
-from nuql import types, api
+from nuql import types, api, resources
 
 
 class UpdateItem(api.Boto3Adapter):
@@ -34,7 +34,7 @@ class UpdateItem(api.Boto3Adapter):
 
         # Marshall the key into DynamoDB format
         serialiser = TypeSerializer()
-        marshalled_data = {k: serialiser.serialize(v) for k, v in serialised_data.items()}
+        marshalled_key = {k: serialiser.serialize(v) for k, v in key.items()}
 
         # Generate the update condition
         condition = api.Condition(
@@ -42,11 +42,26 @@ class UpdateItem(api.Boto3Adapter):
             condition=condition,
             condition_type='ConditionExpression'
         )
+        self.on_condition(condition)
 
         # Generate the update expression
         update = api.UpdateExpressionBuilder(serialised_data, shallow=shallow)
+        args = {
+            'Key': marshalled_key,
+            **resources.merge_dicts(update.args, condition.client_args),
+            **kwargs
+        }
 
-        return {'Key': marshalled_data, **update.args, **condition.client_args, **kwargs}
+        # Serialise ExpressionAttributeValues into DynamoDB format
+        if 'ExpressionAttributeValues' in args:
+            for key, value in args['ExpressionAttributeValues'].items():
+                args['ExpressionAttributeValues'][key] = serialiser.serialize(value)
+
+        # Remove empty ExpressionAttributeValues
+        if 'ExpressionAttributeValues' in args and not args['ExpressionAttributeValues']:
+            args.pop('ExpressionAttributeValues')
+
+        return args
 
     def prepare_args(
             self,
@@ -74,6 +89,7 @@ class UpdateItem(api.Boto3Adapter):
             condition=condition,
             condition_type='ConditionExpression'
         )
+        self.on_condition(condition)
 
         # Generate the update expression
         update = api.UpdateExpressionBuilder(serialised_data, shallow=shallow)

@@ -54,6 +54,14 @@ class Nuql:
         """
         return api.BatchWrite(self)
 
+    def transaction(self) -> 'api.Transaction':
+        """
+        Instantiates a `Transaction` object for performing transactions on a DynamoDB table.
+
+        :return: Transaction instance.
+        """
+        return api.Transaction(self)
+
     def get_table(self, name: str) -> Table:
         """
         Instantiates a `Table` object for the chosen table in the schema.

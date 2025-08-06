@@ -19,7 +19,7 @@ class Create(api.PutItem):
         if 'sort' in index and index['sort'] and index['sort'] in self.table.fields:
             keys.append(index['sort'])
 
-        expression = ' and '.join([f'attribute_exists({key})' for key in keys])
+        expression = ' and '.join([f'attribute_not_exists({key})' for key in keys])
 
         # Add the expression to the existing condition
         condition.append(expression)
