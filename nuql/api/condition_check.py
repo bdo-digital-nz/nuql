@@ -4,12 +4,12 @@ from typing import Dict, Any
 
 from boto3.dynamodb.types import TypeSerializer
 
-from nuql import types, api
+from nuql import types, api, resources
 from nuql.api import Boto3Adapter
 
 
 class ConditionCheck(Boto3Adapter):
-    def prepare_client_args(self, key: Dict[str, Any], condition: 'types.QueryWhere', **kwargs) -> Dict[str, Any]:
+    def prepare_client_args(self, key: Dict[str, Any], condition: Dict[str, Any], **kwargs) -> Dict[str, Any]:
         """
         Prepare the request args for a condition check operation against the table (client API).
 
@@ -19,6 +19,7 @@ class ConditionCheck(Boto3Adapter):
         :return: Client request args.
         """
         serialised_data = self.table.serialiser.serialise('query', key)
+        resources.validate_condition_dict(condition, required=True)
         condition = api.Condition(self.table, condition, 'ConditionExpression')
 
         # Marshall into the DynamoDB format

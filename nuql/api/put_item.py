@@ -6,7 +6,7 @@ from boto3.dynamodb.types import TypeSerializer
 from botocore.exceptions import ClientError
 
 import nuql
-from nuql import types, api
+from nuql import types, api, resources
 from nuql.api import Boto3Adapter
 
 
@@ -59,7 +59,7 @@ class PutItem(Boto3Adapter):
     def prepare_args(
             self,
             data: Dict[str, Any],
-            condition: Optional['types.QueryWhere'] = None,
+            condition: Dict[str, Any] | None = None,
             exclude_condition: bool = False,
             **kwargs,
     ) -> Dict[str, Any]:
@@ -73,6 +73,7 @@ class PutItem(Boto3Adapter):
         :return: New item dict.
         """
         serialised_data = self.table.serialiser.serialise(self.serialisation_action, data)
+        resources.validate_condition_dict(condition, required=True)
         condition = api.Condition(self.table, condition, 'ConditionExpression')
 
         # Implement ability to modify condition before the request
@@ -93,7 +94,7 @@ class PutItem(Boto3Adapter):
         """
         pass
 
-    def invoke_sync(self, data: Dict[str, Any], condition: Optional['types.QueryWhere'] = None) -> Dict[str, Any]:
+    def invoke_sync(self, data: Dict[str, Any], condition: Dict[str, Any] | None = None) -> Dict[str, Any]:
         """
         Perform a put operation against the table.
 

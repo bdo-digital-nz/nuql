@@ -31,18 +31,18 @@ class Table:
     def query(
             self,
             key_condition: Dict[str, Any] | None = None,
-            filter_condition: Optional['types.QueryWhere'] = None,
+            condition: Dict[str, Any] | None = None,
             index_name: str = 'primary',
             limit: int | None = None,
             scan_index_forward: bool = True,
             exclusive_start_key: Dict[str, Any] | None = None,
             consistent_read: bool = False,
-    ) -> 'types.QueryResult':
+    ) -> Dict[str, Any]:
         """
         Synchronously invokes a query against the table.
 
         :param key_condition: Key condition expression as a dict.
-        :param filter_condition: Filter condition expression as a dict.
+        :param condition: Filter condition expression as a dict.
         :param index_name: Index to perform query against.
         :param limit: Number of items to retrieve.
         :param scan_index_forward: Direction of scan.
@@ -53,7 +53,7 @@ class Table:
         query = api.Query(self.provider, self)
         return query.invoke_sync(
             key_condition=key_condition,
-            filter_condition=filter_condition,
+            condition=condition,
             index_name=index_name,
             limit=limit,
             scan_index_forward=scan_index_forward,
@@ -72,7 +72,7 @@ class Table:
         get = api.Get(self.provider, self)
         return get.invoke_sync(key=key, consistent_read=consistent_read)
 
-    def create(self, data: Dict[str, Any], condition: Optional['types.QueryWhere'] = None) -> Dict[str, Any]:
+    def create(self, data: Dict[str, Any], condition: Dict[str, Any] | None = None) -> Dict[str, Any]:
         """
         Create a new item on the table.
 
@@ -86,7 +86,7 @@ class Table:
     def delete(
             self,
             key: Dict[str, Any],
-            condition: Optional['types.QueryWhere'] = None,
+            condition: Dict[str, Any] | None = None,
     ) -> None:
         """
         Performs a delete operation for an item on the table.
@@ -100,7 +100,7 @@ class Table:
     def update(
             self,
             data: Dict[str, Any],
-            condition: Optional['types.QueryWhere'] = None,
+            condition: Dict[str, Any] | None = None,
             shallow: bool = False
     ) -> Dict[str, Any]:
         """
@@ -114,7 +114,7 @@ class Table:
         update = api.UpdateItem(self.provider, self)
         return update.invoke_sync(data=data, condition=condition, shallow=shallow)
 
-    def put_item(self, data: Dict[str, Any], condition: Optional['types.QueryWhere'] = None) -> Dict[str, Any]:
+    def put_item(self, data: Dict[str, Any], condition: Dict[str, Any] | None = None) -> Dict[str, Any]:
         """
         Perform a put operation against the table.
 

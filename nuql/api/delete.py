@@ -6,7 +6,7 @@ from boto3.dynamodb.types import TypeSerializer
 from botocore.exceptions import ClientError
 
 import nuql
-from nuql import types, api
+from nuql import types, api, resources
 from nuql.api import Boto3Adapter, Condition
 
 
@@ -14,7 +14,7 @@ class Delete(Boto3Adapter):
     def prepare_client_args(
             self,
             key: Dict[str, Any],
-            condition: Optional['types.QueryWhere'] = None,
+            condition: Dict[str, Any] | None = None,
             exclude_condition: bool = False,
             **kwargs,
     ) -> Dict[str, Any]:
@@ -27,6 +27,7 @@ class Delete(Boto3Adapter):
         :param kwargs: Additional args to pass to the request.
         """
         serialised_data = self.table.serialiser.serialise('query', key)
+        resources.validate_condition_dict(condition)
         condition = api.Condition(self.table, condition, 'ConditionExpression')
 
         # Marshall into the DynamoDB format
@@ -43,7 +44,7 @@ class Delete(Boto3Adapter):
     def prepare_args(
             self,
             key: Dict[str, Any],
-            condition: Optional['types.QueryWhere'] = None,
+            condition: Dict[str, Any] | None = None,
             exclude_condition: bool = False,
             **kwargs,
     ) -> Dict[str, Any]:
@@ -55,6 +56,7 @@ class Delete(Boto3Adapter):
         :param exclude_condition: Exclude condition from request (i.e. for BatchWrite).
         :param kwargs: Additional args to pass to the request.
         """
+        resources.validate_condition_dict(condition)
         condition_expression = Condition(
             table=self.table,
             condition=condition,
@@ -70,7 +72,7 @@ class Delete(Boto3Adapter):
     def invoke_sync(
             self,
             key: Dict[str, Any],
-            condition: Optional['types.QueryWhere'] = None,
+            condition: Dict[str, Any] | None = None,
     ) -> None:
         """
         Performs a delete operation for an item on the table.

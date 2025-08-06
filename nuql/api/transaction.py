@@ -66,7 +66,7 @@ class Transaction:
             self,
             table: 'resources.Table',
             data: Dict[str, Any],
-            condition: Optional['types.QueryWhere'] = None,
+            condition: Dict[str, Any] | None = None,
     ) -> None:
         """
         Create a new item on a table as part of a transaction.
@@ -86,7 +86,7 @@ class Transaction:
             self,
             table: 'resources.Table',
             data: Dict[str, Any],
-            condition: Optional['types.QueryWhere'] = None,
+            condition: Dict[str, Any] | None = None,
             shallow: bool = False,
     ) -> None:
         """
@@ -108,7 +108,7 @@ class Transaction:
             self,
             table: 'resources.Table',
             key: Dict[str, Any],
-            condition: Optional['types.QueryWhere'] = None,
+            condition: Dict[str, Any] | None = None,
     ) -> None:
         """
         Delete an item on a table as part of a transaction.
@@ -128,7 +128,7 @@ class Transaction:
             self,
             table: 'resources.Table',
             key: Dict[str, Any],
-            condition: 'types.QueryWhere',
+            condition: Dict[str, Any],
     ) -> None:
         """
         Perform a condition check on an item as part of a transaction.

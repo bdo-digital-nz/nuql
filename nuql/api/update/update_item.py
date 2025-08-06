@@ -15,7 +15,7 @@ class UpdateItem(api.Boto3Adapter):
     def prepare_client_args(
             self,
             data: Dict[str, Any],
-            condition: Optional['types.QueryWhere'] = None,
+            condition: Dict[str, Any] | None = None,
             shallow: bool = False,
             **kwargs,
     ) -> Dict[str, Any]:
@@ -37,6 +37,7 @@ class UpdateItem(api.Boto3Adapter):
         marshalled_key = {k: serialiser.serialize(v) for k, v in key.items()}
 
         # Generate the update condition
+        resources.validate_condition_dict(condition)
         condition = api.Condition(
             table=self.table,
             condition=condition,
@@ -66,7 +67,7 @@ class UpdateItem(api.Boto3Adapter):
     def prepare_args(
             self,
             data: Dict[str, Any],
-            condition: Optional['types.QueryWhere'] = None,
+            condition: Dict[str, Any] | None = None,
             shallow: bool = False,
             **kwargs,
     ) -> Dict[str, Any]:
@@ -84,6 +85,7 @@ class UpdateItem(api.Boto3Adapter):
         serialised_data = {k: v for k, v in self.table.serialiser.serialise('update', data).items() if k not in key}
 
         # Generate the update condition
+        resources.validate_condition_dict(condition)
         condition = api.Condition(
             table=self.table,
             condition=condition,
@@ -116,7 +118,7 @@ class UpdateItem(api.Boto3Adapter):
     def invoke_sync(
             self,
             data: Dict[str, Any],
-            condition: Optional['types.QueryWhere'] = None,
+            condition: Dict[str, Any] | None = None,
             shallow: bool = False
     ) -> Dict[str, Any]:
         """

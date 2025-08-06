@@ -5,14 +5,14 @@ from typing import Any, Dict, Optional
 from botocore.exceptions import ClientError
 
 import nuql
-from nuql import types, api
+from nuql import types, api, resources
 
 
 class Query(api.Boto3Adapter):
     def prepare_client_args(
             self,
             key_condition: Dict[str, Any] | None = None,
-            filter_condition: Optional['types.QueryWhere'] = None,
+            condition: Dict[str, Any] | None = None,
             index_name: str = 'primary',
             limit: int | None = None,
             scan_index_forward: bool = True,
@@ -23,7 +23,7 @@ class Query(api.Boto3Adapter):
         Prepares args for performing a query against the table (client API).
 
         :param key_condition: Key condition expression as a dict.
-        :param filter_condition: Filter condition expression as a dict.
+        :param condition: Filter condition expression as a dict.
         :param index_name: Index to perform query against.
         :param limit: Number of items to retrieve.
         :param scan_index_forward: Direction of scan.
@@ -35,9 +35,10 @@ class Query(api.Boto3Adapter):
         key_condition = api.KeyCondition(self.table, key_condition, index_name)
 
         # Filter condition is parsed from a string and validated
+        resources.validate_condition_dict(condition)
         filter_condition = api.Condition(
             table=self.table,
-            condition=filter_condition,
+            condition=condition,
             condition_type='FilterExpression'
         )
 
@@ -51,7 +52,7 @@ class Query(api.Boto3Adapter):
     def prepare_args(
             self,
             key_condition: Dict[str, Any] | None = None,
-            filter_condition: Optional['types.QueryWhere'] = None,
+            condition: Dict[str, Any] | None = None,
             index_name: str = 'primary',
             limit: int | None = None,
             scan_index_forward: bool = True,
@@ -62,7 +63,7 @@ class Query(api.Boto3Adapter):
         Prepares args for performing a query against the table (resource API).
 
         :param key_condition: Key condition expression as a dict.
-        :param filter_condition: Filter condition expression as a dict.
+        :param condition: Filter condition expression as a dict.
         :param index_name: Index to perform query against.
         :param limit: Number of items to retrieve.
         :param scan_index_forward: Direction of scan.
@@ -74,9 +75,10 @@ class Query(api.Boto3Adapter):
         key_condition = api.KeyCondition(self.table, key_condition, index_name)
 
         # Filter condition is parsed from a string and validated
+        resources.validate_condition_dict(condition)
         filter_condition = api.Condition(
             table=self.table,
-            condition=filter_condition,
+            condition=condition,
             condition_type='FilterExpression'
         )
 
@@ -90,18 +92,18 @@ class Query(api.Boto3Adapter):
     def invoke_sync(
             self,
             key_condition: Dict[str, Any] | None = None,
-            filter_condition: Optional['types.QueryWhere'] = None,
+            condition: Dict[str, Any] | None = None,
             index_name: str = 'primary',
             limit: int | None = None,
             scan_index_forward: bool = True,
             exclusive_start_key: Dict[str, Any] | None = None,
             consistent_read: bool = False,
-    ) -> 'types.QueryResult':
+    ) -> Dict[str, Any]:
         """
         Synchronously invokes a query against the table.
 
         :param key_condition: Key condition expression as a dict.
-        :param filter_condition: Filter condition expression as a dict.
+        :param condition: Filter condition expression as a dict.
         :param index_name: Index to perform query against.
         :param limit: Number of items to retrieve.
         :param scan_index_forward: Direction of scan.
@@ -109,22 +111,15 @@ class Query(api.Boto3Adapter):
         :param consistent_read: Perform query as a consistent read.
         :return: Query result.
         """
-        # Key condition is parsed from a dict and validated
-        key_condition = api.KeyCondition(self.table, key_condition, index_name)
-
-        # Filter condition is parsed from a string and validated
-        filter_condition = api.Condition(
-            table=self.table,
-            condition=filter_condition,
-            condition_type='FilterExpression'
+        args = self.prepare_args(
+            key_condition=key_condition,
+            condition=condition,
+            index_name=index_name,
+            limit=limit,
+            scan_index_forward=scan_index_forward,
+            exclusive_start_key=exclusive_start_key,
+            consistent_read=consistent_read,
         )
-
-        args: Dict[str, Any] = {
-            **key_condition.resource_args,
-            **filter_condition.resource_args,
-            'ScanIndexForward': scan_index_forward,
-            'ConsistentRead': consistent_read,
-        }
 
         data = []
         last_evaluated_key = exclusive_start_key

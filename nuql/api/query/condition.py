@@ -13,7 +13,7 @@ class Condition:
     def __init__(
             self,
             table: 'resources.Table',
-            condition: Optional['types.QueryWhere'] = None,
+            condition: Dict[str, Any] | None = None,
             condition_type: Literal['FilterExpression', 'ConditionExpression'] = 'FilterExpression',
     ) -> None:
         """
