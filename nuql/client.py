@@ -4,7 +4,7 @@ from typing import List, Type
 
 from boto3 import Session
 
-from nuql import types
+from nuql import types, api
 from . import Connection, exceptions
 from .resources import Table, Indexes
 
@@ -45,6 +45,14 @@ class Nuql:
     @property
     def schema(self) -> 'types.SchemaConfig':
         return self.__schema
+
+    def batch_write(self) -> 'api.BatchWrite':
+        """
+        Instantiates a `BatchWrite` object for performing batch writes to DynamoDB.
+
+        :return: BatchWrite instance.
+        """
+        return api.BatchWrite(self)
 
     def get_table(self, name: str) -> Table:
         """

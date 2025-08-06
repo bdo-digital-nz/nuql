@@ -2,31 +2,66 @@ __all__ = ['Delete']
 
 from typing import Any, Dict, Optional
 
+from boto3.dynamodb.types import TypeSerializer
 from botocore.exceptions import ClientError
 
 import nuql
-from nuql import types
+from nuql import types, api
 from nuql.api import Boto3Adapter, Condition
 
 
 class Delete(Boto3Adapter):
+    def prepare_client_args(
+            self,
+            key: Dict[str, Any],
+            condition: Optional['types.QueryWhere'] = None,
+            exclude_condition: bool = False
+    ) -> Dict[str, Any]:
+        """
+        Prepares the request args for a delete operation of an item on the table (client API).
+
+        :arg key: Record key as a dict.
+        :param condition: Condition expression as a dict.
+        :param exclude_condition: Exclude condition from request (i.e. for BatchWrite).
+        """
+        serialised_data = self.table.serialiser.serialise('query', key)
+        condition = api.Condition(self.table, condition, 'ConditionExpression')
+
+        # Marshall into the DynamoDB format
+        serialiser = TypeSerializer()
+        marshalled_data = {k: serialiser.serialize(v) for k, v in serialised_data.items()}
+
+        args = {'Key': marshalled_data}
+
+        if not exclude_condition:
+            args.update(condition.client_args)
+
+        return args
+
     def prepare_args(
             self,
             key: Dict[str, Any],
             condition: Optional['types.QueryWhere'] = None,
+            exclude_condition: bool = False
     ) -> Dict[str, Any]:
         """
-        Prepares the request args for a delete operation of an item on the table.
+        Prepares the request args for a delete operation of an item on the table (resource API).
 
         :arg key: Record key as a dict.
         :param condition: Condition expression as a dict.
+        :param exclude_condition: Exclude condition from request (i.e. for BatchWrite).
         """
         condition_expression = Condition(
             table=self.table,
             condition=condition,
             condition_type='ConditionExpression'
         )
-        return {'Key': self.table.serialiser.serialise_key(key), **condition_expression.resource_args}
+        args = {'Key': self.table.serialiser.serialise_key(key)}
+
+        if not exclude_condition:
+            args.update(condition_expression.resource_args)
+
+        return args
 
     def invoke_sync(
             self,

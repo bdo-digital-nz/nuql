@@ -16,13 +16,15 @@ class PutItem(Boto3Adapter):
     def prepare_client_args(
             self,
             data: Dict[str, Any],
-            condition: Optional['types.QueryWhere'] = None
+            condition: Optional['types.QueryWhere'] = None,
+            exclude_condition: bool = False
     ) -> Dict[str, Any]:
         """
         Prepare the request args for a put operation against the table (client API).
 
         :arg data: Data to put.
         :param condition: Optional condition expression dict.
+        :param exclude_condition: Exclude condition from request (i.e. for BatchWrite).
         :return: New item dict.
         """
         serialised_data = self.table.serialiser.serialise(self.serialisation_action, data)
@@ -35,14 +37,25 @@ class PutItem(Boto3Adapter):
         # Implement ability to modify condition before the request
         self.on_condition(condition)
 
-        return {'Item': marshalled_data, **condition.client_args, 'ReturnValues': 'NONE'}
+        args = {'Item': marshalled_data, 'ReturnValues': 'NONE'}
 
-    def prepare_args(self, data: Dict[str, Any], condition: Optional['types.QueryWhere'] = None) -> Dict[str, Any]:
+        if not exclude_condition:
+            args.update(condition.client_args)
+
+        return args
+
+    def prepare_args(
+            self,
+            data: Dict[str, Any],
+            condition: Optional['types.QueryWhere'] = None,
+            exclude_condition: bool = False
+    ) -> Dict[str, Any]:
         """
         Prepare the request args for a put operation against the table (resource API).
 
         :arg data: Data to put.
         :param condition: Optional condition expression dict.
+        :param exclude_condition: Exclude condition from request (i.e. for BatchWrite).
         :return: New item dict.
         """
         serialised_data = self.table.serialiser.serialise(self.serialisation_action, data)
@@ -51,7 +64,12 @@ class PutItem(Boto3Adapter):
         # Implement ability to modify condition before the request
         self.on_condition(condition)
 
-        return {'Item': serialised_data, **condition.resource_args, 'ReturnValues': 'NONE'}
+        args = {'Item': serialised_data}
+
+        if not exclude_condition:
+            args.update(condition.resource_args)
+
+        return args
 
     def on_condition(self, condition: 'api.Condition') -> None:
         """
