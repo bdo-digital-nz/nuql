@@ -17,7 +17,8 @@ class PutItem(Boto3Adapter):
             self,
             data: Dict[str, Any],
             condition: Optional['types.QueryWhere'] = None,
-            exclude_condition: bool = False
+            exclude_condition: bool = False,
+            **kwargs,
     ) -> Dict[str, Any]:
         """
         Prepare the request args for a put operation against the table (client API).
@@ -25,6 +26,7 @@ class PutItem(Boto3Adapter):
         :arg data: Data to put.
         :param condition: Optional condition expression dict.
         :param exclude_condition: Exclude condition from request (i.e. for BatchWrite).
+        :param kwargs: Additional args to pass to the request.
         :return: New item dict.
         """
         serialised_data = self.table.serialiser.serialise(self.serialisation_action, data)
@@ -37,7 +39,7 @@ class PutItem(Boto3Adapter):
         # Implement ability to modify condition before the request
         self.on_condition(condition)
 
-        args = {'Item': marshalled_data, 'ReturnValues': 'NONE'}
+        args: Dict[str, Any] = {'Item': marshalled_data, **kwargs}
 
         if not exclude_condition:
             args.update(condition.client_args)
@@ -48,7 +50,8 @@ class PutItem(Boto3Adapter):
             self,
             data: Dict[str, Any],
             condition: Optional['types.QueryWhere'] = None,
-            exclude_condition: bool = False
+            exclude_condition: bool = False,
+            **kwargs,
     ) -> Dict[str, Any]:
         """
         Prepare the request args for a put operation against the table (resource API).
@@ -56,6 +59,7 @@ class PutItem(Boto3Adapter):
         :arg data: Data to put.
         :param condition: Optional condition expression dict.
         :param exclude_condition: Exclude condition from request (i.e. for BatchWrite).
+        :param kwargs: Additional args to pass to the request.
         :return: New item dict.
         """
         serialised_data = self.table.serialiser.serialise(self.serialisation_action, data)
@@ -64,7 +68,7 @@ class PutItem(Boto3Adapter):
         # Implement ability to modify condition before the request
         self.on_condition(condition)
 
-        args = {'Item': serialised_data}
+        args = {'Item': serialised_data, **kwargs}
 
         if not exclude_condition:
             args.update(condition.resource_args)

@@ -15,7 +15,8 @@ class Delete(Boto3Adapter):
             self,
             key: Dict[str, Any],
             condition: Optional['types.QueryWhere'] = None,
-            exclude_condition: bool = False
+            exclude_condition: bool = False,
+            **kwargs,
     ) -> Dict[str, Any]:
         """
         Prepares the request args for a delete operation of an item on the table (client API).
@@ -23,6 +24,7 @@ class Delete(Boto3Adapter):
         :arg key: Record key as a dict.
         :param condition: Condition expression as a dict.
         :param exclude_condition: Exclude condition from request (i.e. for BatchWrite).
+        :param kwargs: Additional args to pass to the request.
         """
         serialised_data = self.table.serialiser.serialise('query', key)
         condition = api.Condition(self.table, condition, 'ConditionExpression')
@@ -31,7 +33,7 @@ class Delete(Boto3Adapter):
         serialiser = TypeSerializer()
         marshalled_data = {k: serialiser.serialize(v) for k, v in serialised_data.items()}
 
-        args = {'Key': marshalled_data}
+        args = {'Key': marshalled_data, **kwargs}
 
         if not exclude_condition:
             args.update(condition.client_args)
@@ -42,7 +44,8 @@ class Delete(Boto3Adapter):
             self,
             key: Dict[str, Any],
             condition: Optional['types.QueryWhere'] = None,
-            exclude_condition: bool = False
+            exclude_condition: bool = False,
+            **kwargs,
     ) -> Dict[str, Any]:
         """
         Prepares the request args for a delete operation of an item on the table (resource API).
@@ -50,13 +53,14 @@ class Delete(Boto3Adapter):
         :arg key: Record key as a dict.
         :param condition: Condition expression as a dict.
         :param exclude_condition: Exclude condition from request (i.e. for BatchWrite).
+        :param kwargs: Additional args to pass to the request.
         """
         condition_expression = Condition(
             table=self.table,
             condition=condition,
             condition_type='ConditionExpression'
         )
-        args = {'Key': self.table.serialiser.serialise_key(key)}
+        args = {'Key': self.table.serialiser.serialise_key(key), **kwargs}
 
         if not exclude_condition:
             args.update(condition_expression.resource_args)

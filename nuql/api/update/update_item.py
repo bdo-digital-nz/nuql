@@ -16,7 +16,8 @@ class UpdateItem(api.Boto3Adapter):
             self,
             data: Dict[str, Any],
             condition: Optional['types.QueryWhere'] = None,
-            shallow: bool = False
+            shallow: bool = False,
+            **kwargs,
     ) -> Dict[str, Any]:
         """
         Prepares the request args for updating an item in the table (client API).
@@ -24,6 +25,7 @@ class UpdateItem(api.Boto3Adapter):
         :arg data: Data to update.
         :param condition: Optional condition expression.
         :param shallow: Activates shallow update mode (so that whole nested items are updated at once).
+        :param kwargs: Additional args to pass to the request.
         :return: New item dict.
         """
         # Serialise the data for update
@@ -44,13 +46,14 @@ class UpdateItem(api.Boto3Adapter):
         # Generate the update expression
         update = api.UpdateExpressionBuilder(serialised_data, shallow=shallow)
 
-        return {'Key': marshalled_data, **update.args, **condition.resource_args, 'ReturnValues': 'ALL_NEW'}
+        return {'Key': marshalled_data, **update.args, **condition.client_args, **kwargs}
 
     def prepare_args(
             self,
             data: Dict[str, Any],
             condition: Optional['types.QueryWhere'] = None,
-            shallow: bool = False
+            shallow: bool = False,
+            **kwargs,
     ) -> Dict[str, Any]:
         """
         Prepares the request args for updating an item in the table (resource API).
@@ -58,6 +61,7 @@ class UpdateItem(api.Boto3Adapter):
         :arg data: Data to update.
         :param condition: Optional condition expression.
         :param shallow: Activates shallow update mode (so that whole nested items are updated at once).
+        :param kwargs: Additional args to pass to the request.
         :return: New item dict.
         """
         # Serialise the data for update
@@ -73,7 +77,7 @@ class UpdateItem(api.Boto3Adapter):
 
         # Generate the update expression
         update = api.UpdateExpressionBuilder(serialised_data, shallow=shallow)
-        return {'Key': key, **update.args, **condition.resource_args, 'ReturnValues': 'ALL_NEW'}
+        return {'Key': key, **update.args, **condition.resource_args, **kwargs}
 
     def on_condition(self, condition: 'api.Condition') -> None:
         """
@@ -107,7 +111,7 @@ class UpdateItem(api.Boto3Adapter):
         :param shallow: Activates shallow update mode (so that whole nested items are updated at once).
         :return: New item dict.
         """
-        args = self.prepare_args(data=data, condition=condition, shallow=shallow)
+        args = self.prepare_args(data=data, condition=condition, shallow=shallow, ReturnValues='ALL_NEW')
 
         try:
             response = self.connection.table.update_item(**args)
