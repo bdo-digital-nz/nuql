@@ -19,7 +19,7 @@ class Validator:
     @property
     def errors(self):
         """Recursively provide errors."""
-        return [*self.errors, *[x.errors for x in self.children]]
+        return [*self._errors, *[x.errors for x in self.children]]
 
     def spawn_new(self, path: str) -> 'Validator':
         """

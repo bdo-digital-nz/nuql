@@ -5,3 +5,7 @@ from .datetime import *
 from .datetime_timestamp import *
 from .list import *
 from .map import *
+from .integer import *
+from .float import *
+from .uuid import *
+from .ulid import *

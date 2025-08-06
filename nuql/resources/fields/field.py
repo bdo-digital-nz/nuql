@@ -105,6 +105,9 @@ class FieldBase:
         if self.enum and has_value and action in ['create', 'update', 'write'] and value not in self.enum:
             validator.add(name=self.name, message=f'Value must be one of: {", ".join(self.enum)}')
 
+        # Run internal validation
+        self.internal_validation(value, action, validator)
+
         # Run custom validation logic
         if self.validator and action in ['create', 'update', 'write']:
             self.validator(value, validator)
@@ -137,3 +140,14 @@ class FieldBase:
 
     def on_init(self) -> None:
         """Custom initialisation logic for the field."""
+        pass
+
+    def internal_validation(self, value: Any, action: 'types.SerialisationType', validator: 'resources.Validator'):
+        """
+        Perform internal validation on the field.
+
+        :arg value: Value.
+        :arg action: Serialisation action.
+        :arg validator: Validator instance.
+        """
+        pass

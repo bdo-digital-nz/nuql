@@ -57,6 +57,9 @@ class Map(resources.FieldBase):
         if self.required and action == 'create' and value is None:
             validator.add(name=self.name, message='Field is required')
 
+        # Run internal validation
+        self.internal_validation(value, action, validator)
+
         # Run custom validation logic
         if self.validator and action in ['create', 'update', 'write']:
             self.validator(value, validator)

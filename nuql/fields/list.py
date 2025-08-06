@@ -68,6 +68,9 @@ class List(FieldBase):
         if self.enum and has_value and action in ['create', 'update', 'write'] and value not in self.enum:
             validator.add(name=self.name, message=f'Value must be one of: {", ".join(self.enum)}')
 
+        # Run internal validation
+        self.internal_validation(value, action, validator)
+
         # Run custom validation logic
         if self.validator and action in ['create', 'update', 'write']:
             self.validator(value, validator)
