@@ -1,11 +1,11 @@
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, Union
 
 import nuql
-from nuql import resources, types
+from nuql import resources, types, fields
 
 
 class Serialiser:
-    def __init__(self, parent: 'resources.Table') -> None:
+    def __init__(self, parent: Union['resources.Table', 'fields.Map']) -> None:
         """
         Helper object to serialise a record.
 

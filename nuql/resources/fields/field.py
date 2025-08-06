@@ -79,9 +79,6 @@ class FieldBase:
         """
         has_value = not isinstance(value, resources.EmptyValue)
 
-        # Serialise the value first
-        value = self.serialise(value)
-
         # Apply generators if applicable to the field to overwrite the value
         if action in ['create', 'update', 'write']:
             if action == 'create' and self.on_create:
@@ -96,6 +93,9 @@ class FieldBase:
         # Set default value if applicable
         if not has_value:
             value = self.default
+
+        # Serialise the value
+        value = self.serialise(value)
 
         # Validate required field
         if self.required and action == 'create' and value is None:
