@@ -10,3 +10,4 @@ from .upsert import *
 from .put_update import *
 from .condition_check import *
 from .transaction import *
+from .batch_get import *

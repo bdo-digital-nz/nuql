@@ -1,6 +1,6 @@
 __all__ = ['Table']
 
-from typing import Dict, Any
+from typing import Dict, Any, List
 
 import nuql
 from nuql import resources, types, api
@@ -139,3 +139,13 @@ class Table:
         """
         upsert = api.Upsert(self.provider, self)
         return upsert.invoke_sync(data=data, shallow=shallow)
+
+    def batch_get(self, keys: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """
+        Performs a batch get operation against the table.
+
+        :arg keys: List of keys to get.
+        :return: Batch get result.
+        """
+        batch_get = api.BatchGet(self.provider, self)
+        return batch_get.invoke_sync(keys=keys)
