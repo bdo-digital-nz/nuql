@@ -1,6 +1,6 @@
 __all__ = ['Table']
 
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 
 import nuql
 from nuql import resources, types, api
