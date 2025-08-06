@@ -37,7 +37,16 @@ class Indexes:
         local_count = 0
         global_count = 0
 
+        if not isinstance(indexes, list):
+            raise nuql.NuqlError(code='IndexValidation', message='Indexes must be a list')
+
         for index in indexes:
+            if not isinstance(index, dict):
+                raise nuql.NuqlError(code='IndexValidation', message='Indexes must be a list of dicts')
+
+            if 'hash' not in index:
+                raise nuql.NuqlError(code='IndexValidation', message='\'hash\' is required for all indexes')
+
             index_name = index.get('name', 'primary')
             self.index_keys.add(index['hash'])
 
@@ -47,14 +56,14 @@ class Indexes:
             # Validate only one primary index
             if index_name == 'primary' and 'primary' in index_dict:
                 raise nuql.NuqlError(
-                    code='MultiplePrimaryIndexes',
+                    code='IndexValidation',
                     message='More than one primary index cannot be defined'
                 )
 
             # Validate index has a type set
             if index_name != 'primary' and index.get('type') not in ['local', 'global']:
                 raise nuql.NuqlError(
-                    code='MissingIndexType',
+                    code='IndexValidation',
                     message='Index type is required for all indexes except the primary index'
                 )
 
@@ -65,6 +74,15 @@ class Indexes:
             # Count GSIs
             if index.get('type') == 'global':
                 global_count += 1
+
+            accepted_keys = ['hash', 'sort', 'name', 'type']
+            extra_keys = [x for x in index.keys() if x not in accepted_keys]
+            if extra_keys:
+                raise nuql.NuqlError(
+                    code='IndexValidation',
+                    message=f'Index \'{index_name}\' contains invalid keys: {", ".join(extra_keys)}\n\n'
+                            f'Accepted index keys are: {", ".join(accepted_keys)}'
+                )
 
             index_dict[index_name] = index
 
