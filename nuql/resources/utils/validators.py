@@ -124,15 +124,15 @@ def validate_table(name: str, config: Dict[str, Any], fields: Dict[str, Type['ty
                 'message': 'Field key \'enum\' must be a list if provided.'
             }])
 
-        invalid_field_config_keys = [
-            x for x in field_config.keys() if x not in [
-                'type', 'required', 'default', 'value', 'on_create', 'on_update', 'on_write', 'validator', 'enum'
-            ]
+        accepted_keys = [
+            'type', 'required', 'default', 'value', 'on_create', 'on_update', 'on_write', 'validator', 'enum'
         ]
+        invalid_field_config_keys = [x for x in field_config.keys() if x not in accepted_keys]
         if invalid_field_config_keys:
             raise nuql.ValidationError([{
                 'name': f'schema.tables.{name}.fields.{field_name}',
-                'message': f'Field config contains unexpected keys: {", ".join(invalid_field_config_keys)}'
+                'message': f'Field config contains unexpected keys: {", ".join(invalid_field_config_keys)}. '
+                           f'Accepted keys are: {", ".join(accepted_keys)}'
             }])
 
 
