@@ -52,6 +52,9 @@ class KeyCondition:
         :param condition: Condition dict.
         :param index_name: Optional index name.
         """
+        if not isinstance(condition, (dict, type(None))):
+            raise nuql.NuqlError(code='KeyConditionError', message='Key condition must be a dict or None.')
+
         if not condition:
             condition = {}
 
