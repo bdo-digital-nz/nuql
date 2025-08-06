@@ -1,20 +1,19 @@
 __all__ = ['Nuql']
 
-from typing import List, Type
+from typing import List, Type, Dict, Any
 
 from boto3 import Session
 
-from nuql import types, api
+from nuql import types, api, resources
 from . import Connection, exceptions
-from .resources import Table, Indexes
 
 
 class Nuql:
     def __init__(
             self,
             name: str,
-            indexes: 'types.IndexesType',
-            schema: 'types.SchemaConfig',
+            indexes: List[Dict[str, Any]] | Dict[str, Any],
+            schema: Dict[str, Any],
             boto3_session: Session | None = None,
             fields: List[Type['types.FieldType']] | None = None,
     ) -> None:
@@ -36,10 +35,12 @@ class Nuql:
         self.connection = Connection(name, boto3_session)
         self.fields = fields
         self.__schema = schema
-        self.__indexes = Indexes(indexes)
+        self.__indexes = resources.Indexes(indexes)
+
+        resources.validate_schema(self.__schema, self.fields)
 
     @property
-    def indexes(self) -> Indexes:
+    def indexes(self) -> 'resources.Indexes':
         return self.__indexes
 
     @property
@@ -62,7 +63,7 @@ class Nuql:
         """
         return api.Transaction(self)
 
-    def get_table(self, name: str) -> Table:
+    def get_table(self, name: str) -> 'resources.Table':
         """
         Instantiates a `Table` object for the chosen table in the schema.
 
@@ -76,4 +77,4 @@ class Nuql:
             )
 
         schema = self.__schema[name]
-        return Table(name=name, provider=self, schema=schema, indexes=self.indexes)
+        return resources.Table(name=name, provider=self, schema=schema, indexes=self.indexes)

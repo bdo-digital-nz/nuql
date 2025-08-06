@@ -1,4 +1,4 @@
-__all__ = ['create_field_map']
+__all__ = ['create_field_map', 'get_field_types']
 
 import inspect
 from typing import Dict, List, Type, Any, Callable
