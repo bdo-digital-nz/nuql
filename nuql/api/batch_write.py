@@ -41,7 +41,7 @@ class BatchWrite:
             raise nuql.Boto3Error(exc, self._actions)
 
         self._started = False
-        return True
+        return False
 
     def _validate_started(self) -> None:
         """Validates that the context manager has been started."""

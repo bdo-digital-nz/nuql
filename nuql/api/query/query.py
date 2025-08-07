@@ -149,7 +149,18 @@ class Query(api.Boto3Adapter):
             if not last_evaluated_key:
                 fulfilled = True
 
-        return {
-            'items': [self.table.serialiser.deserialise(item) for item in data],
-            'last_evaluated_key': last_evaluated_key,
-        }
+        # Deserialise the data
+        data = [self.table.serialiser.deserialise(item) for item in data]
+
+        output = {'items': [], 'last_evaluated_key': last_evaluated_key}
+
+        # Follow functionality on local/global indexes - batch gets all retrieved items
+        index = self.table.indexes.get_index(index_name) if index_name != 'primary' else self.table.indexes.primary
+
+        if 'follow' in index and index['follow'] is True:
+            batch_get = api.BatchGet(self.client, self.table)
+            output.update(batch_get.invoke_sync(data))
+        else:
+            output['items'] = data
+
+        return output

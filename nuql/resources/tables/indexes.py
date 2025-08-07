@@ -57,7 +57,7 @@ class Indexes:
             if index_name == 'primary' and 'primary' in index_dict:
                 raise nuql.NuqlError(
                     code='IndexValidation',
-                    message='More than one primary index cannot be defined'
+                    message='More than one primary index cannot be defined. Did you mean to add \'name\' and \'type\'?'
                 )
 
             # Validate index has a type set
@@ -65,6 +65,20 @@ class Indexes:
                 raise nuql.NuqlError(
                     code='IndexValidation',
                     message='Index type is required for all indexes except the primary index'
+                )
+
+            # Set index follow rule
+            if index_name != 'primary' and 'follow' in index and not isinstance(index['follow'], bool):
+                raise nuql.NuqlError(
+                    code='IndexValidation',
+                    message='Index \'follow\' must be a boolean value if provided.'
+                )
+
+            # Validate index projection
+            if index_name != 'primary' and 'projection' in index and index['projection'] not in ['all', 'keys']:
+                raise nuql.NuqlError(
+                    code='IndexValidation',
+                    message='Index \'projection\' must be \'all\' or \'keys\' if provided.'
                 )
 
             # Count LSIs
@@ -75,7 +89,7 @@ class Indexes:
             if index.get('type') == 'global':
                 global_count += 1
 
-            accepted_keys = ['hash', 'sort', 'name', 'type']
+            accepted_keys = ['hash', 'sort', 'name', 'type', 'follow', 'projection']
             extra_keys = [x for x in index.keys() if x not in accepted_keys]
             if extra_keys:
                 raise nuql.NuqlError(

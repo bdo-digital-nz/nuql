@@ -79,7 +79,7 @@ class BatchGetQueue:
         for item in processed:
             item = {k: deserialiser.deserialize(v) for k, v in item.items()}
             data = self.table.serialiser.deserialise(item)
-            key_hash = self.get_key_hash(data['key'])
+            key_hash = self.get_key_hash(self.table.serialiser.serialise_key(data))
 
             self._store[key_hash]['item'] = data
             self._store[key_hash]['processed'] = True

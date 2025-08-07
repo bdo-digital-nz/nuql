@@ -20,6 +20,8 @@ class SecondaryIndex(TypedDict):
     sort: str
     type: DBIndexType
     name: str
+    follow: NotRequired[bool]
+    projection: NotRequired[Literal['keys', 'all']]
 
 
 IndexesType = List[PrimaryIndex | SecondaryIndex]
