@@ -1,7 +1,7 @@
 [project]
 name = "nuql"
-version = "0.1.0"
-description = "Add your description here"
+version = "0.0.1"
+description = "Nuql (pronounced 'nuckle') is a lightweight DynamoDB library for implementing the single table model pattern."
 requires-python = ">=3.13"
 dependencies = [
     "boto3>=1.40.0",
@@ -9,12 +9,31 @@ dependencies = [
     "python-ulid>=3.0.0",
     "uuid-utils>=0.11.0",
 ]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [[tool.uv.index]]
 url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/"
 
 [dependency-groups]
+dev = [
+    "hatchling>=1.27.0",
+]
 testing = [
     "coverage>=7.10.2",
     "pytest>=8.4.1",
 ]
+
+[tool.hatch.build.targets.sdist]
+include = ["nuql/**/*"]
+
+[project.url]
+Homepage = "https://github.com/lukeshortland/nuql"
+Issues = "https://github.com/lukeshortland/nuql/issues"
