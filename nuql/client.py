@@ -15,7 +15,8 @@ class Nuql:
             indexes: List[Dict[str, Any]] | Dict[str, Any],
             schema: Dict[str, Any],
             boto3_session: Session | None = None,
-            fields: List[Type['types.FieldType']] | None = None,
+            custom_fields: List[Type['types.FieldType']] | None = None,
+            global_fields: Dict[str, Any] | None = None,
     ) -> None:
         """
         Nuql - a lightweight DynamoDB library for implementing
@@ -25,15 +26,22 @@ class Nuql:
         :arg indexes: Table index definition.
         :arg schema: Table design.
         :param boto3_session: Boto3 Session instance.
+        :param custom_fields: List of custom field types.
+        :param global_fields: Additional field definitions to apply to all tables.
         """
         if not isinstance(boto3_session, Session):
             boto3_session = Session()
 
-        if fields is None:
-            fields = []
+        if custom_fields is None:
+            custom_fields = []
+
+        # Insert global fields on to all tables
+        if isinstance(global_fields, dict):
+            for table in schema.values():
+                table.update(global_fields)
 
         self.connection = Connection(name, boto3_session)
-        self.fields = fields
+        self.fields = custom_fields
         self.__schema = schema
         self.__indexes = resources.Indexes(indexes)
 
