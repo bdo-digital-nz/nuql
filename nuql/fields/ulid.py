@@ -19,7 +19,7 @@ class Ulid(resources.FieldBase):
             return str(value)
         if isinstance(value, str):
             try:
-                return str(ULID(value.encode()))
+                return str(ULID.from_str(value))
             except ValueError:
                 return None
         return None
@@ -32,8 +32,8 @@ class Ulid(resources.FieldBase):
         :return: str or None.
         """
         if isinstance(value, str):
-            try:
-                return str(ULID(value.encode()))
-            except ValueError:
-                return None
+            # try:
+                return str(ULID.from_str(value))
+            # except ValueError:
+            #     return None
         return None

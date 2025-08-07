@@ -48,11 +48,19 @@ class Serialiser:
         # Serialise provided fields
         for key, deserialised_value in data.items():
             field = self.get_field(key)
-            serialised_value = field(deserialised_value, action, validator)
 
+            if not field:
+                raise nuql.NuqlError(
+                    code='SchemaError',
+                    message=f'Field \'{key}\' is not defined in the schema.'
+                )
+
+            # Skip serialisation for projected fields as this is to be handled at
+            # the end of the serialisation process
             if field.projected_from:
-                projections.add(key, serialised_value, action, validator)
+                projections.add(key, deserialised_value)
             else:
+                serialised_value = field(deserialised_value, action, validator)
                 output[key] = serialised_value
 
         # Serialise fields not provided (i.e. could have defaults)
@@ -61,14 +69,11 @@ class Serialiser:
             if field.projects_fields:
                 continue
 
-            serialised_value = field(resources.EmptyValue(), action, validator)
-
             if field.projected_from:
-                projections.add(name, serialised_value, action, validator)
                 continue
 
-            if serialised_value:
-                output[name] = serialised_value
+            serialised_value = field(resources.EmptyValue(), action, validator)
+            output[name] = serialised_value
 
         # Set projections
         projections.merge(output, action, validator)
@@ -119,7 +124,11 @@ class Serialiser:
         record = {}
 
         for name, field in self.parent.fields.items():
-            deserialised_value = field.deserialise(data.get(name))
+            # Special Case: string templates
+            if hasattr(field, 'deserialise_template') and getattr(field, 'is_template', True):
+                deserialised_value = field.deserialise_template(data.get(name))
+            else:
+                deserialised_value = field.deserialise(data.get(name))
 
             if field.projected_from:
                 continue
@@ -130,7 +139,6 @@ class Serialiser:
             # Handle projected fields
             if field.projects_fields:
                 for projected_key in field.projects_fields:
-                    projected_field = self.get_field(projected_key)
-                    record[projected_key] = projected_field.deserialise(deserialised_value.get(projected_key))
+                    record[projected_key] = deserialised_value.get(projected_key)
 
         return record

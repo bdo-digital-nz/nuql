@@ -109,4 +109,4 @@ class PutItem(Boto3Adapter):
         except ClientError as exc:
             raise nuql.Boto3Error(exc, args)
 
-        return self.table.serialiser.deserialise(args['Item'])
+        return args['Item']
