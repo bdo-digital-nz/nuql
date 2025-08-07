@@ -1,6 +1,7 @@
 __all__ = ['Uuid']
 
-from uuid import UUID
+from uuid import UUID as NATIVE_UUID
+from uuid_utils import UUID
 
 from nuql import resources
 
@@ -8,14 +9,14 @@ from nuql import resources
 class Uuid(resources.FieldBase):
     type = 'uuid'
 
-    def serialise(self, value: UUID | str | None) -> str | None:
+    def serialise(self, value: NATIVE_UUID | UUID | str | None) -> str | None:
         """
         Serialises a UUID value.
 
         :arg value: UUID, str or None.
         :return: str or None.
         """
-        if isinstance(value, UUID):
+        if isinstance(value, (NATIVE_UUID, UUID)):
             return str(value)
 
         if isinstance(value, str):

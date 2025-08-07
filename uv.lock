@@ -118,6 +118,7 @@ dependencies = [
     { name = "boto3" },
     { name = "pyparsing" },
     { name = "python-ulid" },
+    { name = "uuid-utils" },
 ]
 
 [package.dev-dependencies]
@@ -131,6 +132,7 @@ requires-dist = [
     { name = "boto3", specifier = ">=1.40.0" },
     { name = "pyparsing", specifier = ">=3.2.3" },
     { name = "python-ulid", specifier = ">=3.0.0" },
+    { name = "uuid-utils", specifier = ">=0.11.0" },
 ]
 
 [package.metadata.requires-dev]
@@ -240,4 +242,25 @@ source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.
 sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/urllib3/2.5.0/urllib3-2.5.0.tar.gz", hash = "sha256:3fc47733c7e419d4bc3f6b3dc2b4f890bb743906a30d56ba4a5bfa4bbff92760" }
 wheels = [
     { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/urllib3/2.5.0/urllib3-2.5.0-py3-none-any.whl", hash = "sha256:e6b01673c0fa6a13e374b50871808eb3bf7046c4b125b216f6bf1cc604cff0dc" },
+]
+
+[[package]]
+name = "uuid-utils"
+version = "0.11.0"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/uuid-utils/0.11.0/uuid_utils-0.11.0.tar.gz", hash = "sha256:18cf2b7083da7f3cca0517647213129eb16d20d7ed0dd74b3f4f8bff2aa334ea" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/uuid-utils/0.11.0/uuid_utils-0.11.0-cp39-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl", hash = "sha256:094445ccd323bc5507e28e9d6d86b983513efcf19ab59c2dd75239cef765631a" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/uuid-utils/0.11.0/uuid_utils-0.11.0-cp39-abi3-macosx_10_12_x86_64.whl", hash = "sha256:6430b53d343215f85269ffd74e1d1f4b25ae1031acf0ac24ff3d5721f6a06f48" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/uuid-utils/0.11.0/uuid_utils-0.11.0-cp39-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:be2e6e4318d23195887fa74fa1d64565a34f7127fdcf22918954981d79765f68" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/uuid-utils/0.11.0/uuid_utils-0.11.0-cp39-abi3-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:d37289ab72aa30b5550bfa64d91431c62c89e4969bdf989988aa97f918d5f803" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/uuid-utils/0.11.0/uuid_utils-0.11.0-cp39-abi3-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:1012595220f945fe09641f1365a8a06915bf432cac1b31ebd262944934a9b787" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/uuid-utils/0.11.0/uuid_utils-0.11.0-cp39-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:35cd3fc718a673e4516e87afb9325558969eca513aa734515b9031d1b651bbb1" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/uuid-utils/0.11.0/uuid_utils-0.11.0-cp39-abi3-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:ed325e0c40e0f59ae82b347f534df954b50cedf12bf60d025625538530e1965d" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/uuid-utils/0.11.0/uuid_utils-0.11.0-cp39-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:5c8b7cf201990ee3140956e541967bd556a7365ec738cb504b04187ad89c757a" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/uuid-utils/0.11.0/uuid_utils-0.11.0-cp39-abi3-musllinux_1_2_i686.whl", hash = "sha256:9966df55bed5d538ba2e9cc40115796480f437f9007727116ef99dc2f42bd5fa" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/uuid-utils/0.11.0/uuid_utils-0.11.0-cp39-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:cb04b6c604968424b7e6398d54debbdd5b771b39fc1e648c6eabf3f1dc20582e" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/uuid-utils/0.11.0/uuid_utils-0.11.0-cp39-abi3-win32.whl", hash = "sha256:18420eb3316bb514f09f2da15750ac135478c3a12a704e2c5fb59eab642bb255" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/uuid-utils/0.11.0/uuid_utils-0.11.0-cp39-abi3-win_amd64.whl", hash = "sha256:37c4805af61a7cce899597d34e7c3dd5cb6a8b4b93a90fbca3826b071ba544df" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/uuid-utils/0.11.0/uuid_utils-0.11.0-cp39-abi3-win_arm64.whl", hash = "sha256:4065cf17bbe97f6d8ccc7dc6a0bae7d28fd4797d7f32028a5abd979aeb7bf7c9" },
 ]
