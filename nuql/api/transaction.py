@@ -1,6 +1,6 @@
 __all__ = ['Transaction']
 
-from typing import Dict, Any, Optional, Literal
+from typing import Dict, Any
 
 from botocore.exceptions import ClientError
 
