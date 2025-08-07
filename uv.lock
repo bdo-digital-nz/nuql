@@ -31,6 +31,69 @@ wheels = [
 ]
 
 [[package]]
+name = "build"
+version = "1.3.0"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+dependencies = [
+    { name = "colorama", marker = "os_name == 'nt'" },
+    { name = "packaging" },
+    { name = "pyproject-hooks" },
+]
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/build/1.3.0/build-1.3.0.tar.gz", hash = "sha256:698edd0ea270bde950f53aed21f3a0135672206f3911e0176261a31e0e07b397" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/build/1.3.0/build-1.3.0-py3-none-any.whl", hash = "sha256:7145f0b5061ba90a1500d60bd1b13ca0a8a4cebdd0cc16ed8adf1c0e739f43b4" },
+]
+
+[[package]]
+name = "certifi"
+version = "2025.8.3"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/certifi/2025.8.3/certifi-2025.8.3.tar.gz", hash = "sha256:e564105f78ded564e3ae7c923924435e1daa7463faeab5bb932bc53ffae63407" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/certifi/2025.8.3/certifi-2025.8.3-py3-none-any.whl", hash = "sha256:f6c12493cfb1b06ba2ff328595af9350c65d6644968e5d3a2ffd78699af217a5" },
+]
+
+[[package]]
+name = "cffi"
+version = "1.17.1"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+dependencies = [
+    { name = "pycparser" },
+]
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cffi/1.17.1/cffi-1.17.1.tar.gz", hash = "sha256:1c39c6016c32bc48dd54561950ebd6836e1670f2ae46128f67cf49e789c52824" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cffi/1.17.1/cffi-1.17.1-cp313-cp313-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:d01b12eeeb4427d3110de311e1774046ad344f5b1a7403101878976ecd7a10f3" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cffi/1.17.1/cffi-1.17.1-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:706510fe141c86a69c8ddc029c7910003a17353970cff3b904ff0686a5927683" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cffi/1.17.1/cffi-1.17.1-cp313-cp313-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:de55b766c7aa2e2a3092c51e0483d700341182f08e67c63630d5b6f200bb28e5" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cffi/1.17.1/cffi-1.17.1-cp313-cp313-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:c59d6e989d07460165cc5ad3c61f9fd8f1b4796eacbd81cee78957842b834af4" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cffi/1.17.1/cffi-1.17.1-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:dd398dbc6773384a17fe0d3e7eeb8d1a21c2200473ee6806bb5e6a8e62bb73dd" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cffi/1.17.1/cffi-1.17.1-cp313-cp313-musllinux_1_1_aarch64.whl", hash = "sha256:3edc8d958eb099c634dace3c7e16560ae474aa3803a5df240542b305d14e14ed" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cffi/1.17.1/cffi-1.17.1-cp313-cp313-musllinux_1_1_x86_64.whl", hash = "sha256:72e72408cad3d5419375fc87d289076ee319835bdfa2caad331e377589aebba9" },
+]
+
+[[package]]
+name = "charset-normalizer"
+version = "3.4.2"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/charset-normalizer/3.4.2/charset_normalizer-3.4.2.tar.gz", hash = "sha256:5baececa9ecba31eff645232d59845c07aa030f0c81ee70184a90d35099a0e63" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/charset-normalizer/3.4.2/charset_normalizer-3.4.2-cp313-cp313-macosx_10_13_universal2.whl", hash = "sha256:926ca93accd5d36ccdabd803392ddc3e03e6d4cd1cf17deff3b989ab8e9dbcf0" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/charset-normalizer/3.4.2/charset_normalizer-3.4.2-cp313-cp313-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:eba9904b0f38a143592d9fc0e19e2df0fa2e41c3c3745554761c5f6447eedabf" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/charset-normalizer/3.4.2/charset_normalizer-3.4.2-cp313-cp313-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:3fddb7e2c84ac87ac3a947cb4e66d143ca5863ef48e4a5ecb83bd48619e4634e" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/charset-normalizer/3.4.2/charset_normalizer-3.4.2-cp313-cp313-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:98f862da73774290f251b9df8d11161b6cf25b599a66baf087c1ffe340e9bfd1" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/charset-normalizer/3.4.2/charset_normalizer-3.4.2-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:6c9379d65defcab82d07b2a9dfbfc2e95bc8fe0ebb1b176a3190230a3ef0e07c" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/charset-normalizer/3.4.2/charset_normalizer-3.4.2-cp313-cp313-manylinux_2_5_i686.manylinux1_i686.manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:e635b87f01ebc977342e2697d05b56632f5f879a4f15955dfe8cef2448b51691" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/charset-normalizer/3.4.2/charset_normalizer-3.4.2-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:1c95a1e2902a8b722868587c0e1184ad5c55631de5afc0eb96bc4b0d738092c0" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/charset-normalizer/3.4.2/charset_normalizer-3.4.2-cp313-cp313-musllinux_1_2_i686.whl", hash = "sha256:ef8de666d6179b009dce7bcb2ad4c4a779f113f12caf8dc77f0162c29d20490b" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/charset-normalizer/3.4.2/charset_normalizer-3.4.2-cp313-cp313-musllinux_1_2_ppc64le.whl", hash = "sha256:32fc0341d72e0f73f80acb0a2c94216bd704f4f0bce10aedea38f30502b271ff" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/charset-normalizer/3.4.2/charset_normalizer-3.4.2-cp313-cp313-musllinux_1_2_s390x.whl", hash = "sha256:289200a18fa698949d2b39c671c2cc7a24d44096784e76614899a7ccf2574b7b" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/charset-normalizer/3.4.2/charset_normalizer-3.4.2-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:4a476b06fbcf359ad25d34a057b7219281286ae2477cc5ff5e3f70a246971148" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/charset-normalizer/3.4.2/charset_normalizer-3.4.2-cp313-cp313-win32.whl", hash = "sha256:aaeeb6a479c7667fbe1099af9617c83aaca22182d6cf8c53966491a0f1b7ffb7" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/charset-normalizer/3.4.2/charset_normalizer-3.4.2-cp313-cp313-win_amd64.whl", hash = "sha256:aa6af9e7d59f9c12b33ae4e9450619cf2488e2bbe9b44030905877f0b2324980" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/charset-normalizer/3.4.2/charset_normalizer-3.4.2-py3-none-any.whl", hash = "sha256:7f56930ab0abd1c45cd15be65cc741c28b1c9a34876ce8c17a2fa107810c0af0" },
+]
+
+[[package]]
 name = "colorama"
 version = "0.4.6"
 source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
@@ -93,6 +156,44 @@ wheels = [
 ]
 
 [[package]]
+name = "cryptography"
+version = "45.0.6"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+dependencies = [
+    { name = "cffi", marker = "platform_python_implementation != 'PyPy'" },
+]
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cryptography/45.0.6/cryptography-45.0.6.tar.gz", hash = "sha256:5c966c732cf6e4a276ce83b6e4c729edda2df6929083a952cc7da973c539c719" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cryptography/45.0.6/cryptography-45.0.6-cp311-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:44647c5d796f5fc042bbc6d61307d04bf29bccb74d188f18051b635f20a9c75f" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cryptography/45.0.6/cryptography-45.0.6-cp311-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:e40b80ecf35ec265c452eea0ba94c9587ca763e739b8e559c128d23bff7ebbbf" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cryptography/45.0.6/cryptography-45.0.6-cp311-abi3-manylinux_2_28_aarch64.whl", hash = "sha256:00e8724bdad672d75e6f069b27970883179bd472cd24a63f6e620ca7e41cc0c5" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cryptography/45.0.6/cryptography-45.0.6-cp311-abi3-manylinux_2_28_armv7l.manylinux_2_31_armv7l.whl", hash = "sha256:7a3085d1b319d35296176af31c90338eeb2ddac8104661df79f80e1d9787b8b2" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cryptography/45.0.6/cryptography-45.0.6-cp311-abi3-manylinux_2_28_x86_64.whl", hash = "sha256:1b7fa6a1c1188c7ee32e47590d16a5a0646270921f8020efc9a511648e1b2e08" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cryptography/45.0.6/cryptography-45.0.6-cp311-abi3-manylinux_2_34_aarch64.whl", hash = "sha256:275ba5cc0d9e320cd70f8e7b96d9e59903c815ca579ab96c1e37278d231fc402" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cryptography/45.0.6/cryptography-45.0.6-cp311-abi3-manylinux_2_34_x86_64.whl", hash = "sha256:f4028f29a9f38a2025abedb2e409973709c660d44319c61762202206ed577c42" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cryptography/45.0.6/cryptography-45.0.6-cp311-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:ee411a1b977f40bd075392c80c10b58025ee5c6b47a822a33c1198598a7a5f05" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cryptography/45.0.6/cryptography-45.0.6-cp311-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:e2a21a8eda2d86bb604934b6b37691585bd095c1f788530c1fcefc53a82b3453" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cryptography/45.0.6/cryptography-45.0.6-cp37-abi3-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:0d9ef57b6768d9fa58e92f4947cea96ade1233c0e236db22ba44748ffedca394" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cryptography/45.0.6/cryptography-45.0.6-cp37-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:ea3c42f2016a5bbf71825537c2ad753f2870191134933196bee408aac397b3d9" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cryptography/45.0.6/cryptography-45.0.6-cp37-abi3-manylinux_2_28_aarch64.whl", hash = "sha256:20ae4906a13716139d6d762ceb3e0e7e110f7955f3bc3876e3a07f5daadec5f3" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cryptography/45.0.6/cryptography-45.0.6-cp37-abi3-manylinux_2_28_armv7l.manylinux_2_31_armv7l.whl", hash = "sha256:2dac5ec199038b8e131365e2324c03d20e97fe214af051d20c49db129844e8b3" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cryptography/45.0.6/cryptography-45.0.6-cp37-abi3-manylinux_2_28_x86_64.whl", hash = "sha256:18f878a34b90d688982e43f4b700408b478102dd58b3e39de21b5ebf6509c301" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cryptography/45.0.6/cryptography-45.0.6-cp37-abi3-manylinux_2_34_aarch64.whl", hash = "sha256:5bd6020c80c5b2b2242d6c48487d7b85700f5e0038e67b29d706f98440d66eb5" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cryptography/45.0.6/cryptography-45.0.6-cp37-abi3-manylinux_2_34_x86_64.whl", hash = "sha256:eccddbd986e43014263eda489abbddfbc287af5cddfd690477993dbb31e31016" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cryptography/45.0.6/cryptography-45.0.6-cp37-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:550ae02148206beb722cfe4ef0933f9352bab26b087af00e48fdfb9ade35c5b3" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/cryptography/45.0.6/cryptography-45.0.6-cp37-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:5b64e668fc3528e77efa51ca70fadcd6610e8ab231e3e06ae2bab3b31c2b8ed9" },
+]
+
+[[package]]
+name = "docutils"
+version = "0.22"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/docutils/0.22/docutils-0.22.tar.gz", hash = "sha256:ba9d57750e92331ebe7c08a1bbf7a7f8143b86c476acd51528b042216a6aad0f" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/docutils/0.22/docutils-0.22-py3-none-any.whl", hash = "sha256:4ed966a0e96a0477d852f7af31bdcb3adc049fbb35ccba358c2ea8a03287615e" },
+]
+
+[[package]]
 name = "hatchling"
 version = "1.27.0"
 source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
@@ -108,6 +209,27 @@ wheels = [
 ]
 
 [[package]]
+name = "id"
+version = "1.5.0"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+dependencies = [
+    { name = "requests" },
+]
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/id/1.5.0/id-1.5.0.tar.gz", hash = "sha256:292cb8a49eacbbdbce97244f47a97b4c62540169c976552e497fd57df0734c1d" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/id/1.5.0/id-1.5.0-py3-none-any.whl", hash = "sha256:f1434e1cef91f2cbb8a4ec64663d5a23b9ed43ef44c4c957d02583d61714c658" },
+]
+
+[[package]]
+name = "idna"
+version = "3.10"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/idna/3.10/idna-3.10.tar.gz", hash = "sha256:12f65c9b470abda6dc35cf8e63cc574b1c52b11df2c86030af0ac09b01b13ea9" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/idna/3.10/idna-3.10-py3-none-any.whl", hash = "sha256:946d195a0d259cbba61165e88e65941f16e9b36ea6ddb97f00452bae8b1287d3" },
+]
+
+[[package]]
 name = "iniconfig"
 version = "2.1.0"
 source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
@@ -117,12 +239,134 @@ wheels = [
 ]
 
 [[package]]
+name = "jaraco-classes"
+version = "3.4.0"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+dependencies = [
+    { name = "more-itertools" },
+]
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/jaraco-classes/3.4.0/jaraco.classes-3.4.0.tar.gz", hash = "sha256:47a024b51d0239c0dd8c8540c6c7f484be3b8fcf0b2d85c13825780d3b3f3acd" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/jaraco-classes/3.4.0/jaraco.classes-3.4.0-py3-none-any.whl", hash = "sha256:f662826b6bed8cace05e7ff873ce0f9283b5c924470fe664fff1c2f00f581790" },
+]
+
+[[package]]
+name = "jaraco-context"
+version = "6.0.1"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/jaraco-context/6.0.1/jaraco_context-6.0.1.tar.gz", hash = "sha256:9bae4ea555cf0b14938dc0aee7c9f32ed303aa20a3b73e7dc80111628792d1b3" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/jaraco-context/6.0.1/jaraco.context-6.0.1-py3-none-any.whl", hash = "sha256:f797fc481b490edb305122c9181830a3a5b76d84ef6d1aef2fb9b47ab956f9e4" },
+]
+
+[[package]]
+name = "jaraco-functools"
+version = "4.2.1"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+dependencies = [
+    { name = "more-itertools" },
+]
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/jaraco-functools/4.2.1/jaraco_functools-4.2.1.tar.gz", hash = "sha256:be634abfccabce56fa3053f8c7ebe37b682683a4ee7793670ced17bab0087353" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/jaraco-functools/4.2.1/jaraco_functools-4.2.1-py3-none-any.whl", hash = "sha256:590486285803805f4b1f99c60ca9e94ed348d4added84b74c7a12885561e524e" },
+]
+
+[[package]]
+name = "jeepney"
+version = "0.9.0"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/jeepney/0.9.0/jeepney-0.9.0.tar.gz", hash = "sha256:cf0e9e845622b81e4a28df94c40345400256ec608d0e55bb8a3feaa9163f5732" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/jeepney/0.9.0/jeepney-0.9.0-py3-none-any.whl", hash = "sha256:97e5714520c16fc0a45695e5365a2e11b81ea79bba796e26f9f1d178cb182683" },
+]
+
+[[package]]
 name = "jmespath"
 version = "1.0.1"
 source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
 sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/jmespath/1.0.1/jmespath-1.0.1.tar.gz", hash = "sha256:90261b206d6defd58fdd5e85f478bf633a2901798906be2ad389150c5c60edbe" }
 wheels = [
     { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/jmespath/1.0.1/jmespath-1.0.1-py3-none-any.whl", hash = "sha256:02e2e4cc71b5bcab88332eebf907519190dd9e6e82107fa7f83b1003a6252980" },
+]
+
+[[package]]
+name = "keyring"
+version = "25.6.0"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+dependencies = [
+    { name = "jaraco-classes" },
+    { name = "jaraco-context" },
+    { name = "jaraco-functools" },
+    { name = "jeepney", marker = "sys_platform == 'linux'" },
+    { name = "pywin32-ctypes", marker = "sys_platform == 'win32'" },
+    { name = "secretstorage", marker = "sys_platform == 'linux'" },
+]
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/keyring/25.6.0/keyring-25.6.0.tar.gz", hash = "sha256:0b39998aa941431eb3d9b0d4b2460bc773b9df6fed7621c2dfb291a7e0187a66" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/keyring/25.6.0/keyring-25.6.0-py3-none-any.whl", hash = "sha256:552a3f7af126ece7ed5c89753650eec89c7eaae8617d0aa4d9ad2b75111266bd" },
+]
+
+[[package]]
+name = "markdown-it-py"
+version = "3.0.0"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+dependencies = [
+    { name = "mdurl" },
+]
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/markdown-it-py/3.0.0/markdown-it-py-3.0.0.tar.gz", hash = "sha256:e3f60a94fa066dc52ec76661e37c851cb232d92f9886b15cb560aaada2df8feb" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/markdown-it-py/3.0.0/markdown_it_py-3.0.0-py3-none-any.whl", hash = "sha256:355216845c60bd96232cd8d8c40e8f9765cc86f46880e43a8fd22dc1a1a8cab1" },
+]
+
+[[package]]
+name = "mdurl"
+version = "0.1.2"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/mdurl/0.1.2/mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/mdurl/0.1.2/mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8" },
+]
+
+[[package]]
+name = "more-itertools"
+version = "10.7.0"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/more-itertools/10.7.0/more_itertools-10.7.0.tar.gz", hash = "sha256:9fddd5403be01a94b204faadcff459ec3568cf110265d3c54323e1e866ad29d3" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/more-itertools/10.7.0/more_itertools-10.7.0-py3-none-any.whl", hash = "sha256:d43980384673cb07d2f7d2d918c616b30c659c089ee23953f601d6609c67510e" },
+]
+
+[[package]]
+name = "nh3"
+version = "0.3.0"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0.tar.gz", hash = "sha256:d8ba24cb31525492ea71b6aac11a4adac91d828aadeff7c4586541bf5dc34d2f" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0-cp313-cp313t-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl", hash = "sha256:a537ece1bf513e5a88d8cff8a872e12fe8d0f42ef71dd15a5e7520fecd191bbb" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0-cp313-cp313t-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:7c915060a2c8131bef6a29f78debc29ba40859b6dbe2362ef9e5fd44f11487c2" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0-cp313-cp313t-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:ba0caa8aa184196daa6e574d997a33867d6d10234018012d35f86d46024a2a95" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0-cp313-cp313t-musllinux_1_2_aarch64.whl", hash = "sha256:80fe20171c6da69c7978ecba33b638e951b85fb92059259edd285ff108b82a6d" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0-cp313-cp313t-musllinux_1_2_armv7l.whl", hash = "sha256:e90883f9f85288f423c77b3f5a6f4486375636f25f793165112679a7b6363b35" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0-cp313-cp313t-musllinux_1_2_i686.whl", hash = "sha256:0649464ac8eee018644aacbc103874ccbfac80e3035643c3acaab4287e36e7f5" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0-cp313-cp313t-musllinux_1_2_x86_64.whl", hash = "sha256:1adeb1062a1c2974bc75b8d1ecb014c5fd4daf2df646bbe2831f7c23659793f9" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0-cp313-cp313t-win32.whl", hash = "sha256:7275fdffaab10cc5801bf026e3c089d8de40a997afc9e41b981f7ac48c5aa7d5" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0-cp313-cp313t-win_amd64.whl", hash = "sha256:423201bbdf3164a9e09aa01e540adbb94c9962cc177d5b1cbb385f5e1e79216e" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0-cp313-cp313t-win_arm64.whl", hash = "sha256:16f8670201f7e8e0e05ed1a590eb84bfa51b01a69dd5caf1d3ea57733de6a52f" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0-cp38-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl", hash = "sha256:ec6cfdd2e0399cb79ba4dcffb2332b94d9696c52272ff9d48a630c5dca5e325a" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0-cp38-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:ce5e7185599f89b0e391e2f29cc12dc2e206167380cea49b33beda4891be2fe1" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0-cp38-abi3-manylinux_2_17_armv7l.manylinux2014_armv7l.whl", hash = "sha256:389d93d59b8214d51c400fb5b07866c2a4f79e4e14b071ad66c92184fec3a392" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0-cp38-abi3-manylinux_2_17_ppc64.manylinux2014_ppc64.whl", hash = "sha256:e9e6a7e4d38f7e8dda9edd1433af5170c597336c1a74b4693c5cb75ab2b30f2a" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0-cp38-abi3-manylinux_2_17_ppc64le.manylinux2014_ppc64le.whl", hash = "sha256:7852f038a054e0096dac12b8141191e02e93e0b4608c4b993ec7d4ffafea4e49" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0-cp38-abi3-manylinux_2_17_s390x.manylinux2014_s390x.whl", hash = "sha256:af5aa8127f62bbf03d68f67a956627b1bd0469703a35b3dad28d0c1195e6c7fb" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0-cp38-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f416c35efee3e6a6c9ab7716d9e57aa0a49981be915963a82697952cba1353e1" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0-cp38-abi3-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:37d3003d98dedca6cd762bf88f2e70b67f05100f6b949ffe540e189cc06887f9" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0-cp38-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:634e34e6162e0408e14fb61d5e69dbaea32f59e847cfcfa41b66100a6b796f62" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0-cp38-abi3-musllinux_1_2_armv7l.whl", hash = "sha256:b0612ccf5de8a480cf08f047b08f9d3fecc12e63d2ee91769cb19d7290614c23" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0-cp38-abi3-musllinux_1_2_i686.whl", hash = "sha256:c7a32a7f0d89f7d30cb8f4a84bdbd56d1eb88b78a2434534f62c71dac538c450" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0-cp38-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:3f1b4f8a264a0c86ea01da0d0c390fe295ea0bcacc52c2103aca286f6884f518" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0-cp38-abi3-win32.whl", hash = "sha256:6d68fa277b4a3cf04e5c4b84dd0c6149ff7d56c12b3e3fab304c525b850f613d" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0-cp38-abi3-win_amd64.whl", hash = "sha256:bae63772408fd63ad836ec569a7c8f444dd32863d0c67f6e0b25ebbd606afa95" },
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/nh3/0.3.0/nh3-0.3.0-cp38-abi3-win_arm64.whl", hash = "sha256:d97d3efd61404af7e5721a0e74d81cdbfc6e5f97e11e731bb6d090e30a7b62b2" },
 ]
 
 [[package]]
@@ -138,7 +382,9 @@ dependencies = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "build" },
     { name = "hatchling" },
+    { name = "twine" },
 ]
 testing = [
     { name = "coverage" },
@@ -154,7 +400,11 @@ requires-dist = [
 ]
 
 [package.metadata.requires-dev]
-dev = [{ name = "hatchling", specifier = ">=1.27.0" }]
+dev = [
+    { name = "build", specifier = ">=1.3.0" },
+    { name = "hatchling", specifier = ">=1.27.0" },
+    { name = "twine", specifier = ">=6.1.0" },
+]
 testing = [
     { name = "coverage", specifier = ">=7.10.2" },
     { name = "pytest", specifier = ">=8.4.1" },
@@ -188,6 +438,15 @@ wheels = [
 ]
 
 [[package]]
+name = "pycparser"
+version = "2.22"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/pycparser/2.22/pycparser-2.22.tar.gz", hash = "sha256:491c8be9c040f5390f5bf44a5b07752bd07f56edf992381b05c701439eec10f6" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/pycparser/2.22/pycparser-2.22-py3-none-any.whl", hash = "sha256:c3702b6d3dd8c7abc1afa565d7e63d53a1d0bd86cdc24edd75470f4de499cfcc" },
+]
+
+[[package]]
 name = "pygments"
 version = "2.19.2"
 source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
@@ -203,6 +462,15 @@ source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.
 sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/pyparsing/3.2.3/pyparsing-3.2.3.tar.gz", hash = "sha256:b9c13f1ab8b3b542f72e28f634bad4de758ab3ce4546e4301970ad6fa77c38be" }
 wheels = [
     { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/pyparsing/3.2.3/pyparsing-3.2.3-py3-none-any.whl", hash = "sha256:a749938e02d6fd0b59b356ca504a24982314bb090c383e3cf201c95ef7e2bfcf" },
+]
+
+[[package]]
+name = "pyproject-hooks"
+version = "1.2.0"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/pyproject-hooks/1.2.0/pyproject_hooks-1.2.0.tar.gz", hash = "sha256:1e859bd5c40fae9448642dd871adf459e5e2084186e8d2c2a79a824c970da1f8" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/pyproject-hooks/1.2.0/pyproject_hooks-1.2.0-py3-none-any.whl", hash = "sha256:9e5c6bfa8dcc30091c74b0cf803c81fdd29d94f01992a7707bc97babb1141913" },
 ]
 
 [[package]]
@@ -243,6 +511,78 @@ wheels = [
 ]
 
 [[package]]
+name = "pywin32-ctypes"
+version = "0.2.3"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/pywin32-ctypes/0.2.3/pywin32-ctypes-0.2.3.tar.gz", hash = "sha256:d162dc04946d704503b2edc4d55f3dba5c1d539ead017afa00142c38b9885755" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/pywin32-ctypes/0.2.3/pywin32_ctypes-0.2.3-py3-none-any.whl", hash = "sha256:8a1513379d709975552d202d942d9837758905c8d01eb82b8bcc30918929e7b8" },
+]
+
+[[package]]
+name = "readme-renderer"
+version = "44.0"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+dependencies = [
+    { name = "docutils" },
+    { name = "nh3" },
+    { name = "pygments" },
+]
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/readme-renderer/44.0/readme_renderer-44.0.tar.gz", hash = "sha256:8712034eabbfa6805cacf1402b4eeb2a73028f72d1166d6f5cb7f9c047c5d1e1" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/readme-renderer/44.0/readme_renderer-44.0-py3-none-any.whl", hash = "sha256:2fbca89b81a08526aadf1357a8c2ae889ec05fb03f5da67f9769c9a592166151" },
+]
+
+[[package]]
+name = "requests"
+version = "2.32.4"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+dependencies = [
+    { name = "certifi" },
+    { name = "charset-normalizer" },
+    { name = "idna" },
+    { name = "urllib3" },
+]
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/requests/2.32.4/requests-2.32.4.tar.gz", hash = "sha256:27d0316682c8a29834d3264820024b62a36942083d52caf2f14c0591336d3422" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/requests/2.32.4/requests-2.32.4-py3-none-any.whl", hash = "sha256:27babd3cda2a6d50b30443204ee89830707d396671944c998b5975b031ac2b2c" },
+]
+
+[[package]]
+name = "requests-toolbelt"
+version = "1.0.0"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+dependencies = [
+    { name = "requests" },
+]
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/requests-toolbelt/1.0.0/requests-toolbelt-1.0.0.tar.gz", hash = "sha256:7681a0a3d047012b5bdc0ee37d7f8f07ebe76ab08caeccfc3921ce23c88d5bc6" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/requests-toolbelt/1.0.0/requests_toolbelt-1.0.0-py2.py3-none-any.whl", hash = "sha256:cccfdd665f0a24fcf4726e690f65639d272bb0637b9b92dfd91a5568ccf6bd06" },
+]
+
+[[package]]
+name = "rfc3986"
+version = "2.0.0"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/rfc3986/2.0.0/rfc3986-2.0.0.tar.gz", hash = "sha256:97aacf9dbd4bfd829baad6e6309fa6573aaf1be3f6fa735c8ab05e46cecb261c" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/rfc3986/2.0.0/rfc3986-2.0.0-py2.py3-none-any.whl", hash = "sha256:50b1502b60e289cb37883f3dfd34532b8873c7de9f49bb546641ce9cbd256ebd" },
+]
+
+[[package]]
+name = "rich"
+version = "14.1.0"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+dependencies = [
+    { name = "markdown-it-py" },
+    { name = "pygments" },
+]
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/rich/14.1.0/rich-14.1.0.tar.gz", hash = "sha256:e497a48b844b0320d45007cdebfeaeed8db2a4f4bcf49f15e455cfc4af11eaa8" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/rich/14.1.0/rich-14.1.0-py3-none-any.whl", hash = "sha256:536f5f1785986d6dbdea3c75205c473f970777b4a0d6c6dd1b696aa05a3fa04f" },
+]
+
+[[package]]
 name = "s3transfer"
 version = "0.13.1"
 source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
@@ -252,6 +592,19 @@ dependencies = [
 sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/s3transfer/0.13.1/s3transfer-0.13.1.tar.gz", hash = "sha256:c3fdba22ba1bd367922f27ec8032d6a1cf5f10c934fb5d68cf60fd5a23d936cf" }
 wheels = [
     { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/s3transfer/0.13.1/s3transfer-0.13.1-py3-none-any.whl", hash = "sha256:a981aa7429be23fe6dfc13e80e4020057cbab622b08c0315288758d67cabc724" },
+]
+
+[[package]]
+name = "secretstorage"
+version = "3.3.3"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+dependencies = [
+    { name = "cryptography" },
+    { name = "jeepney" },
+]
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/secretstorage/3.3.3/SecretStorage-3.3.3.tar.gz", hash = "sha256:2403533ef369eca6d2ba81718576c5e0f564d5cca1b58f73a8b23e7d4eeebd77" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/secretstorage/3.3.3/SecretStorage-3.3.3-py3-none-any.whl", hash = "sha256:f356e6628222568e3af06f2eba8df495efa13b3b63081dafd4f7d9a7b7bc9f99" },
 ]
 
 [[package]]
@@ -270,6 +623,26 @@ source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.
 sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/trove-classifiers/2025.8.6.13/trove_classifiers-2025.8.6.13.tar.gz", hash = "sha256:5a0abad839d2ed810f213ab133d555d267124ddea29f1d8a50d6eca12a50ae6e" }
 wheels = [
     { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/trove-classifiers/2025.8.6.13/trove_classifiers-2025.8.6.13-py3-none-any.whl", hash = "sha256:c4e7fc83012770d80b3ae95816111c32b085716374dccee0d3fbf5c235495f9f" },
+]
+
+[[package]]
+name = "twine"
+version = "6.1.0"
+source = { registry = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/" }
+dependencies = [
+    { name = "id" },
+    { name = "keyring", marker = "platform_machine != 'ppc64le' and platform_machine != 's390x'" },
+    { name = "packaging" },
+    { name = "readme-renderer" },
+    { name = "requests" },
+    { name = "requests-toolbelt" },
+    { name = "rfc3986" },
+    { name = "rich" },
+    { name = "urllib3" },
+]
+sdist = { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/twine/6.1.0/twine-6.1.0.tar.gz", hash = "sha256:be324f6272eff91d07ee93f251edf232fc647935dd585ac003539b42404a8dbd" }
+wheels = [
+    { url = "https://bdois-090779586235.d.codeartifact.ap-southeast-2.amazonaws.com/pypi/bdois/simple/twine/6.1.0/twine-6.1.0-py3-none-any.whl", hash = "sha256:a47f973caf122930bf0fbbf17f80b83bc1602c9ce393c7845f289a3001dc5384" },
 ]
 
 [[package]]
