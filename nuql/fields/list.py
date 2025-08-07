@@ -51,7 +51,7 @@ class List(FieldBase):
                 value = self.on_write()
 
         # Set default value if applicable
-        if not has_value:
+        if not has_value and not value:
             value = self.default
 
         # Serialise the value

@@ -73,7 +73,7 @@ class PutItem(Boto3Adapter):
         :return: New item dict.
         """
         serialised_data = self.table.serialiser.serialise(self.serialisation_action, data)
-        resources.validate_condition_dict(condition, required=True)
+        resources.validate_condition_dict(condition, required=False)
         condition = api.Condition(self.table, condition, 'ConditionExpression')
 
         # Implement ability to modify condition before the request
