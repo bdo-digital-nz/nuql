@@ -37,8 +37,8 @@ class Nuql:
 
         # Insert global fields on to all tables
         if isinstance(global_fields, dict):
-            for table in schema.values():
-                table.update(global_fields)
+            for table_name in list(schema.keys()):
+                schema[table_name].update(global_fields)
 
         self.connection = Connection(name, session)
         self.fields = custom_fields
