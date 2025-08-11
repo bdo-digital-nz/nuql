@@ -5,57 +5,11 @@ from typing import Dict, Any
 
 import nuql
 from nuql import resources, types
+from nuql.resources import EmptyValue
 
 
 class Key(resources.FieldBase):
     type = 'key'
-
-    def __call__(self, value: Any, action: 'types.SerialisationType', validator: 'resources.Validator') -> Any:
-        """
-        Encapsulates the internal serialisation logic to prepare for
-        sending the record to DynamoDB.
-
-        :arg value: Deserialised value.
-        :arg action: SerialisationType (`create`, `update`, `write` or `query`).
-        :arg validator: Validator instance.
-        :return: Serialised value.
-        """
-        has_value = not isinstance(value, resources.EmptyValue)
-
-        # Apply generators if applicable to the field to overwrite the value
-        if action in ['create', 'update', 'write']:
-            if action == 'create' and self.on_create:
-                value = self.on_create()
-
-            if action == 'update' and self.on_update:
-                value = self.on_update()
-
-            if self.on_write:
-                value = self.on_write()
-
-        # Set default value if applicable
-        if not has_value and not value:
-            value = self.default
-
-        # Serialise the value
-        value = self.serialise_template(value, action, validator)
-
-        # Validate required field
-        if self.required and action == 'create' and value is None:
-            validator.add(name=self.name, message='Field is required')
-
-        # Validate against enum
-        if self.enum and has_value and action in ['create', 'update', 'write'] and value not in self.enum:
-            validator.add(name=self.name, message=f'Value must be one of: {", ".join(self.enum)}')
-
-        # Run internal validation
-        self.internal_validation(value, action, validator)
-
-        # Run custom validation logic
-        if self.validator and action in ['create', 'update', 'write']:
-            self.validator(value, validator)
-
-        return value
 
     def on_init(self) -> None:
         """Initialises the key field."""
@@ -69,6 +23,8 @@ class Key(resources.FieldBase):
         # Callback fn handles configuring projected fields on the schema
         def callback(field_map: dict) -> None:
             """Callback fn to configure projected fields on the schema."""
+            auto_include_map = {}
+
             for key, value in self.value.items():
                 projected_name = self.parse_projected_name(value)
 
@@ -88,15 +44,38 @@ class Key(resources.FieldBase):
                 field_map[projected_name].projected_from.append(self.name)
                 self.projects_fields.append(projected_name)
 
+                auto_include_map[projected_name] = field_map[projected_name].default is not None
+
+            self.auto_include_key_condition = all(auto_include_map.values())
+
         if self.init_callback is not None:
             self.init_callback(callback)
+
+    def serialise_internal(
+            self,
+            value: Any,
+            action: 'types.SerialisationType',
+            validator: 'resources.Validator'
+    ) -> Any:
+        """
+        Internal serialisation override.
+
+        :arg value: Value to serialise.
+        :arg action: Serialisation action.
+        :arg validator: Validator instance.
+        :return: Serialised value.
+        """
+        serialised = self.serialise_template(value, action, validator)
+        if serialised['is_partial']:
+            validator.partial_keys.append(self.name)
+        return serialised['value']
 
     def serialise_template(
             self,
             key_dict: Dict[str, Any],
             action: 'types.SerialisationType',
             validator: 'resources.Validator'
-    ) -> str:
+    ) -> Dict[str, Any]:
         """
         Serialises the key dict to a string.
 
@@ -107,6 +86,11 @@ class Key(resources.FieldBase):
         """
         output = ''
         s = self.sanitise
+
+        if key_dict is None:
+            key_dict = {}
+
+        is_partial = False
 
         for key, value in self.value.items():
             projected_name = self.parse_projected_name(value)
@@ -121,7 +105,9 @@ class Key(resources.FieldBase):
                                 f'\'{self.name}\') is not defined in the schema'
                     )
 
-                projected_value = key_dict.get(projected_name)
+                is_partial = is_partial or (key not in key_dict and not projected_field.default)
+
+                projected_value = key_dict.get(projected_name) or EmptyValue()
                 serialised_value = projected_field(projected_value, action, validator)
                 used_value = s(serialised_value) if serialised_value else None
             else:
@@ -133,7 +119,7 @@ class Key(resources.FieldBase):
 
             output += f'{s(key)}:{used_value if used_value else ""}|'
 
-        return output[:-1]
+        return {'value': output[:-1], 'is_partial': is_partial}
 
     def deserialise(self, value: str) -> Dict[str, Any]:
         """

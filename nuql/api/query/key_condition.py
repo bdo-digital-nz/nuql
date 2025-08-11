@@ -65,8 +65,13 @@ class KeyCondition:
         else:
             self.index = table.indexes.get_index(index_name)
 
-        if self.index['hash'] not in condition:
+        pk_field = table.fields[self.index['hash']]
+        sk_field = table.fields.get(self.index.get('sort'))
+
+        if pk_field.auto_include_key_condition:
             condition[self.index['hash']] = None
+        if sk_field and sk_field.auto_include_key_condition:
+            condition[self.index.get('sort')] = None
 
         parsed_conditions = {}
 
@@ -98,22 +103,27 @@ class KeyCondition:
 
             # Process projected field
             else:
-                key_name = self.index['hash'] if is_hash_key else self.index['sort']
+                projected_keys = []
+                if projects_to_hash:
+                    projected_keys.append(self.index['hash'])
+                if projects_to_sort:
+                    projected_keys.append(self.index['sort'])
 
-                if key_name not in parsed_conditions:
-                    parsed_conditions[key_name] = ['eq', {}]
+                for key_name in projected_keys:
+                    if key_name not in parsed_conditions:
+                        parsed_conditions[key_name] = ['eq', {}]
 
-                if parsed_conditions[key_name][0] != 'eq' and operand != 'eq':
-                    raise nuql.NuqlError(
-                        code='KeyConditionError',
-                        message=f'Multiple non-equals operators provided for the key \'{key_name}\' '
-                                'will result in an ambiguous key condition.'
-                    )
+                    if parsed_conditions[key_name][0] != 'eq' and operand != 'eq':
+                        raise nuql.NuqlError(
+                            code='KeyConditionError',
+                            message=f'Multiple non-equals operators provided for the key \'{key_name}\' '
+                                    'will result in an ambiguous key condition.'
+                        )
 
-                if operand != 'eq':
-                    parsed_conditions[key_name][0] = operand
+                    if operand != 'eq':
+                        parsed_conditions[key_name][0] = operand
 
-                parsed_conditions[key_name][1][key] = condition_value
+                    parsed_conditions[key_name][1][key] = condition_value
 
         self.condition = None
         validator = resources.Validator()
@@ -134,6 +144,17 @@ class KeyCondition:
             else:
                 serialised_value = field(value, 'query', validator)
                 key_condition = getattr(key_obj, operand)(serialised_value)
+
+            is_partial = key in validator.partial_keys
+
+            if key == self.index['hash'] and is_partial:
+                raise nuql.NuqlError(
+                    code='KeyConditionError',
+                    message=f'Partial key \'{key}\' cannot be used in a key condition on \'{index_name}\' index.'
+                )
+
+            if is_partial and operand != 'begins_with':
+                continue
 
             if self.condition is None:
                 self.condition = key_condition

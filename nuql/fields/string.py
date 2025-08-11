@@ -6,7 +6,7 @@ from typing import List, Dict, Any
 
 import nuql
 from nuql import resources, types
-
+from nuql.resources import EmptyValue
 
 TEMPLATE_PATTERN = r'\$\{(\w+)}'
 
@@ -15,61 +15,14 @@ class String(resources.FieldBase):
     type = 'string'
     is_template = False
 
-    def __call__(self, value: Any, action: 'types.SerialisationType', validator: 'resources.Validator') -> Any:
-        """
-        Encapsulates the internal serialisation logic to prepare for
-        sending the record to DynamoDB.
-
-        :arg value: Deserialised value.
-        :arg action: SerialisationType (`create`, `update`, `write` or `query`).
-        :arg validator: Validator instance.
-        :return: Serialised value.
-        """
-        has_value = not isinstance(value, resources.EmptyValue)
-
-        # Apply generators if applicable to the field to overwrite the value
-        if action in ['create', 'update', 'write']:
-            if action == 'create' and self.on_create:
-                value = self.on_create()
-
-            if action == 'update' and self.on_update:
-                value = self.on_update()
-
-            if self.on_write:
-                value = self.on_write()
-
-        # Set default value if applicable
-        if not has_value and not value and not self.value and not self.is_template:
-            value = self.default
-
-        if self.value and not self.is_template:
-            value = self.value
-
-        # Serialise the value
-        if self.is_template:
-            value = self.serialise_template(value, action, validator)
-        else:
-            value = self.serialise(value)
-
-        # Validate required field
-        if self.required and action == 'create' and value is None:
-            validator.add(name=self.name, message='Field is required')
-
-        # Run internal validation
-        self.internal_validation(value, action, validator)
-
-        # Run custom validation logic
-        if self.validator and action in ['create', 'update', 'write']:
-            self.validator(value, validator)
-
-        return value
-
     def on_init(self) -> None:
         """Initialises the string field when a template is defined."""
         self.is_template = self.value is not None and bool(re.search(TEMPLATE_PATTERN, self.value))
 
         def callback(field_map: dict) -> None:
             """Callback fn to configure projected fields on the schema."""
+            auto_include_map = {}
+
             for key in self.find_projections(self.value):
                 if key not in field_map:
                     raise nuql.NuqlError(
@@ -82,8 +35,34 @@ class String(resources.FieldBase):
                 field_map[key].projected_from.append(self.name)
                 self.projects_fields.append(key)
 
+                auto_include_map[key] = field_map[key].default is not None
+
+            self.auto_include_key_condition = all(auto_include_map.values())
+
         if self.init_callback is not None and self.is_template:
             self.init_callback(callback)
+
+    def serialise_internal(
+            self,
+            value: Any,
+            action: 'types.SerialisationType',
+            validator: 'resources.Validator'
+    ) -> Any:
+        """
+        Internal serialisation override.
+
+        :arg value: Value to serialise.
+        :arg action: Serialisation action.
+        :arg validator: Validator instance.
+        :return: Serialised value.
+        """
+        if self.is_template:
+            serialised = self.serialise_template(value, action, validator)
+            if serialised['is_partial']:
+                validator.partial_keys.append(self.name)
+            return serialised['value']
+        else:
+            return self.serialise(value)
 
     def serialise(self, value: str | None) -> str | None:
         """
@@ -108,7 +87,7 @@ class String(resources.FieldBase):
             value: Dict[str, Any],
             action: 'types.SerialisationType',
             validator: 'resources.Validator'
-    ) -> str | None:
+    ) -> Dict[str, Any]:
         """
         Serialises a template string.
 
@@ -120,9 +99,12 @@ class String(resources.FieldBase):
         if not isinstance(value, dict):
             value = {}
 
+        is_partial = False
+
         # Add not provided keys as empty strings
         for key in self.find_projections(self.value):
             if key not in value:
+                is_partial = True
                 value[key] = None
 
         serialised = {}
@@ -138,11 +120,11 @@ class String(resources.FieldBase):
                             f'\'{self.name}\') is not defined in the schema'
                 )
 
-            serialised_value = field(deserialised_value, action, validator)
+            serialised_value = field(deserialised_value or EmptyValue(), action, validator)
             serialised[key] = serialised_value if serialised_value else ''
 
         template = Template(self.value)
-        return template.substitute(serialised)
+        return {'value': template.substitute(serialised), 'is_partial': is_partial}
 
     def deserialise_template(self, value: str | None) -> Dict[str, Any]:
         """

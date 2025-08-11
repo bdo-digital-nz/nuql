@@ -28,6 +28,7 @@ class FieldBase:
         self.config = config
         self.parent = parent
         self.init_callback = init_callback
+        self.auto_include_key_condition = False
 
         # Handle 'KEY' field type
         self.projected_from = []
@@ -91,11 +92,11 @@ class FieldBase:
                 value = self.on_write()
 
         # Set default value if applicable
-        if not has_value and not value:
+        if not has_value and self.default:
             value = self.default
 
         # Serialise the value
-        value = self.serialise(value)
+        value = self.serialise_internal(value, action, validator)
 
         # Validate required field
         if self.required and action == 'create' and value is None:
@@ -125,6 +126,22 @@ class FieldBase:
             code='NotImplementedError',
             message='Serialisation has not been implemented for this field type.'
         )
+
+    def serialise_internal(
+            self,
+            value: Any,
+            _action: 'types.SerialisationType',
+            _validator: 'resources.Validator'
+    ) -> Any:
+        """
+        Internal serialisation wrapper to allow overridable serialisation behaviour.
+
+        :arg value: Value to serialise.
+        :arg _action: Serialisation type.
+        :arg _validator: Validator instance.
+        :return: Serialised value.
+        """
+        return self.serialise(value)
 
     def deserialise(self, value: Any) -> Any:
         """

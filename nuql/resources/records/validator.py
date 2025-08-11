@@ -15,6 +15,7 @@ class Validator:
         self.path = path
         self.children = []
         self._errors = []
+        self.partial_keys = []
 
     @property
     def errors(self):
