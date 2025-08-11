@@ -94,8 +94,11 @@ class FieldBase:
         if not has_value and not value:
             value = self.default
 
+        if not value and self.value:
+            value = self.value
+
         # Serialise the value
-        value = self.serialise(value)
+        value = self.serialise_internal(value, action, validator)
 
         # Validate required field
         if self.required and action == 'create' and value is None:
@@ -125,6 +128,22 @@ class FieldBase:
             code='NotImplementedError',
             message='Serialisation has not been implemented for this field type.'
         )
+
+    def serialise_internal(
+            self,
+            value: Any,
+            _action: 'types.SerialisationType',
+            _validator: 'resources.Validator'
+    ) -> Any:
+        """
+        Internal serialisation wrapper to allow overridable serialisation behaviour.
+
+        :arg value: Value to serialise.
+        :arg _action: Serialisation type.
+        :arg _validator: Validator instance.
+        :return: Serialised value.
+        """
+        return self.serialise(value)
 
     def deserialise(self, value: Any) -> Any:
         """

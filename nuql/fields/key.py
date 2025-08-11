@@ -10,53 +10,6 @@ from nuql import resources, types
 class Key(resources.FieldBase):
     type = 'key'
 
-    def __call__(self, value: Any, action: 'types.SerialisationType', validator: 'resources.Validator') -> Any:
-        """
-        Encapsulates the internal serialisation logic to prepare for
-        sending the record to DynamoDB.
-
-        :arg value: Deserialised value.
-        :arg action: SerialisationType (`create`, `update`, `write` or `query`).
-        :arg validator: Validator instance.
-        :return: Serialised value.
-        """
-        has_value = not isinstance(value, resources.EmptyValue)
-
-        # Apply generators if applicable to the field to overwrite the value
-        if action in ['create', 'update', 'write']:
-            if action == 'create' and self.on_create:
-                value = self.on_create()
-
-            if action == 'update' and self.on_update:
-                value = self.on_update()
-
-            if self.on_write:
-                value = self.on_write()
-
-        # Set default value if applicable
-        if not has_value and not value:
-            value = self.default
-
-        # Serialise the value
-        value = self.serialise_template(value, action, validator)
-
-        # Validate required field
-        if self.required and action == 'create' and value is None:
-            validator.add(name=self.name, message='Field is required')
-
-        # Validate against enum
-        if self.enum and has_value and action in ['create', 'update', 'write'] and value not in self.enum:
-            validator.add(name=self.name, message=f'Value must be one of: {", ".join(self.enum)}')
-
-        # Run internal validation
-        self.internal_validation(value, action, validator)
-
-        # Run custom validation logic
-        if self.validator and action in ['create', 'update', 'write']:
-            self.validator(value, validator)
-
-        return value
-
     def on_init(self) -> None:
         """Initialises the key field."""
         # Validate the field has a value
@@ -90,6 +43,22 @@ class Key(resources.FieldBase):
 
         if self.init_callback is not None:
             self.init_callback(callback)
+
+    def serialise_internal(
+            self,
+            value: Any,
+            action: 'types.SerialisationType',
+            validator: 'resources.Validator'
+    ) -> Any:
+        """
+        Internal serialisation override.
+
+        :arg value: Value to serialise.
+        :arg action: Serialisation action.
+        :arg validator: Validator instance.
+        :return: Serialised value.
+        """
+        return self.serialise_template(value, action, validator)
 
     def serialise_template(
             self,
