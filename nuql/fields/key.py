@@ -80,6 +80,9 @@ class Key(resources.FieldBase):
         output = ''
         s = self.sanitise
 
+        if key_dict is None:
+            key_dict = {}
+
         is_partial = False
 
         for key, value in self.value.items():
@@ -95,7 +98,7 @@ class Key(resources.FieldBase):
                                 f'\'{self.name}\') is not defined in the schema'
                     )
 
-                is_partial = is_partial or projected_name not in key_dict
+                is_partial = is_partial or (key not in key_dict and not projected_field.value)
 
                 projected_value = key_dict.get(projected_name)
                 serialised_value = projected_field(projected_value, action, validator)
