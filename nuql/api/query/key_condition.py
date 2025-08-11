@@ -65,6 +65,14 @@ class KeyCondition:
         else:
             self.index = table.indexes.get_index(index_name)
 
+        pk_field = table.fields[self.index['hash']]
+        sk_field = table.fields.get(self.index.get('sort'))
+
+        if pk_field.auto_include_key_condition:
+            condition[self.index['hash']] = None
+        if sk_field and sk_field.auto_include_key_condition:
+            condition[self.index.get('sort')] = None
+
         parsed_conditions = {}
 
         for key, value in condition.items():

@@ -28,6 +28,7 @@ class FieldBase:
         self.config = config
         self.parent = parent
         self.init_callback = init_callback
+        self.auto_include_key_condition = False
 
         # Handle 'KEY' field type
         self.projected_from = []
@@ -91,11 +92,8 @@ class FieldBase:
                 value = self.on_write()
 
         # Set default value if applicable
-        if not has_value and not value:
+        if not has_value and self.default:
             value = self.default
-
-        if not value and self.value:
-            value = self.value
 
         # Serialise the value
         value = self.serialise_internal(value, action, validator)

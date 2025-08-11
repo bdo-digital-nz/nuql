@@ -5,6 +5,7 @@ from typing import Dict, Any
 
 import nuql
 from nuql import resources, types
+from nuql.resources import EmptyValue
 
 
 class Key(resources.FieldBase):
@@ -22,6 +23,8 @@ class Key(resources.FieldBase):
         # Callback fn handles configuring projected fields on the schema
         def callback(field_map: dict) -> None:
             """Callback fn to configure projected fields on the schema."""
+            auto_include_map = {}
+
             for key, value in self.value.items():
                 projected_name = self.parse_projected_name(value)
 
@@ -40,6 +43,10 @@ class Key(resources.FieldBase):
                 # Add reference to this field on the projected field
                 field_map[projected_name].projected_from.append(self.name)
                 self.projects_fields.append(projected_name)
+
+                auto_include_map[projected_name] = field_map[projected_name].default is not None
+
+            self.auto_include_key_condition = all(auto_include_map.values())
 
         if self.init_callback is not None:
             self.init_callback(callback)
@@ -98,9 +105,9 @@ class Key(resources.FieldBase):
                                 f'\'{self.name}\') is not defined in the schema'
                     )
 
-                is_partial = is_partial or (key not in key_dict and not projected_field.value)
+                is_partial = is_partial or (key not in key_dict and not projected_field.default)
 
-                projected_value = key_dict.get(projected_name)
+                projected_value = key_dict.get(projected_name) or EmptyValue()
                 serialised_value = projected_field(projected_value, action, validator)
                 used_value = s(serialised_value) if serialised_value else None
             else:

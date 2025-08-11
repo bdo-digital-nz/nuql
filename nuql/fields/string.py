@@ -6,7 +6,7 @@ from typing import List, Dict, Any
 
 import nuql
 from nuql import resources, types
-
+from nuql.resources import EmptyValue
 
 TEMPLATE_PATTERN = r'\$\{(\w+)}'
 
@@ -21,6 +21,8 @@ class String(resources.FieldBase):
 
         def callback(field_map: dict) -> None:
             """Callback fn to configure projected fields on the schema."""
+            auto_include_map = {}
+
             for key in self.find_projections(self.value):
                 if key not in field_map:
                     raise nuql.NuqlError(
@@ -32,6 +34,10 @@ class String(resources.FieldBase):
                 # Add reference to this field on the projected field
                 field_map[key].projected_from.append(self.name)
                 self.projects_fields.append(key)
+
+                auto_include_map[key] = field_map[key].default is not None
+
+            self.auto_include_key_condition = all(auto_include_map.values())
 
         if self.init_callback is not None and self.is_template:
             self.init_callback(callback)
@@ -114,7 +120,7 @@ class String(resources.FieldBase):
                             f'\'{self.name}\') is not defined in the schema'
                 )
 
-            serialised_value = field(deserialised_value, action, validator)
+            serialised_value = field(deserialised_value or EmptyValue(), action, validator)
             serialised[key] = serialised_value if serialised_value else ''
 
         template = Template(self.value)
