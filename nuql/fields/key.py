@@ -58,14 +58,16 @@ class Key(resources.FieldBase):
         :arg validator: Validator instance.
         :return: Serialised value.
         """
-        return self.serialise_template(value, action, validator)
+        serialised = self.serialise_template(value, action, validator)
+        # TODO partial into validator
+        return serialised['value']
 
     def serialise_template(
             self,
             key_dict: Dict[str, Any],
             action: 'types.SerialisationType',
             validator: 'resources.Validator'
-    ) -> str:
+    ) -> Dict[str, Any]:
         """
         Serialises the key dict to a string.
 
@@ -76,6 +78,8 @@ class Key(resources.FieldBase):
         """
         output = ''
         s = self.sanitise
+
+        is_partial = False
 
         for key, value in self.value.items():
             projected_name = self.parse_projected_name(value)
@@ -90,6 +94,8 @@ class Key(resources.FieldBase):
                                 f'\'{self.name}\') is not defined in the schema'
                     )
 
+                is_partial = is_partial or projected_name not in key_dict
+
                 projected_value = key_dict.get(projected_name)
                 serialised_value = projected_field(projected_value, action, validator)
                 used_value = s(serialised_value) if serialised_value else None
@@ -102,7 +108,7 @@ class Key(resources.FieldBase):
 
             output += f'{s(key)}:{used_value if used_value else ""}|'
 
-        return output[:-1]
+        return {'value': output[:-1], 'is_partial': is_partial}
 
     def deserialise(self, value: str) -> Dict[str, Any]:
         """

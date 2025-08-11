@@ -51,7 +51,9 @@ class String(resources.FieldBase):
         :return: Serialised value.
         """
         if self.is_template:
-            return self.serialise_template(value, action, validator)
+            serialised = self.serialise_template(value, action, validator)
+            # TODO partial into validator
+            return serialised['value']
         else:
             return self.serialise(value)
 
@@ -78,7 +80,7 @@ class String(resources.FieldBase):
             value: Dict[str, Any],
             action: 'types.SerialisationType',
             validator: 'resources.Validator'
-    ) -> str | None:
+    ) -> Dict[str, Any]:
         """
         Serialises a template string.
 
@@ -90,9 +92,12 @@ class String(resources.FieldBase):
         if not isinstance(value, dict):
             value = {}
 
+        is_partial = False
+
         # Add not provided keys as empty strings
         for key in self.find_projections(self.value):
             if key not in value:
+                is_partial = True
                 value[key] = None
 
         serialised = {}
@@ -112,7 +117,7 @@ class String(resources.FieldBase):
             serialised[key] = serialised_value if serialised_value else ''
 
         template = Template(self.value)
-        return template.substitute(serialised)
+        return {'value': template.substitute(serialised), 'is_partial': is_partial}
 
     def deserialise_template(self, value: str | None) -> Dict[str, Any]:
         """
