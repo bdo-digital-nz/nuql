@@ -52,7 +52,8 @@ class String(resources.FieldBase):
         """
         if self.is_template:
             serialised = self.serialise_template(value, action, validator)
-            # TODO partial into validator
+            if serialised['is_partial']:
+                validator.partial_keys.append(self.name)
             return serialised['value']
         else:
             return self.serialise(value)

@@ -59,7 +59,8 @@ class Key(resources.FieldBase):
         :return: Serialised value.
         """
         serialised = self.serialise_template(value, action, validator)
-        # TODO partial into validator
+        if serialised['is_partial']:
+            validator.partial_keys.append(self.name)
         return serialised['value']
 
     def serialise_template(
