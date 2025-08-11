@@ -16,7 +16,7 @@ class PutItem(Boto3Adapter):
     def prepare_client_args(
             self,
             data: Dict[str, Any],
-            condition: Optional['types.QueryWhere'] = None,
+            condition: Optional[Dict[str, Any]] = None,
             exclude_condition: bool = False,
             **kwargs,
     ) -> Dict[str, Any]:
@@ -109,4 +109,4 @@ class PutItem(Boto3Adapter):
         except ClientError as exc:
             raise nuql.Boto3Error(exc, args)
 
-        return args['Item']
+        return self.table.serialiser.deserialise(args['Item'])
