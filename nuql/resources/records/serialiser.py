@@ -45,6 +45,9 @@ class Serialiser:
         projections = resources.Projections(self.parent, self)
         output = {}
 
+        if not isinstance(data, dict):
+            data = {}
+
         # Serialise provided fields
         for key, deserialised_value in data.items():
             field = self.get_field(key)
@@ -122,6 +125,9 @@ class Serialiser:
         :return: Deserialised data.
         """
         record = {}
+
+        if not isinstance(data, dict):
+            data = {}
 
         for name, field in self.parent.fields.items():
             # Special Case: string templates
