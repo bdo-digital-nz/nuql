@@ -13,7 +13,7 @@ class Condition:
     def __init__(
             self,
             table: 'resources.Table',
-            condition: Dict[str, Any] | None = None,
+            condition: str | Dict[str, Any] | None = None,
             condition_type: Literal['FilterExpression', 'ConditionExpression'] = 'FilterExpression',
     ) -> None:
         """
@@ -23,6 +23,9 @@ class Condition:
         :param condition: Condition dict.
         :param condition_type: Condition type (FilterExpression or ConditionExpression).
         """
+        # Initialise the condition even when it is a string
+        if isinstance(condition, str):
+            condition = {'where': condition, 'variables': {}}
 
         self.table = table
         self.variables = condition['variables'] if condition and condition.get('variables') else {}

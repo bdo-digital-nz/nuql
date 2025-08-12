@@ -12,7 +12,7 @@ class Query(api.Boto3Adapter):
     def prepare_client_args(
             self,
             key_condition: Dict[str, Any] | None = None,
-            condition: Dict[str, Any] | None = None,
+            condition: str | Dict[str, Any] | None = None,
             index_name: str = 'primary',
             limit: int | None = None,
             scan_index_forward: bool = True,
@@ -52,7 +52,7 @@ class Query(api.Boto3Adapter):
     def prepare_args(
             self,
             key_condition: Dict[str, Any] | None = None,
-            condition: Dict[str, Any] | None = None,
+            condition: str | Dict[str, Any] | None = None,
             index_name: str = 'primary',
             limit: int | None = None,
             scan_index_forward: bool = True,
@@ -92,7 +92,7 @@ class Query(api.Boto3Adapter):
     def invoke_sync(
             self,
             key_condition: Dict[str, Any] | None = None,
-            condition: Dict[str, Any] | None = None,
+            condition: str | Dict[str, Any] | None = None,
             index_name: str = 'primary',
             limit: int | None = None,
             scan_index_forward: bool = True,

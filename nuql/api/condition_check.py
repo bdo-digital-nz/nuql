@@ -9,7 +9,7 @@ from nuql.api import Boto3Adapter
 
 
 class ConditionCheck(Boto3Adapter):
-    def prepare_client_args(self, key: Dict[str, Any], condition: Dict[str, Any], **kwargs) -> Dict[str, Any]:
+    def prepare_client_args(self, key: Dict[str, Any], condition: str | Dict[str, Any], **kwargs) -> Dict[str, Any]:
         """
         Prepare the request args for a condition check operation against the table (client API).
 

@@ -14,7 +14,7 @@ class Delete(Boto3Adapter):
     def prepare_client_args(
             self,
             key: Dict[str, Any],
-            condition: Dict[str, Any] | None = None,
+            condition: str | Dict[str, Any] | None = None,
             exclude_condition: bool = False,
             **kwargs,
     ) -> Dict[str, Any]:

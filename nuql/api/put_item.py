@@ -16,7 +16,7 @@ class PutItem(Boto3Adapter):
     def prepare_client_args(
             self,
             data: Dict[str, Any],
-            condition: Optional[Dict[str, Any]] = None,
+            condition: Optional[str | Dict[str, Any]] = None,
             exclude_condition: bool = False,
             **kwargs,
     ) -> Dict[str, Any]:
@@ -59,7 +59,7 @@ class PutItem(Boto3Adapter):
     def prepare_args(
             self,
             data: Dict[str, Any],
-            condition: Dict[str, Any] | None = None,
+            condition: str | Dict[str, Any] | None = None,
             exclude_condition: bool = False,
             **kwargs,
     ) -> Dict[str, Any]:
@@ -94,7 +94,7 @@ class PutItem(Boto3Adapter):
         """
         pass
 
-    def invoke_sync(self, data: Dict[str, Any], condition: Dict[str, Any] | None = None) -> Dict[str, Any]:
+    def invoke_sync(self, data: Dict[str, Any], condition: str | Dict[str, Any] | None = None) -> Dict[str, Any]:
         """
         Perform a put operation against the table.
 
