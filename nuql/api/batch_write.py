@@ -1,6 +1,6 @@
 __all__ = ['BatchWrite']
 
-from typing import Dict, Any, Optional
+from typing import Dict, Any
 
 from botocore.exceptions import ClientError
 
