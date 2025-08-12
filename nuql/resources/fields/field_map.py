@@ -62,10 +62,10 @@ def get_field_types(field_types: List[Type['types.FieldType']] | None = None) ->
 
     def is_valid(_obj: Any) -> bool:
         """Check the provided object is a valid field type."""
-        if not inspect.isclass(obj):
+        if not inspect.isclass(_obj):
             return False
 
-        if not issubclass(obj, resources.FieldBase):
+        if not issubclass(_obj, resources.FieldBase):
             return False
 
         return True
