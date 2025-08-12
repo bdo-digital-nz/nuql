@@ -106,11 +106,17 @@ class Key(resources.FieldBase):
                                 f'\'{self.name}\') is not defined in the schema'
                     )
 
-                is_partial = is_partial or (key not in key_dict and not projected_field.default)
-
                 projected_value = key_dict.get(projected_name) or EmptyValue()
                 serialised_value = projected_field(projected_value, action, validator)
-                used_value = s(serialised_value) if serialised_value else None
+
+                is_partial = (is_partial or
+                              (key not in key_dict and not projected_field.default) or
+                              isinstance(projected_value, EmptyValue))
+
+                if isinstance(projected_value, EmptyValue):
+                    break
+
+                used_value = s(serialised_value) if not isinstance(serialised_value, (type(None), EmptyValue)) else None
             else:
                 used_value = s(value)
 

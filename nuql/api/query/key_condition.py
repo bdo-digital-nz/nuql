@@ -1,11 +1,11 @@
 __all__ = ['KeyCondition']
 
-from typing import Dict, Any
+from typing import Dict, Any, Tuple, Union
 
-from boto3.dynamodb.conditions import Key, ConditionExpressionBuilder
+from boto3.dynamodb.conditions import Key, ConditionExpressionBuilder, ComparisonCondition
 
 import nuql
-from nuql import resources
+from nuql import resources, types
 
 
 KEY_OPERANDS = {
@@ -59,107 +59,19 @@ class KeyCondition:
             condition = {}
 
         self.index_name = index_name
-
-        if index_name == 'primary':
-            self.index = table.indexes.primary
-        else:
-            self.index = table.indexes.get_index(index_name)
+        self.index = self._resolve_index(table, index_name)
 
         pk_field = table.fields[self.index['hash']]
         sk_field = table.fields.get(self.index.get('sort'))
 
+        # Key fields that only contain fixed values should always be included
         if pk_field.auto_include_key_condition:
             condition[self.index['hash']] = None
-        if sk_field and sk_field.auto_include_key_condition:
+        if sk_field:
             condition[self.index.get('sort')] = None
 
-        parsed_conditions = {}
-
-        for key, value in condition.items():
-            # Validate that the key exists
-            if key not in table.fields:
-                raise nuql.NuqlError(code='KeyConditionError', message=f'Field \'{key}\' is not defined in the schema.')
-
-            field = table.fields[key]
-
-            is_hash_key = key == self.index['hash']
-            is_sort_key = key == self.index.get('sort')
-            projects_to_hash = self.index['hash'] in field.projected_from
-            projects_to_sort = self.index.get('sort') in field.projected_from
-
-            # Validate that the key is available on the index
-            if not any([is_hash_key, is_sort_key, projects_to_hash, projects_to_sort]):
-                raise nuql.NuqlError(
-                    code='KeyConditionError',
-                    message=f'Field \'{key}\' cannot be used in a key condition on \'{index_name}\' index '
-                            f'as it is not a hash/sort key and it doesn\'t project to the hash/sort key.'
-                )
-
-            operand, condition_value = self.extract_condition(key, value)
-
-            # Directly set the key field where not projected
-            if is_hash_key or is_sort_key:
-                parsed_conditions[key] = [operand, condition_value]
-
-            # Process projected field
-            else:
-                projected_keys = []
-                if projects_to_hash:
-                    projected_keys.append(self.index['hash'])
-                if projects_to_sort:
-                    projected_keys.append(self.index['sort'])
-
-                for key_name in projected_keys:
-                    if key_name not in parsed_conditions:
-                        parsed_conditions[key_name] = ['eq', {}]
-
-                    if parsed_conditions[key_name][0] != 'eq' and operand != 'eq':
-                        raise nuql.NuqlError(
-                            code='KeyConditionError',
-                            message=f'Multiple non-equals operators provided for the key \'{key_name}\' '
-                                    'will result in an ambiguous key condition.'
-                        )
-
-                    if operand != 'eq':
-                        parsed_conditions[key_name][0] = operand
-
-                    parsed_conditions[key_name][1][key] = condition_value
-
-        self.condition = None
-        validator = resources.Validator()
-
-        # Generate key condition
-        for key, (operand, value) in parsed_conditions.items():
-            field = table.fields[key]
-            key_obj = Key(key)
-
-            if operand == 'between':
-                if len(value) != 2:
-                    raise nuql.NuqlError(
-                        code='KeyConditionError',
-                        message=f'Between operator requires exactly two values for the key \'{key}\'.'
-                    )
-                serialised_value = (field(value[0], 'query', validator), field(value[1], 'query', validator))
-                key_condition = getattr(key_obj, operand)(*serialised_value)
-            else:
-                serialised_value = field(value, 'query', validator)
-                key_condition = getattr(key_obj, operand)(serialised_value)
-
-            is_partial = key in validator.partial_keys
-
-            if key == self.index['hash'] and is_partial:
-                raise nuql.NuqlError(
-                    code='KeyConditionError',
-                    message=f'Partial key \'{key}\' cannot be used in a key condition on \'{index_name}\' index.'
-                )
-
-            if is_partial and operand != 'begins_with':
-                continue
-
-            if self.condition is None:
-                self.condition = key_condition
-            else:
-                self.condition &= key_condition
+        parsed_conditions = self.parse_conditions(table, condition, index_name)
+        self.condition = self.build_condition_expression(table, parsed_conditions, index_name)
 
     @property
     def resource_args(self) -> Dict[str, Any]:
@@ -194,7 +106,7 @@ class KeyCondition:
         return args
 
     @staticmethod
-    def extract_condition(key: str, value: Any) -> (str, Any):
+    def extract_condition(key: str, value: Any) -> Tuple[str, Any]:
         """
         Parses and extracts the operand and value from the condition.
 
@@ -219,3 +131,143 @@ class KeyCondition:
             condition_value = value
 
         return operand, condition_value
+
+    def parse_conditions(self, table: 'resources.Table', condition: Dict[str, Any], index_name: str) -> Dict[str, Any]:
+        """
+        Parse the condition dict handling projected fields.
+
+        :arg table: Table instance.
+        :arg condition: Condition dict.
+        :arg index_name: Index name.
+        :return: Parsed condition dict.
+        """
+        parsed_conditions = {}
+
+        for key, value in condition.items():
+            # Validate that the key exists
+            if key not in table.fields:
+                raise nuql.NuqlError(code='KeyConditionError', message=f'Field \'{key}\' is not defined in the schema.')
+
+            field = table.fields[key]
+
+            is_hash_key = key == self.index['hash']
+            is_sort_key = key == self.index.get('sort')
+            projects_to_hash = self.index['hash'] in field.projected_from
+            projects_to_sort = self.index.get('sort') in field.projected_from
+
+            # Resolve projected fields to their respective key(s)
+            projected_keys = []
+            if projects_to_hash:
+                projected_keys.append(self.index['hash'])
+            if projects_to_sort:
+                projected_keys.append(self.index['sort'])
+
+            # Validate that the key is available on the index
+            if not is_hash_key and not is_sort_key and not projects_to_hash and not projects_to_sort:
+                raise nuql.NuqlError(
+                    code='KeyConditionError',
+                    message=f'Field \'{key}\' cannot be used in a key condition on \'{index_name}\' index '
+                            f'as it is not a hash/sort key and it doesn\'t project to the hash/sort key.'
+                )
+
+            operand, condition_value = self.extract_condition(key, value)
+
+            # Directly set the key field where not projected
+            if is_hash_key or is_sort_key:
+                parsed_conditions[key] = [operand, condition_value]
+
+            # Process projected field
+            else:
+                for key_name in projected_keys:
+                    if key_name not in parsed_conditions:
+                        parsed_conditions[key_name] = ['eq', {}]
+
+                    parsed_conditions[key_name][1][key] = condition_value
+
+                    # Allow a key with projections to have a greater_than or begins_with operator
+                    # without disrupting the integrity of the condition
+                    if parsed_conditions[key_name][0] != 'eq' and operand != 'eq':
+                        raise nuql.NuqlError(
+                            code='KeyConditionError',
+                            message=f'Multiple non-equals operators provided for the key \'{key_name}\' '
+                                    'will result in an ambiguous key condition.'
+                        )
+
+                    # The first non-equals operand becomes the winner
+                    if operand != 'eq':
+                        parsed_conditions[key_name][0] = operand
+
+        return parsed_conditions
+
+    def build_condition_expression(
+            self,
+            table: 'resources.Table',
+            parsed_conditions: Dict[str, Any],
+            index_name: str
+    ) -> ComparisonCondition:
+        """
+        Builds the final condition expression to be used in the query.
+
+        :arg table: Table instance.
+        :arg parsed_conditions: Parsed conditions dict.
+        :arg index_name: Index name.
+        :return: ComparisonCondition instance.
+        """
+        condition = None
+        validator = resources.Validator()
+
+        # Generate key condition
+        for key, (operand, value) in parsed_conditions.items():
+
+            field = table.fields[key]
+
+            key_obj = Key(key)
+            key_condition_args = set()
+
+            # Special case for the between operator
+            if operand == 'between':
+                if len(value) != 2:
+                    raise nuql.NuqlError(
+                        code='KeyConditionError',
+                        message=f'Between operator requires exactly two values for the key \'{key}\'.'
+                    )
+                key_condition_args.add(field(value[0], 'query', validator))
+                key_condition_args.add(field(value[1], 'query', validator))
+
+            # All other operators use a single value
+            else:
+                key_condition_args.add(field(value, 'query', validator))
+
+            is_partial = key in validator.partial_keys
+
+            # Disallow partial keys on hash keys
+            if key == self.index['hash'] and is_partial:
+                raise nuql.NuqlError(
+                    code='KeyConditionError',
+                    message=f'Partial key \'{key}\' cannot be used in a key condition on \'{index_name}\' '
+                            f'index as it is the hash key for the index.'
+                )
+
+            # Partial sort key is allowed, but we must switch the operand to begins_with
+            if is_partial and operand != 'begins_with':
+                operand = 'begins_with'
+
+            key_condition = getattr(key_obj, operand)(*key_condition_args)
+
+            if condition is None:
+                condition = key_condition
+            else:
+                condition &= key_condition
+
+        return condition
+
+    @staticmethod
+    def _resolve_index(
+            table: 'resources.Table',
+            index_name: str
+    ) -> Union['types.PrimaryIndex', 'types.SecondaryIndex',]:
+        """Resolves the index to query against"""
+        if index_name == 'primary':
+            return table.indexes.primary
+        else:
+            return table.indexes.get_index(index_name)

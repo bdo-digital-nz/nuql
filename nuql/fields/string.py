@@ -91,28 +91,30 @@ class String(resources.FieldBase):
         """
         Serialises a template string.
 
+        If a required projected value is missing (no user value and no default),
+        the output is truncated right before that placeholder and the result is marked partial.
+
         :arg value: Dict of projections.
         :arg action: Serialisation type.
         :arg validator: Validator instance.
-        :return: String value.
+        :return: Dict with 'value' and 'is_partial'.
         """
         if not isinstance(value, dict):
             value = {}
 
         is_partial = False
+        template_str = self.value or ""
+        output_parts: list[str] = []
 
-        # Add not provided keys as empty strings
-        for key in self.find_projections(self.value):
-            if key not in value:
-                is_partial = True
-                value[key] = None
+        last_idx = 0
 
-        serialised = {}
+        # Walk through template pieces and placeholders in order
+        for match in re.finditer(TEMPLATE_PATTERN, template_str):
+            key = match.group(1)
+            # Append literal chunk before this placeholder
+            literal_chunk = template_str[last_idx:match.start()]
 
-        # Serialise values before substituting
-        for key, deserialised_value in value.items():
             field = self.parent.fields.get(key)
-
             if not field:
                 raise nuql.NuqlError(
                     code='TemplateStringError',
@@ -120,11 +122,32 @@ class String(resources.FieldBase):
                             f'\'{self.name}\') is not defined in the schema'
                 )
 
-            serialised_value = field(deserialised_value or EmptyValue(), action, validator)
-            serialised[key] = serialised_value if serialised_value else ''
+            provided = key in value
+            provided_value = value.get(key)
 
-        template = Template(self.value)
-        return {'value': template.substitute(serialised), 'is_partial': is_partial}
+            # If not provided and no default, we mark partial and stop right before this placeholder
+            if (not provided) and (field.default is None):
+                is_partial = True
+                # Keep only what we have so far and the literal up to this point
+                output_parts.append(literal_chunk)
+                break
+
+            # Serialise the projected value (use EmptyValue to allow defaults)
+            serialised_value = field(provided_value or EmptyValue(), action, validator)
+            serialised_text = serialised_value if serialised_value else ''
+
+            # Append literal + substituted value
+            output_parts.append(literal_chunk)
+            output_parts.append(str(serialised_text))
+
+            # Advance past this placeholder
+            last_idx = match.end()
+
+        # If not partial, append the remaining tail literal
+        if not is_partial:
+            output_parts.append(template_str[last_idx:])
+
+        return {'value': ''.join(output_parts), 'is_partial': is_partial}
 
     def deserialise_template(self, value: str | None) -> Dict[str, Any]:
         """
