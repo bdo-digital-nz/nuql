@@ -249,8 +249,14 @@ class KeyCondition:
                 )
 
             # Partial sort key is allowed, but we must switch the operand to begins_with
-            if is_partial and operand != 'begins_with':
+            if is_partial and operand == 'eq':
                 operand = 'begins_with'
+            elif is_partial and operand != 'begins_with':
+                raise nuql.NuqlError(
+                    code='KeyConditionError',
+                    message=f'Operator \'{operand}\' is not supported for the key \'{key}\' '
+                            f'as it results in a partial key. Only \'begins_with\' is supported.'
+                )
 
             key_condition = getattr(key_obj, operand)(*key_condition_args)
 
