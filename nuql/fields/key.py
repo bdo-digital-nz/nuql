@@ -30,6 +30,7 @@ class Key(resources.FieldBase):
 
                 # Skip fixed value fields
                 if not projected_name:
+                    auto_include_map[key] = True
                     continue
 
                 # Validate projected key exists on the table
