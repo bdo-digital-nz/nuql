@@ -51,7 +51,8 @@ class BatchWrite:
                 message='Batch write context manager has not been started'
             )
 
-    def create(self,
+    def create(
+            self,
             table: 'resources.Table',
             data: Dict[str, Any],
     ) -> None:
