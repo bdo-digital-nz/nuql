@@ -67,7 +67,7 @@ class KeyCondition:
         # Key fields that only contain fixed values should always be included
         if pk_field.auto_include_key_condition:
             condition[self.index['hash']] = None
-        if sk_field:
+        if sk_field.auto_include_key_condition:
             condition[self.index.get('sort')] = None
 
         parsed_conditions = self.parse_conditions(table, condition, index_name)
@@ -196,6 +196,13 @@ class KeyCondition:
                     # The first non-equals operand becomes the winner
                     if operand != 'eq':
                         parsed_conditions[key_name][0] = operand
+
+        if self.index['hash'] not in parsed_conditions:
+            raise nuql.NuqlError(
+                code='KeyConditionError',
+                message=f'Hash key \'{self.index["hash"]}\' is required in the key condition '
+                        f'but was not provided nor could be inferred from the schema.'
+            )
 
         return parsed_conditions
 
