@@ -91,16 +91,6 @@ class Condition:
             field_name = part['field']
             field = self.table.fields.get(field_name)
 
-            is_key = field_name in self.table.indexes.index_keys
-            is_projected_to_key = any([x in self.table.indexes.index_keys for x in field.projected_from])
-
-            # Validate that keys cannot be present in the query
-            if (is_key or is_projected_to_key) and self.type == 'FilterExpression':
-                raise nuql.NuqlError(
-                    code='ConditionError',
-                    message=f'Field \'{field_name}\' cannot be used in a condition query'
-                )
-
             # Functions are called differently
             if part['type'] == 'function':
                 expression = getattr(attr, part['function'])()
