@@ -27,7 +27,7 @@ class DatetimeTimestamp(FieldBase):
                 message='Datetime value must be timezone-aware.'
             )
 
-        return int(value.astimezone(UTC).timestamp() * 1000)
+        return int(value.astimezone(UTC).timestamp())
 
     def deserialise(self, value: Decimal | None) -> datetime | None:
         """
@@ -40,6 +40,6 @@ class DatetimeTimestamp(FieldBase):
             return None
 
         try:
-            return datetime.fromtimestamp(int(value) / 1000, UTC)
+            return datetime.fromtimestamp(int(value), UTC)
         except (ValueError, TypeError):
             return None
