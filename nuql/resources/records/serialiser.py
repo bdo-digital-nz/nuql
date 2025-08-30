@@ -48,6 +48,9 @@ class Serialiser:
         if not isinstance(data, dict):
             data = {}
 
+        if action != 'query' and isinstance(self.parent, resources.Table):
+            data['nuql:type'] = self.parent.name
+
         # Serialise provided fields
         for key, deserialised_value in data.items():
             field = self.get_field(key)
