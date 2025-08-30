@@ -77,6 +77,7 @@ class BatchWrite:
         elif serialisation_type == 'write':
             put = api.PutItem(self.client, table)
             args = put.prepare_args(data=data, exclude_condition=True)
+
         else:
             raise nuql.NuqlError(
                 code='BatchWriteError',
