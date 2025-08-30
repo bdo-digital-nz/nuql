@@ -1,6 +1,6 @@
 __all__ = ['BatchWrite']
 
-from typing import Dict, Any
+from typing import Dict, Any, Literal
 
 from botocore.exceptions import ClientError
 
@@ -51,36 +51,38 @@ class BatchWrite:
                 message='Batch write context manager has not been started'
             )
 
-    def create(
+    def put(
             self,
             table: 'resources.Table',
             data: Dict[str, Any],
+            serialisation_type: Literal['create', 'update', 'write'] = 'write'
     ) -> None:
         """
         Create a new item on the table as part of a batch write.
 
         :arg table: Table instance.
         :arg data: Data to create.
+        :param serialisation_type: Data serialisation type.
         """
         self._validate_started()
-        create = api.Create(self.client, table)
-        args = create.prepare_args(data=data, exclude_condition=True)
-        self._actions['put_item'].append(args)
 
-    def update(
-            self,
-            table: 'resources.Table',
-            data: Dict[str, Any],
-    ) -> None:
-        """
-        Update an existing item on the table as part of a batch write.
+        if serialisation_type == 'create':
+            create = api.Create(self.client, table)
+            args = create.prepare_args(data=data, exclude_condition=True)
 
-        :arg table: Table instance.
-        :arg data: Data to update.
-        """
-        self._validate_started()
-        put_update = api.PutUpdate(self.client, table)
-        args = put_update.prepare_args(data=data, exclude_condition=True)
+        elif serialisation_type == 'update':
+            put_update = api.PutUpdate(self.client, table)
+            args = put_update.prepare_args(data=data, exclude_condition=True)
+
+        elif serialisation_type == 'write':
+            put = api.PutItem(self.client, table)
+            args = put.prepare_args(data=data, exclude_condition=True)
+        else:
+            raise nuql.NuqlError(
+                code='BatchWriteError',
+                message=f'Invalid serialisation type: {serialisation_type}'
+            )
+
         self._actions['put_item'].append(args)
 
     def delete(
