@@ -12,10 +12,10 @@ class DatetimeTimestamp(FieldBase):
 
     def serialise(self, value: datetime | None) -> int | None:
         """
-        Serialises a datetime to a timestamp.
+        Serialises a `datetime` to a timestamp.
 
-        :arg value: datetime instance or None.
-        :return: int or None.
+        :arg value: `datetime` instance or `None`.
+        :return: `int` or `None`.
         """
         if not isinstance(value, datetime):
             return None
@@ -31,10 +31,10 @@ class DatetimeTimestamp(FieldBase):
 
     def deserialise(self, value: Decimal | None) -> datetime | None:
         """
-        Deserialises a timestamp to a datetime.
+        Deserialises a timestamp to a `datetime`.
 
-        :arg value: Decimal instance or None.
-        :return: datetime instance or None.
+        :arg value: `Decimal` instance or `None`.
+        :return: `datetime` instance or `None`.
         """
         if not isinstance(value, Decimal):
             return None
