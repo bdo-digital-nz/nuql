@@ -25,6 +25,18 @@ pip install nuql
     - [Get Table](#get-table)
     - [Batch Writer](#batch-writer)
     - [Transactions](#transactions)
+  - [Table](#table)
+    - [Query Items](#query-items)
+    - [Get Item](#get-item)
+    - [Create Item](#create-item)
+    - [Update Item](#update-item)
+    - [Delete Item](#delete-item)
+    - [Put Item](#put-item)
+    - [Upsert Item](#upsert-item)
+    - [Batch Get](#batch-get)
+  - [More Information](#more-information)
+    - [Key Condition Expression](#key-condition-expressions)
+    - [Filter/Condition Expression](#filtercondition-expressions)
 
 ---
 
@@ -349,3 +361,138 @@ with db.transaction() as txn:
         condition={'where': 'is_active eq ${active}', 'variables': {'active': True}}
     )
 ```
+
+---
+
+### Table
+
+The `Table` class is used to interact with a single table in your schema. It provides all the 
+DynamoDB API methods and enables query, put, update and delete items.
+
+---
+
+#### Query Items
+`Table.query(...)`
+
+Performs a query on the table.
+
+| Param                 | Description                                                                                                           |
+|-----------------------|-----------------------------------------------------------------------------------------------------------------------|
+| `key_condition`       | The key condition expression to query (see [Key Condition Expressions](#key-condition-expressions))                   |
+| `condition`           | Additional filter expression to apply to the query (see [Filter/Condition Expressions](#filtercondition-expressions)) |
+| `limit`               | The maximum number of items to return                                                                                 |
+| `exclusive_start_key` | The exclusive start key for the query                                                                                 |
+| `consistent_read`     | Whether to use consistent reads                                                                                       |
+| `projection`          | The projection expression to apply to the query                                                                       |
+| `index`               | The index to query                                                                                                    |
+
+Returns a `dict` with `items` and `last_evaluated_key` keys. If the `last_evaluated_key` is not `None`, 
+then you can call the query method again with the `exclusive_start_key` set to the value of the 
+`last_evaluated_key` to continue the query.
+
+---
+
+#### Get Item
+`Table.get(key: dict, consistent_read: bool = False)`
+
+Retrieves a single item from the table. Will raise `nuql.ItemNotFound` if the item does not exist.
+
+| Param             | Description                                                                                   |
+|-------------------|-----------------------------------------------------------------------------------------------|
+| `key`             | The key of the item to retrieve (see [Key Condition Expressions](#key-condition-expressions)) |
+| `consistent_read` | Whether to use consistent or eventually consistent reads                                      |
+
+Returns a `dict` representing the item.
+
+---
+
+#### Create Item
+`Table.create(item: dict, condition: dict | None = None)`
+
+Creates a new item on the table. This method validates that the key is unique.
+
+| Param       | Description                                                                                                                |
+|-------------|----------------------------------------------------------------------------------------------------------------------------|
+| `item`      | The item to create                                                                                                         |
+| `condition` | Additional condition expression to apply to the request (see [Filter/Condition Expressions](#filtercondition-expressions)) |
+
+Returns a `dict` representing the newly created item.
+
+---
+
+#### Update Item
+`Table.update(item: dict, condition: dict | None = None)`
+
+Updates an existing item on the table.
+
+| Param       | Description                                                                                                                |
+|-------------|----------------------------------------------------------------------------------------------------------------------------|
+| `item`      | The item to update                                                                                                         |
+| `condition` | Additional condition expression to apply to the request (see [Filter/Condition Expressions](#filtercondition-expressions)) |
+
+Returns a `dict` representing the updated item.
+
+---
+
+#### Delete Item
+`Table.delete(key: dict, condition: dict | None = None)`
+
+Deletes an item from the table.
+
+| Param       | Description                                                                                                                |
+|-------------|----------------------------------------------------------------------------------------------------------------------------|
+| `key`       | The key of the item to delete                                                                                              |
+| `condition` | Additional condition expression to apply to the request (see [Filter/Condition Expressions](#filtercondition-expressions)) |
+
+---
+
+#### Put Item
+`Table.put(item: dict, condition: dict | None = None)`
+
+Creates or replaces an item on the table.
+
+| Param       | Description                                                                                                                |
+|-------------|----------------------------------------------------------------------------------------------------------------------------|
+| `item`      | The item to create or replace                                                                                              |
+| `condition` | Additional condition expression to apply to the request (see [Filter/Condition Expressions](#filtercondition-expressions)) |
+
+Returns a `dict` representing the item that was put.
+
+---
+
+#### Upsert Item
+`Table.upsert(item: dict)`
+
+Creates a new item or updates it if it already exists. If the item does exist then only the provided fields 
+will be updated.
+
+| Param  | Description        |
+|--------|--------------------|
+| `item` | The item to upsert |
+
+Returns a `dict` representing the item that was upserted.
+
+> [!NOTE]
+> Condition expressions are not supported for upserts.
+
+---
+
+#### Batch Get
+`Table.batch_get(keys: list, consistent_read: bool = False)`
+
+Bulk retrieves items from the table by their keys.
+
+| Param             | Description                                              |
+|-------------------|----------------------------------------------------------|
+| `keys`            | A list of keys to retrieve                               |
+| `consistent_read` | Whether to use consistent or eventually consistent reads |
+
+---
+
+## More Information
+
+### Key Condition Expressions
+
+---
+
+### Filter/Condition Expressions
