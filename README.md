@@ -7,6 +7,27 @@ the single table model pattern in Python.
 pip install nuql
 ```
 
+## Table of Contents
+- [Introduction](#introduction)
+- [Usage](#usage)
+    - [Field Types](#field-types)
+    - [Field Options](#field-options)
+    - [Generators](#generators)
+        - [Datetime Generator](#datetime-generator)
+        - [UUID Generator](#uuid-generator)
+        - [ULID Generator](#ulid-generator)
+    - [Lists](#lists)
+    - [Maps](#maps)
+    - [Indexes](#indexes)
+    - [Keys](#keys)
+- [API Reference](#api-reference)
+  - [Nuql](#nuql)
+    - [Get Table](#get-table)
+    - [Batch Writer](#batch-writer)
+    - [Transactions](#transactions)
+
+---
+
 ## Introduction
 
 The design of your single table model schema is passed as a `dict` into the `Nuql` class and allows 
@@ -49,6 +70,8 @@ user = users_table.create({'pk': 'USER#123', 'name': 'John Smith'})
 user['active'] = False
 users_table.update(user)
 ```
+
+---
 
 ## Usage
 
@@ -250,3 +273,79 @@ In practice both the string templates and keys operate in the same manner when q
 > [!TIP] A query with a key condition that generates a partial composite key will automatically 
 > use the `begins_with` operator, but only for the sort key. The hash key always requires a 
 > complete key.
+
+### Indexes
+
+Indexes are defined on the `Nuql` class using the `indexes` option. The indexes are defined as 
+a list of dicts, where each dict contains the `hash` and `sort` keys. Your indexes are defined 
+at the root level, and then each table uses the keys to define the partition and sort keys.
+
+#### Index Config
+
+| Option       | Description                                                                          |
+|--------------|--------------------------------------------------------------------------------------|
+| `hash`       | The hash key name, required for all indexes.                                         |
+| `sort`       | The sort key name for the index.                                                     |
+| `type`       | Index type (`local`, `global` or not defined).                                       |
+| `name`       | Index name (not required for primary index).                                         |
+| `projection` | Projection type (`all` or `keys_only`, `include` is not yet supported).              |
+| `follow`     | Retrieve the full item from the primary index if the projection type is `keys_only`. |
+
+---
+
+## API Reference
+
+### Nuql
+The `Nuql` class is the main entry point for the library. It is used to instantiate a `Table` 
+object for each table in your schema.
+
+---
+
+#### Get Table
+`Nuql.get_table(name: str)`
+
+Returns a `Table` object for the given table name.
+
+```python
+table = db.get_table('users')
+```
+
+---
+
+#### Batch Writer
+`Nuql.batch_writer()`
+
+The batch writer is used to put/delete multiple items in a single batch. It is to be used as a
+context manager which you make your mutations within:
+
+```python
+table = db.get_table('users')
+
+with db.batch_writer() as batch:
+    batch.put(table, user)
+    batch.delete(table, user)
+```
+
+Multiple tables can be written to in the same batch.
+
+---
+
+#### Transactions
+`Nuql.transaction()`
+
+A transaction allows you to make multiple mutations to multiple tables in a single atomic 
+operation. It is to be used as a context manager which you make your mutations within:
+
+```python
+table = db.get_table('users')
+
+with db.transaction() as txn:
+    txn.create(table, user)
+    txn.delete(table, user)
+    txn.update(table, user)
+    txn.condition_check(
+        table=table, 
+        key={'user_id': '123'}, 
+        condition={'where': 'is_active eq ${active}', 'variables': {'active': True}}
+    )
+```
