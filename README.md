@@ -163,3 +163,90 @@ schema = {
     }
 }
 ```
+
+### Lists
+
+A list field type can be defined, and the definition of that list is configured using the `of` config option:
+
+```python
+schema = {
+    'users': {
+        # Table fields
+        'tags': {'type': 'list', 'of': {'type': 'string', 'enum': ['cool', 'very cool', 'awesome']}}
+    }
+}
+```
+
+### Maps
+
+The map field type almost operates as an independent schema with its own fields and serialisation.
+
+```python
+schema = {
+    'users': {
+        # Table fields
+        'settings': {
+            'type': 'map',
+            'fields': {
+                'wearing_a_hat': {'type': 'boolean'},
+                'wearing_socks': {'type': 'boolean'},
+            }
+        },
+        'friends': {
+            'type': 'list',
+            'of': {
+                'type': 'map',
+                'fields': {
+                    'name': {'type': 'string'},
+                    'age': {'type': 'integer'},
+                }
+            }
+        }
+    }
+}
+```
+
+### String Templates
+
+In the spirit of the single table model pattern, the library allows you to define string templates 
+which can bring multiple fields together to create a composite key. The design of the template is 
+provided to the `value` option of a string field and references other fields at the root level of 
+the schema by wrapping the field name in a template `${my_field}`:
+
+```python
+schema = {
+    'users': {
+        'pk': {'type': 'string', 'value': 'TENANT#${tenant_id}'},
+        'sk': {'type': 'string', 'value': 'USER#${user_id}'},
+        'tenant_id': {'type': 'string', 'required': True},
+        'user_id': {'type': 'string', 'required': True}
+    }
+}
+```
+
+This gives a more ergonomic way of defining and using composite keys, especially when querying 
+the table. Instead of manually constructing these composite keys for a query, you can just 
+use the `tenant_id` and `user_id` fields in the query, and it will automatically project 
+these values on to the `pk` and `sk` fields.
+
+### Keys
+
+Much like with the concept of string templates, the `key` field type can achieve a similar 
+effect by designing the key with a dict. Like with the string templates this is also specified 
+using the `value` option. The value of this dict will accept either a fixed string value or a 
+field variable `${my_field}`:
+
+```python
+schema = {
+    'users': {
+        'pk': {'type': 'key', 'value': {'type': 'user', 'tenant_id': '${tenant_id}'}},
+        'tenant_id': {'type': 'string', 'required': True}
+    }
+}
+```
+
+In practice both the string templates and keys operate in the same manner when querying.
+
+> [!TIP] A query with a key condition that generates a partial composite key will automatically 
+> use the `begins_with` operator, but only for the sort key. The hash key always requires a 
+> complete key.
