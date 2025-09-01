@@ -493,6 +493,69 @@ Bulk retrieves items from the table by their keys.
 
 ### Key Condition Expressions
 
+Key conditions are expressed in a query using a `dict`. The key is always a field name and the value 
+is either the value (when using the equals operator) or it is a `dict` with the operator and value:
+
+```python
+db_query = table.query(
+    key_condition={'tenant_id': '1234', 'user_id': {'begins_with': '0000'}}
+)
+```
+
+Supported operators are:
+
+| Operator                 | DynamoDB Operator | Notes                                    |
+|--------------------------|-------------------|------------------------------------------|
+| `equals`                 | `eq`              |                                          |
+| `=`                      | `eq`              |                                          |
+| `==`                     | `eq`              |                                          |
+| `eq`                     | `eq`              |                                          |
+| `less_than`              | `lt`              |                                          |
+| `<`                      | `lt`              |                                          |
+| `lt`                     | `lt`              |                                          |
+| `less_than_or_equals`    | `lte`             |                                          |
+| `less_than_equals`       | `lte`             |                                          |
+| `<=`                     | `lte`             |                                          |
+| `greater_than`           | `gt`              |                                          |
+| `>`                      | `gt`              |                                          |
+| `gt`                     | `gt`              |                                          |
+| `greater_than_or_equals` | `gte`             |                                          |
+| `greater_than_equals`    | `gte`             |                                          |
+| `>=`                     | `gte`             |                                          |
+| `begins_with`            | `begins_with`     |                                          |
+| `between`                | `between`         | The value must be a `list` of two values |
+
+Projected fields (from [String Templates](#string-templates) or [Keys](#keys)) can be used in the key 
+condition expression like normal, and these will project back to the original field they belong to.
+
+You may use one non-equals operator per key or string template field type, and the key condition builder 
+will automatically serialise the whole key condition into a single expression:
+
+```python
+schema = {
+    'users': {
+        'pk': {'type': 'key', 'value': {'type': 'user', 'tenant': '${tenant_id}'}},
+        'ls1': {'type': 'key', 'value': {'account': '${account_id}', 'created': '${created_at}'}},
+        # ... Table fields
+        'tenant_id': {'type': 'string', 'required': True},
+        'account_id': {'type': 'string', 'required': True},
+        'created_at': {'type': 'datetime', 'required': True}
+    }
+}
+```
+
+```python
+new_users = table.query({
+    'tenant_id': '1234',
+    'account_id': '9876',
+    'created_at': {'greater_than': datetime.now() + timedelta(days=-7)}
+})
+```
+
+> [!TIP]
+> When passing an incomplete set of projected fields into a query, the query will automatically 
+> use the `begins_with` operator for the sort key.
+
 ---
 
 ### Filter/Condition Expressions
