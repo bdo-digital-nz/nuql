@@ -36,5 +36,5 @@ testing = [
 include = ["nuql/**/*"]
 
 [project.url]
-Homepage = "https://github.com/lukeshortland/nuql"
-Issues = "https://github.com/lukeshortland/nuql/issues"
+Homepage = "https://github.com/bdo-digital-nz/nuql"
+Issues = "https://github.com/bdo-digital-nz/nuql/issues"
