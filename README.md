@@ -283,7 +283,8 @@ schema = {
 
 In practice both the string templates and keys operate in the same manner when querying.
 
-> [!TIP] A query with a key condition that generates a partial composite key will automatically 
+> [!TIP] 
+> A query with a key condition that generates a partial composite key will automatically 
 > use the `begins_with` operator, but only for the sort key. The hash key always requires a 
 > complete key.
 
