@@ -1,6 +1,8 @@
 __all__ = ['validate_condition_dict', 'validate_schema']
 
 import inspect
+import re
+import keyword
 from typing import Dict, Any, List, Type
 
 import nuql
@@ -159,6 +161,19 @@ def validate_schema(schema: Dict[str, Any], fields: List[Type['types.FieldType']
             raise nuql.ValidationError([{
                 'name': 'schema.table_name',
                 'message': 'Table name in schema must be a string.',
+            }])
+
+        # Validate table name format and reserved keywords
+        if not re.match(r'^[a-zA-Z_][a-zA-Z0-9_]*$', table_name):
+            raise nuql.ValidationError([{
+                'name': 'schema.table_name',
+                'message': 'Table name must match pattern ^[a-zA-Z_][a-zA-Z0-9_]*$.',
+            }])
+
+        if keyword.iskeyword(table_name):
+            raise nuql.ValidationError([{
+                'name': 'schema.table_name',
+                'message': f'Table name \'{table_name}\' is a reserved keyword.',
             }])
 
         # Validate table schema
