@@ -549,7 +549,7 @@ schema = {
 new_users = table.query({
     'tenant_id': '1234',
     'account_id': '9876',
-    'created_at': {'greater_than': datetime.now() + timedelta(days=-7)}
+    'created_at': {'greater_than': datetime.now(UTC) + timedelta(days=-7)}
 })
 ```
 
