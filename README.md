@@ -37,6 +37,7 @@ pip install nuql
   - [More Information](#more-information)
     - [Key Condition Expression](#key-condition-expressions)
     - [Filter/Condition Expression](#filtercondition-expressions)
+    - [Global Fields](#global-fields)
 
 ---
 
@@ -608,3 +609,25 @@ Condition expressions can use the following operators:
 | `match`                  | `contains`        |                                                               |
 | `in`                     | `is_in`           |                                                               |
 | `is_in`                  | `is_in`           |                                                               |
+
+---
+
+### Global Fields
+
+Global fields are fields that are automatically included on all schemas. A good use case for global 
+fields is to define a `created_at` and `modified_at` fields that are automatically set on all items:
+
+```python
+from nuql import Nuql
+from nuql.generators import Datetime
+
+global_fields = {
+    'created_at': {'type': 'datetime_timestamp', 'on_create': Datetime.now()},
+    'modified_at': {'type': 'datetime_timestamp', 'on_create': Datetime.now(), 'on_update': Datetime.now()}
+}
+
+db = Nuql(..., global_fields=global_fields)
+```
+
+Fields specified here are merged into each table and act as any other field, these can also be projected on 
+to a string template or key field type.
