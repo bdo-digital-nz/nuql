@@ -559,3 +559,52 @@ new_users = table.query({
 ---
 
 ### Filter/Condition Expressions
+
+Filter or condition expressions are expressed in a query using a `dict`. As filter expressions are 
+much less rigid when compared to key conditions, they can be more complex so these are expressed using 
+a query string. Queries take the form of:
+
+```python
+{
+    'where': 'status == "Voided" and (name == ${name_1} or name == ${name_2})',
+    'variables': {'name_1': 'John', 'name_2': 'Smith'}
+}
+```
+
+The `where` expression consists of simple equality checks separated by `and` or `or` operators. Simple 
+values such as strings, integers, floats or booleans can be directly used in the expression, and any 
+other types need to be wrapped in a variable and referenced in the `variables` dict.
+
+Condition expressions can use the following operators:
+
+| Operator                 | DynamoDB Operator | Notes                                                         |
+|--------------------------|-------------------|---------------------------------------------------------------|
+| `equals`                 | `eq`              |                                                               |
+| `=`                      | `eq`              |                                                               |
+| `==`                     | `eq`              |                                                               |
+| `eq`                     | `eq`              |                                                               |
+| `not_equals`             | `ne`              |                                                               |
+| `!=`                     | `ne`              |                                                               |
+| `<>`                     | `ne`              |                                                               |
+| `ne`                     | `ne`              |                                                               |
+| `is_not`                 | `ne`              |                                                               |
+| `less_than`              | `lt`              |                                                               |
+| `<`                      | `lt`              |                                                               |
+| `lt`                     | `lt`              |                                                               |
+| `less_than_or_equals`    | `lte`             |                                                               |
+| `less_than_equals`       | `lte`             |                                                               |
+| `<=`                     | `lte`             |                                                               |
+| `greater_than`           | `gt`              |                                                               |
+| `>`                      | `gt`              |                                                               |
+| `gt`                     | `gt`              |                                                               |
+| `greater_than_or_equals` | `gte`             |                                                               |
+| `greater_than_equals`    | `gte`             |                                                               |
+| `>=`                     | `gte`             |                                                               |
+| `begins_with`            | `begins_with`     |                                                               |
+| `between`                | `between`         | The value must be a `list` of two values                      |
+| `attribute_exists`       | `exists`          | Expressed as a function i.e. `attribute_exists(my_field)`     |
+| `attribute_not_exists`   | `not_exists`      | Expressed as a function i.e. `attribute_not_exists(my_field)` |
+| `contains`               | `contains`        |                                                               |
+| `match`                  | `contains`        |                                                               |
+| `in`                     | `is_in`           |                                                               |
+| `is_in`                  | `is_in`           |                                                               |
