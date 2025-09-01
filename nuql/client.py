@@ -47,6 +47,11 @@ class Nuql:
 
         resources.validate_schema(self.__schema, self.fields)
 
+    def __getattr__(self, name: str) -> 'resources.Table':
+        if name in self.__schema:
+            return self.get_table(name)
+        raise AttributeError(f'\'{self.__class__.__name__}\' object has no attribute \'{name}\'')
+
     @property
     def indexes(self) -> 'resources.Indexes':
         return self.__indexes

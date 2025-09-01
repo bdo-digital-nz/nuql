@@ -75,6 +75,7 @@ tables can then be used to query, put, update and delete items.
 
 ```python
 users_table = db.get_table('users')
+# "db.users" will also work
 
 # Create a new user
 user = users_table.create({'pk': 'USER#123', 'name': 'John Smith'})
@@ -83,6 +84,9 @@ user = users_table.create({'pk': 'USER#123', 'name': 'John Smith'})
 user['active'] = False
 users_table.update(user)
 ```
+
+> [!TIP]
+> The `Nuql` class supports table instantiation dynamically, you may just use `Nuql.my_table_name`
 
 ---
 
