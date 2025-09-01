@@ -106,7 +106,7 @@ The library supports the following field types out of the box:
 | `ulid`               | A ULID value (depends on the `python-ulid` package)                                         |
 | `key`                | A key value string that serialises from a dict (to create a composite key)                  |
 
-You can also define your own field types by subclassing the `Field` class:
+You can also define your own field types by subclassing the `FieldBase` class:
 
 ```python
 from nuql.resources import FieldBase
