@@ -167,7 +167,7 @@ def validate_schema(schema: Dict[str, Any], fields: List[Type['types.FieldType']
         if not re.match(r'^[a-zA-Z_][a-zA-Z0-9_]*$', table_name):
             raise nuql.ValidationError([{
                 'name': 'schema.table_name',
-                'message': 'Table name must match pattern ^[a-zA-Z_][a-zA-Z0-9_]*$.',
+                'message': f'Table name \'{table_name}\' must match pattern ^[a-zA-Z_][a-zA-Z0-9_]*$.',
             }])
 
         if keyword.iskeyword(table_name):
