@@ -59,7 +59,7 @@ schema = {
     },
     'widgets': {
         'pk': {'type': 'string'},
-        'size': {'type': 'integer'},
+        'size': {'type': 'int'},
         'price': {'type': 'float', 'required': True},
     }
 }
@@ -99,7 +99,7 @@ The library supports the following field types out of the box:
 | Type                 | Description                                                                                 |
 |----------------------|---------------------------------------------------------------------------------------------|
 | `string`             | A string value                                                                              |
-| `integer`            | An integer value                                                                            |
+| `int`                | An integer value                                                                            |
 | `float`              | A floating point value                                                                      |
 | `boolean`            | A boolean value                                                                             |
 | `datetime`           | A timezone-aware datetime value                                                             |
@@ -238,7 +238,7 @@ schema = {
                 'type': 'map',
                 'fields': {
                     'name': {'type': 'string'},
-                    'age': {'type': 'integer'},
+                    'age': {'type': 'int'},
                 }
             }
         }
