@@ -65,9 +65,9 @@ class KeyCondition:
         sk_field = table.fields.get(self.index.get('sort'))
 
         # Key fields that only contain fixed values should always be included
-        if pk_field.auto_include_key_condition:
+        if pk_field.auto_include_key_condition or pk_field.is_fixed and self.index['hash'] not in condition:
             condition[self.index['hash']] = None
-        if sk_field.auto_include_key_condition:
+        if sk_field.auto_include_key_condition or pk_field.is_fixed and self.index.get('sort') not in condition:
             condition[self.index.get('sort')] = None
 
         parsed_conditions = self.parse_conditions(table, condition, index_name)

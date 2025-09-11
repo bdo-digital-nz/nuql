@@ -35,7 +35,7 @@ class String(resources.FieldBase):
                 field_map[key].projected_from.append(self.name)
                 self.projects_fields.append(key)
 
-                auto_include_map[key] = field_map[key].default is not None
+                auto_include_map[key] = field_map[key].is_fixed
 
             self.auto_include_key_condition = all(auto_include_map.values())
 

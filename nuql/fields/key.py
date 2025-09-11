@@ -45,7 +45,7 @@ class Key(resources.FieldBase):
                 field_map[projected_name].projected_from.append(self.name)
                 self.projects_fields.append(projected_name)
 
-                auto_include_map[projected_name] = field_map[projected_name].default is not None
+                auto_include_map[projected_name] = field_map[projected_name].is_fixed
 
             self.auto_include_key_condition = all(auto_include_map.values())
 
