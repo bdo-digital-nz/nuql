@@ -42,6 +42,9 @@ class String(resources.FieldBase):
         if self.init_callback is not None and self.is_template:
             self.init_callback(callback)
 
+        if self.is_template:
+            self.is_fixed = False
+
     def serialise_internal(
             self,
             value: Any,
