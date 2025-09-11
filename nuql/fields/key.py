@@ -113,7 +113,7 @@ class Key(resources.FieldBase):
                 serialised_value = projected_field(projected_value, action, validator)
 
                 is_partial = (is_partial or
-                              (key not in key_dict and not projected_field.default) or
+                              (key not in key_dict and not projected_field.is_fixed) or
                               (isinstance(projected_value, EmptyValue) and not serialised_value))
 
                 if isinstance(projected_value, EmptyValue) and not serialised_value:
