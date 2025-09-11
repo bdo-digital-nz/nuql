@@ -113,7 +113,7 @@ class Key(resources.FieldBase):
                               (key not in key_dict and not projected_field.default) or
                               isinstance(projected_value, EmptyValue))
 
-                if isinstance(projected_value, EmptyValue):
+                if isinstance(projected_value, EmptyValue) and not serialised_value:
                     break
 
                 used_value = s(serialised_value) if not isinstance(serialised_value, (type(None), EmptyValue)) else None
