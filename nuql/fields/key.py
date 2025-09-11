@@ -52,6 +52,9 @@ class Key(resources.FieldBase):
         if self.init_callback is not None:
             self.init_callback(callback)
 
+        # Override the `is_fixed` property as this would result in improper handling
+        self.is_fixed = False
+
     def serialise_internal(
             self,
             value: Any,
