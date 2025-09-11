@@ -96,7 +96,7 @@ class FieldBase:
             value = self.default
 
         # Serialise the value
-        value = self.serialise_internal(value, action, validator)
+        value = self.serialise_internal(value if has_value else None, action, validator)
 
         # Validate required field
         if self.required and action == 'create' and value is None:
