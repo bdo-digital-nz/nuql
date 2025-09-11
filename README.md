@@ -300,14 +300,14 @@ at the root level, and then each table uses the keys to define the partition and
 
 #### Index Config
 
-| Option       | Description                                                                          |
-|--------------|--------------------------------------------------------------------------------------|
-| `hash`       | The hash key name, required for all indexes.                                         |
-| `sort`       | The sort key name for the index.                                                     |
-| `type`       | Index type (`local`, `global` or not defined).                                       |
-| `name`       | Index name (not required for primary index).                                         |
-| `projection` | Projection type (`all` or `keys_only`, `include` is not yet supported).              |
-| `follow`     | Retrieve the full item from the primary index if the projection type is `keys_only`. |
+| Option       | Description                                                                     |
+|--------------|---------------------------------------------------------------------------------|
+| `hash`       | The hash key name, required for all indexes.                                    |
+| `sort`       | The sort key name for the index.                                                |
+| `type`       | Index type (`local`, `global` or not defined).                                  |
+| `name`       | Index name (not required for primary index).                                    |
+| `projection` | Projection type (`all` or `keys`, `include` is not yet supported).              |
+| `follow`     | Retrieve the full item from the primary index if the projection type is `keys`. |
 
 ---
 
