@@ -113,6 +113,10 @@ class FieldBase:
         if self.validator and action in ['create', 'update', 'write']:
             self.validator(value, validator)
 
+        # EmptyValue should never escape the serialiser
+        if isinstance(value, resources.EmptyValue):
+            value = None
+
         return value
 
     def serialise(self, value: Any) -> Any:
