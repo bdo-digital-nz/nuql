@@ -111,7 +111,7 @@ class Key(resources.FieldBase):
 
                 is_partial = (is_partial or
                               (key not in key_dict and not projected_field.default) or
-                              isinstance(projected_value, EmptyValue))
+                              (isinstance(projected_value, EmptyValue) and not serialised_value))
 
                 if isinstance(projected_value, EmptyValue) and not serialised_value:
                     break
