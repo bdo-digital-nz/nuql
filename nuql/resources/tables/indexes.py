@@ -101,14 +101,14 @@ class Indexes:
             index_dict[index_name] = index
 
         # Throw on more than 5 LSIs
-        if local_count >= MAX_LSI:
+        if local_count > MAX_LSI:
             raise nuql.NuqlError(
                 code='IndexValidation',
                 message='More than 5 local indexes cannot be defined'
             )
 
         # Throw on more than 20 GSIs
-        if global_count >= MAX_GSI:
+        if global_count > MAX_GSI:
             raise nuql.NuqlError(
                 code='IndexValidation',
                 message='More than 20 global indexes cannot be defined'
