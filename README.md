@@ -66,7 +66,7 @@ schema = {
 
 indexes = [{'hash': 'pk'}]
 
-db = Nuql('my-table-name', schema=schema, indexes=indexes)
+db = Nuql('my-table-name', indexes=indexes, schema=schema)
 ```
 
 In the above example we have defined two tables, `users` and `widgets`. The `pk` field is defined 
