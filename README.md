@@ -396,6 +396,11 @@ Returns a `dict` with `items` and `last_evaluated_key` keys. If the `last_evalua
 then you can call the query method again with the `exclusive_start_key` set to the value of the 
 `last_evaluated_key` to continue the query.
 
+> [!TIP]
+> In a scenario where a single query returns multiple table types (i.e. when using GSIs), instead of returning `items` 
+> the query will return a key called `tables`. The value of `tables` is a dict, the key of this dict will be the 
+> table name and the value will be the list of matching items.
+
 ---
 
 #### Get Item

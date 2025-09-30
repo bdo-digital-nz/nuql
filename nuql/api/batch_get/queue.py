@@ -8,17 +8,19 @@ from nuql import resources
 
 
 class BatchGetQueue:
-    def __init__(self, table: 'resources.Table', keys: List[Dict[str, Any]]):
+    def __init__(self, table: 'resources.Table', keys: List[Dict[str, Any]], already_serialised: bool = False):
         """
         Queue helper for performing batch get operations.
 
         :arg table: Table instance.
         :arg keys: List of record keys to retrieve.
+        :param already_serialised: If true, do not serialise the keys.
         """
         self.table = table
+        self.index = self.table.indexes.primary
         self.db_table_name = self.table.provider.connection.table_name
 
-        self._store = self.prepare(keys)
+        self._store = self.prepare(keys, already_serialised=already_serialised)
 
     @staticmethod
     def get_key_hash(key: Dict[str, Any]) -> str:
@@ -39,18 +41,30 @@ class BatchGetQueue:
             ]
         }
 
-    def prepare(self, keys: List[Dict[str, Any]]) -> Dict[str, Any]:
+    def prepare(self, keys: List[Dict[str, Any]], already_serialised: bool = False) -> Dict[str, Any]:
         """
         Prepare the initial queue.
 
         :arg keys: Full list of record keys.
+        :param already_serialised: If true, do not serialise the keys.
         :return: Queue dict.
         """
         output = {}
         serialiser = TypeSerializer()
 
+        primary_keys = [self.index['hash']]
+
+        if self.index.get('sort'):
+            primary_keys.append(self.index['sort'])
+
         for key in keys:
-            serialised_key = self.table.serialiser.serialise_key(key)
+            if already_serialised:
+                serialised_key = key
+            else:
+                serialised_key = self.table.serialiser.serialise_key(key)
+
+            serialised_key = {k: v for k, v in serialised_key.items() if k in primary_keys}
+
             key_hash = self.get_key_hash(serialised_key)
 
             marshalled_key = {k: serialiser.serialize(v) for k, v in serialised_key.items()}
@@ -78,8 +92,14 @@ class BatchGetQueue:
         # Handle successful keys
         for item in processed:
             item = {k: deserialiser.deserialize(v) for k, v in item.items()}
-            data = self.table.serialiser.deserialise(item)
-            key_hash = self.get_key_hash(self.table.serialiser.serialise_key(data))
+            record_type = item.get('nuql:type', self.table.name)
+            table = self.table
+
+            if record_type != table.name:
+                table = self.table.provider.get_table(record_type)
+
+            data = table.serialiser.deserialise(item)
+            key_hash = self.get_key_hash(table.serialiser.serialise_key(data))
 
             self._store[key_hash]['item'] = data
             self._store[key_hash]['processed'] = True
