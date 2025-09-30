@@ -149,18 +149,43 @@ class Query(api.Boto3Adapter):
             if not last_evaluated_key:
                 fulfilled = True
 
-        # Deserialise the data
-        data = [self.table.serialiser.deserialise(item) for item in data]
-
-        output = {'items': [], 'last_evaluated_key': last_evaluated_key}
-
         # Follow functionality on local/global indexes - batch gets all retrieved items
         index = self.table.indexes.get_index(index_name) if index_name != 'primary' else self.table.indexes.primary
+        followed = False
 
         if 'follow' in index and index['follow'] is True:
             batch_get = api.BatchGet(self.client, self.table)
-            output.update(batch_get.invoke_sync(data))
+            response = batch_get.invoke_sync(data, already_serialised=True)
+            data = response.get('items', [])
+            followed = True
+
+        output = {'last_evaluated_key': last_evaluated_key}
+
+        # Deserialise the data by checking the applicable table each record belongs to
+        by_table = {}
+        for item in data:
+            record_type = item.get('nuql:type', self.table.name)
+            table = self.table
+
+            if record_type != table.name:
+                table = self.table.provider.get_table(record_type)
+
+            if record_type not in by_table:
+                by_table[record_type] = []
+
+            if followed:
+                by_table[record_type].append(item)
+            else:
+                by_table[record_type].append(table.serialiser.deserialise(item))
+
+        # Where the result contains a single type of item, `items` is returned.
+        if len(by_table) == 1 and list(by_table.keys())[0] == self.table.name:
+            output['items'] = by_table[list(by_table.keys())[0]]
+
+        # If multiple tables were resolved, the records in each table are stored in `tables`
         else:
-            output['items'] = data
+            output['tables'] = by_table
+
+
 
         return output

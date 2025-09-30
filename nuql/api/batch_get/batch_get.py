@@ -10,14 +10,15 @@ from nuql.api import Boto3Adapter
 
 
 class BatchGet(Boto3Adapter):
-    def invoke_sync(self, keys: List[Dict[str, Any]]) -> Dict[str, Any]:
+    def invoke_sync(self, keys: List[Dict[str, Any]], already_serialised: bool = False) -> Dict[str, Any]:
         """
         Performs a batch get operation against the table.
 
         :arg keys: Keys to get.
+        :param already_serialised: If True, the keys are already serialised.
         :return: Batch get result.
         """
-        queue = api.BatchGetQueue(self.table, keys)
+        queue = api.BatchGetQueue(self.table, keys, already_serialised=already_serialised)
         fulfilled = False
 
         # Loop through until all keys have been processed
