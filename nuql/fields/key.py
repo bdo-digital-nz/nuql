@@ -45,12 +45,15 @@ class Key(resources.FieldBase):
                 field_map[projected_name].projected_from.append(self.name)
                 self.projects_fields.append(projected_name)
 
-                auto_include_map[projected_name] = field_map[projected_name].default is not None
+                auto_include_map[projected_name] = field_map[projected_name].is_fixed
 
             self.auto_include_key_condition = all(auto_include_map.values())
 
         if self.init_callback is not None:
             self.init_callback(callback)
+
+        # Override the `is_fixed` property as this would result in improper handling
+        self.is_fixed = False
 
     def serialise_internal(
             self,
@@ -110,10 +113,10 @@ class Key(resources.FieldBase):
                 serialised_value = projected_field(projected_value, action, validator)
 
                 is_partial = (is_partial or
-                              (key not in key_dict and not projected_field.default) or
-                              isinstance(projected_value, EmptyValue))
+                              (projected_name not in key_dict and not projected_field.is_fixed) or
+                              (isinstance(projected_value, EmptyValue) and not serialised_value))
 
-                if isinstance(projected_value, EmptyValue):
+                if isinstance(projected_value, EmptyValue) and not serialised_value:
                     break
 
                 used_value = s(serialised_value) if not isinstance(serialised_value, (type(None), EmptyValue)) else None

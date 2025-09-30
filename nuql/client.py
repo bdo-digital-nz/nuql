@@ -35,10 +35,14 @@ class Nuql:
         if custom_fields is None:
             custom_fields = []
 
+        if not isinstance(global_fields, dict):
+            global_fields = {}
+
+        global_fields['nuql:type'] = {'type': 'string'}
+
         # Insert global fields on to all tables
-        if isinstance(global_fields, dict):
-            for table_name in list(schema.keys()):
-                schema[table_name].update(global_fields)
+        for table_name in list(schema.keys()):
+            schema[table_name].update(global_fields)
 
         self.connection = Connection(name, session)
         self.fields = custom_fields
@@ -46,6 +50,11 @@ class Nuql:
         self.__indexes = resources.Indexes(indexes)
 
         resources.validate_schema(self.__schema, self.fields)
+
+    def __getattr__(self, name: str) -> 'resources.Table':
+        if name in self.__schema:
+            return self.get_table(name)
+        raise AttributeError(f'\'{self.__class__.__name__}\' object has no attribute \'{name}\'')
 
     @property
     def indexes(self) -> 'resources.Indexes':

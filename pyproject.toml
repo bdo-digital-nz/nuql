@@ -1,6 +1,6 @@
 [project]
 name = "nuql"
-version = "0.0.8"
+version = "0.0.13"
 description = "Nuql (pronounced 'nuckle') is a lightweight DynamoDB library for implementing the single table model pattern."
 requires-python = ">=3.13"
 dependencies = [
@@ -36,5 +36,5 @@ testing = [
 include = ["nuql/**/*"]
 
 [project.url]
-Homepage = "https://github.com/lukeshortland/nuql"
-Issues = "https://github.com/lukeshortland/nuql/issues"
+Homepage = "https://github.com/bdo-digital-nz/nuql"
+Issues = "https://github.com/bdo-digital-nz/nuql/issues"

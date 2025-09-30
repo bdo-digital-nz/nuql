@@ -29,6 +29,7 @@ class FieldBase:
         self.parent = parent
         self.init_callback = init_callback
         self.auto_include_key_condition = False
+        self.is_fixed = self.value is not None
 
         # Handle 'KEY' field type
         self.projected_from = []
@@ -95,8 +96,15 @@ class FieldBase:
         if not has_value and self.default:
             value = self.default
 
+        if self.type != 'key' and not getattr(self, 'is_template', False) and self.value:
+            value = self.value
+
         # Serialise the value
-        value = self.serialise_internal(value, action, validator)
+        value = self.serialise_internal(
+            value if not isinstance(value, resources.EmptyValue) else None,
+            action,
+            validator
+        )
 
         # Validate required field
         if self.required and action == 'create' and value is None:
@@ -112,6 +120,10 @@ class FieldBase:
         # Run custom validation logic
         if self.validator and action in ['create', 'update', 'write']:
             self.validator(value, validator)
+
+        # EmptyValue should never escape the serialiser
+        if isinstance(value, resources.EmptyValue):
+            value = None
 
         return value
 
