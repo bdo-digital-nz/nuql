@@ -16,8 +16,12 @@ class Uuid(resources.FieldBase):
         :return: str or None.
         """
         try:
-            return str(UUID(value))
-        except (AttributeError, ValueError, TypeError):
+            if not value:
+                return None
+            if isinstance(value, str):
+                value = UUID(value)
+            return str(value)
+        except (AttributeError, ValueError, TypeError) as e:
             return None
 
     def deserialise(self, value: str | None) -> str | None:
