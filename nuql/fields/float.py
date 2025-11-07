@@ -17,10 +17,12 @@ class Float(resources.FieldBase):
         :arg value: Value as float, Incrementor or None.
         :return: Value as Decimal, Incrementor or None.
         """
-        if not isinstance(value, (float, Incrementor)):
-            return None
         if isinstance(value, Incrementor):
             return value
+        try:
+            value = float(value)
+        except ValueError:
+            return None
         return Decimal(str(value))
 
     def deserialise(self, value: Decimal | None) -> float | None:
