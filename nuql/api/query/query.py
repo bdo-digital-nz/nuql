@@ -182,10 +182,12 @@ class Query(api.Boto3Adapter):
         if len(by_table) == 1 and list(by_table.keys())[0] == self.table.name:
             output['items'] = by_table[list(by_table.keys())[0]]
 
+        # Handle empty query result
+        elif len(by_table) == 0:
+            output['items'] = []
+
         # If multiple tables were resolved, the records in each table are stored in `tables`
         else:
             output['tables'] = by_table
-
-
 
         return output
