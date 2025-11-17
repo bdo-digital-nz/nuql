@@ -21,7 +21,7 @@ class Float(resources.FieldBase):
             return value
         try:
             value = float(value)
-        except ValueError:
+        except (ValueError, TypeError, AttributeError):
             return None
         return Decimal(str(value))
 
