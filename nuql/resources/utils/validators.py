@@ -26,6 +26,9 @@ def validate_condition_dict(condition: Dict[str, Any] | None, required: bool = F
     if not isinstance(condition, (str, dict)):
         raise nuql.ValidationError([{'name': 'condition', 'message': 'Condition must be a string or a dict.'}])
 
+    if isinstance(condition, str):
+        return None
+
     # Check where key is present
     if 'where' not in condition or not isinstance(condition['where'], str):
         raise nuql.ValidationError([{
