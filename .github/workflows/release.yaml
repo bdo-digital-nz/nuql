@@ -22,6 +22,7 @@ jobs:
         run: echo "VERSION=${{ github.event.release.tag_name }}" >> $GITHUB_ENV
 
       - name: Update pyproject.toml version
+        continue-on-error: true
         run: |
           sed -i "/^\[project\]/,/^$/ {s/^version = .*/version = \"${VERSION#v}\"/}" pyproject.toml
           git config user.name "github-actions[bot]"
