@@ -116,8 +116,17 @@ class Condition:
                 else:
                     value = part['value']
 
+                # Special serialisation case for is_in
+                if part['operand'] in ['is_in'] and isinstance(value, list):
+                    expression = getattr(attr, part['operand'])(
+                        [field(x, action='query', validator=self.validator) for x in value]
+                    )
+
                 # Value is serialised for a query
-                expression = getattr(attr, part['operand'])(field(value, action='query', validator=self.validator))
+                else:
+                    expression = getattr(attr, part['operand'])(
+                        field(value, action='query', validator=self.validator)
+                    )
 
             return expression
 
