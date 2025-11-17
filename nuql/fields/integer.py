@@ -21,7 +21,7 @@ class Integer(resources.FieldBase):
             return value
         try:
             value = int(value)
-        except ValueError:
+        except (ValueError, TypeError, AttributeError):
             return None
         return Decimal(str(value))
 
