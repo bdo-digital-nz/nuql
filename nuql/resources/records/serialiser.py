@@ -79,7 +79,8 @@ class Serialiser:
                 continue
 
             serialised_value = field(resources.EmptyValue(), action, validator)
-            output[name] = serialised_value
+            if serialised_value:
+                output[name] = serialised_value
 
         # Set projections
         projections.merge(output, action, validator)
