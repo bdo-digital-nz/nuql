@@ -4,7 +4,7 @@ from nuql import api
 
 
 class PutUpdate(api.PutItem):
-    serialisation_action = 'create'
+    serialisation_action = 'update'
 
     def on_condition(self, condition: 'api.Condition') -> None:
         """
