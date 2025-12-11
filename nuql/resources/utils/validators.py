@@ -129,6 +129,12 @@ def validate_table(name: str, config: Dict[str, Any], fields: Dict[str, Type['ty
                 'message': 'Field key \'enum\' must be a list if provided.'
             }])
 
+        if 'immutable' in field_config and not isinstance(field_config['immutable'], bool):
+            raise nuql.ValidationError([{
+                'name': f'schema.tables.{name}.fields.{field_name}.immutable',
+                'message': 'Field key \'immutable\' must be a boolean value if provided.'
+            }])
+
         accepted_keys = [
             'type', 'required', 'default', 'value', 'on_create', 'on_update', 'on_write', 'validator', 'enum',
             'of', 'fields', 'immutable'
