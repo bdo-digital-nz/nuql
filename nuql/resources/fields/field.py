@@ -69,6 +69,10 @@ class FieldBase:
     def enum(self) -> List[Any] | None:
         return self.config.get('enum', None)
 
+    @property
+    def immutable(self) -> bool:
+        return self.config.get('immutable', False)
+
     def __call__(self, value: Any, action: 'types.SerialisationType', validator: 'resources.Validator') -> Any:
         """
         Encapsulates the internal serialisation logic to prepare for

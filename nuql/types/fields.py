@@ -25,3 +25,4 @@ class FieldConfig(TypedDict):
     enum: NotRequired[List[Any]]
     of: NotRequired['FieldConfig']
     fields: NotRequired[Dict[str, Any]]
+    immutable: NotRequired[bool]
