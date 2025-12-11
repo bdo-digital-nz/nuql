@@ -131,7 +131,7 @@ def validate_table(name: str, config: Dict[str, Any], fields: Dict[str, Type['ty
 
         accepted_keys = [
             'type', 'required', 'default', 'value', 'on_create', 'on_update', 'on_write', 'validator', 'enum',
-            'of', 'fields',
+            'of', 'fields', 'immutable'
         ]
         invalid_field_config_keys = [x for x in field_config.keys() if x not in accepted_keys]
         if invalid_field_config_keys:
