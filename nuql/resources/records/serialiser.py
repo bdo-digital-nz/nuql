@@ -61,6 +61,10 @@ class Serialiser:
                     message=f'Field \'{key}\' is not defined in the schema.'
                 )
 
+            # Skip all changes to immutable fields when using the UpdateItem API
+            if field.immutable and action == 'update':
+                continue
+
             # Skip serialisation for projected fields as this is to be handled at
             # the end of the serialisation process
             if field.projected_from:
