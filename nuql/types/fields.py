@@ -1,6 +1,6 @@
 __all__ = ['FieldConfig', 'IndexType', 'GeneratorCallback', 'ValidatorCallback', 'FieldType']
 
-from typing import TypedDict, NotRequired, Any, Literal, Callable, List, TypeVar, TYPE_CHECKING, Dict
+from typing import TypedDict, NotRequired, Any, Literal, Callable, List, TypeVar, Dict
 
 from nuql import resources
 
@@ -25,3 +25,4 @@ class FieldConfig(TypedDict):
     enum: NotRequired[List[Any]]
     of: NotRequired['FieldConfig']
     fields: NotRequired[Dict[str, Any]]
+    immutable: NotRequired[bool]

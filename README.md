@@ -138,17 +138,18 @@ db = Nuql(..., custom_fields=[GarbledString])
 There are several configuration options that can be applied to the field dict within your table schema. 
 These options control how the field is serialised and can set several rules:
 
-| Option      | Description                                                                               |
-|-------------|-------------------------------------------------------------------------------------------|
-| `type`      | The field type (required)                                                                 |
-| `required`  | Whether the field is required (enforced only when specifically creating a record)         |
-| `default`   | The default value for the field                                                           |
-| `value`     | Used as a fixed field value, or to configure a `key` field                                |
-| `on_update` | A function that is called to get a value when a record is updated                         |
-| `on_create` | A function that is called to get a value when a record is created                         |
-| `on_write`  | A function that is called to get a value when a record is written (create, update or put) |
-| `validator` | A custom field validator function                                                         |
-| `enum`      | A list of accepted values for the field                                                   |
+| Option      | Description                                                                                        |
+|-------------|----------------------------------------------------------------------------------------------------|
+| `type`      | The field type (required)                                                                          |
+| `required`  | Whether the field is required (enforced only when specifically creating a record)                  |
+| `default`   | The default value for the field                                                                    |
+| `value`     | Used as a fixed field value, or to configure a `key` field                                         |
+| `on_update` | A function that is called to get a value when a record is updated                                  |
+| `on_create` | A function that is called to get a value when a record is created                                  |
+| `on_write`  | A function that is called to get a value when a record is written (create, update or put)          |
+| `validator` | A custom field validator function                                                                  |
+| `enum`      | A list of accepted values for the field                                                            |
+| `immutable` | Whether the field value cannot be changed after creation (only enforced on `UpdateItem` API calls) |
 
 ### Generators
 
