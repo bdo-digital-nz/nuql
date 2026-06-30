@@ -85,8 +85,9 @@ class FieldBase:
         """
         has_value = not isinstance(value, resources.EmptyValue)
 
-        # Apply generators if applicable to the field to overwrite the value
-        if action in ['create', 'update', 'write']:
+        # Apply generators if applicable to the field to overwrite the value.
+        # Generators only fire when no explicit value was provided.
+        if not has_value and action in ['create', 'update', 'write']:
             if action == 'create' and self.on_create:
                 value = self.on_create()
 

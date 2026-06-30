@@ -72,7 +72,7 @@ class Serialiser:
             if field.projected_from:
                 projections.add(key, deserialised_value)
                 serialised_value = field(deserialised_value, action, validator)
-                if serialised_value:
+                if serialised_value is not None:
                     output[key] = serialised_value
             else:
                 serialised_value = field(deserialised_value, action, validator)
@@ -94,13 +94,24 @@ class Serialiser:
                     field.on_write
                 )
                 if has_generator:
-                    serialised_value = field(resources.EmptyValue(), action, validator)
-                    if serialised_value:
+                    # Generate the raw value once and add it to the projections store
+                    # so key/template fields can use it. The same raw value is passed
+                    # through the field's full pipeline (validation included) to produce
+                    # the serialised output, avoiding a second generator invocation.
+                    if action == 'create' and field.on_create:
+                        raw_generated = field.on_create()
+                    elif action == 'update' and field.on_update:
+                        raw_generated = field.on_update()
+                    else:
+                        raw_generated = field.on_write()
+                    projections.add(name, raw_generated)
+                    serialised_value = field(raw_generated, action, validator)
+                    if serialised_value is not None:
                         output[name] = serialised_value
                 continue
 
             serialised_value = field(resources.EmptyValue(), action, validator)
-            if serialised_value:
+            if serialised_value is not None:
                 output[name] = serialised_value
 
         # Set projections
