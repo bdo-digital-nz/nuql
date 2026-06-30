@@ -1,6 +1,6 @@
 __all__ = ['FieldBase']
 
-from typing import Any, List, Optional, Callable
+from typing import Any, Dict, List, Optional, Callable
 
 import nuql
 from nuql import resources, types
@@ -73,7 +73,7 @@ class FieldBase:
     def immutable(self) -> bool:
         return self.config.get('immutable', False)
 
-    def __call__(self, value: Any, action: 'types.SerialisationType', validator: 'resources.Validator') -> Any:
+    def __call__(self, value: Any, action: 'types.SerialisationType', validator: 'resources.Validator', pre_serialised: Dict[str, Any] | None = None) -> Any:
         """
         Encapsulates the internal serialisation logic to prepare for
         sending the record to DynamoDB.
@@ -107,7 +107,8 @@ class FieldBase:
         value = self.serialise_internal(
             value if not isinstance(value, resources.EmptyValue) else None,
             action,
-            validator
+            validator,
+            pre_serialised=pre_serialised
         )
 
         # Validate required field
@@ -147,7 +148,8 @@ class FieldBase:
             self,
             value: Any,
             _action: 'types.SerialisationType',
-            _validator: 'resources.Validator'
+            _validator: 'resources.Validator',
+            **_kwargs: Any
     ) -> Any:
         """
         Internal serialisation wrapper to allow overridable serialisation behaviour.
