@@ -2,3 +2,5 @@
 .idea
 local.py
 .coverage
+__pycache__/
+*.pyc
