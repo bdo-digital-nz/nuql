@@ -70,6 +70,16 @@ class Serialiser:
             # projected field's own value so it is available in pre_serialised for
             # key/template fields to reuse without re-triggering generators.
             if field.projected_from:
+                # If no value was provided (None) and the field has a generator, fire
+                # the generator now so the projections store receives the generated value
+                # rather than None, keeping key/template fields consistent.
+                if deserialised_value is None and action in ['create', 'update', 'write']:
+                    if action == 'create' and field.on_create:
+                        deserialised_value = field.on_create()
+                    elif action == 'update' and field.on_update:
+                        deserialised_value = field.on_update()
+                    elif field.on_write:
+                        deserialised_value = field.on_write()
                 projections.add(key, deserialised_value)
                 serialised_value = field(deserialised_value, action, validator)
                 if serialised_value is not None:

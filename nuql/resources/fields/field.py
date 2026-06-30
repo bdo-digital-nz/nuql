@@ -83,7 +83,7 @@ class FieldBase:
         :arg validator: Validator instance.
         :return: Serialised value.
         """
-        has_value = not isinstance(value, resources.EmptyValue)
+        has_value = not isinstance(value, resources.EmptyValue) and value is not None
 
         # Apply generators if applicable to the field to overwrite the value.
         # Generators only fire when no explicit value was provided.
