@@ -46,6 +46,6 @@ class Projections:
 
         for key, field in key_fields.items():
             projections = self._store.get(key, {})
-            value = field(projections, action, validator)
+            value = field(projections, action, validator, pre_serialised=data)
             if value:
                 data[key] = value

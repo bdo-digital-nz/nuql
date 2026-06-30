@@ -49,7 +49,9 @@ class String(resources.FieldBase):
             self,
             value: Any,
             action: 'types.SerialisationType',
-            validator: 'resources.Validator'
+            validator: 'resources.Validator',
+            pre_serialised: Dict[str, Any] | None = None,
+            **_kwargs
     ) -> Any:
         """
         Internal serialisation override.
@@ -57,10 +59,11 @@ class String(resources.FieldBase):
         :arg value: Value to serialise.
         :arg action: Serialisation action.
         :arg validator: Validator instance.
+        :param pre_serialised: Already-serialised field values to reuse.
         :return: Serialised value.
         """
         if self.is_template:
-            serialised = self.serialise_template(value, action, validator)
+            serialised = self.serialise_template(value, action, validator, pre_serialised=pre_serialised)
             if serialised['is_partial']:
                 validator.partial_keys.append(self.name)
             return serialised['value']
@@ -89,7 +92,8 @@ class String(resources.FieldBase):
             self,
             value: Dict[str, Any],
             action: 'types.SerialisationType',
-            validator: 'resources.Validator'
+            validator: 'resources.Validator',
+            pre_serialised: Dict[str, Any] | None = None
     ) -> Dict[str, Any]:
         """
         Serialises a template string.
@@ -100,10 +104,14 @@ class String(resources.FieldBase):
         :arg value: Dict of projections.
         :arg action: Serialisation type.
         :arg validator: Validator instance.
+        :param pre_serialised: Already-serialised field values to reuse.
         :return: Dict with 'value' and 'is_partial'.
         """
         if not isinstance(value, dict):
             value = {}
+
+        if pre_serialised is None:
+            pre_serialised = {}
 
         is_partial = False
         template_str = self.value or ""
@@ -135,8 +143,11 @@ class String(resources.FieldBase):
                 output_parts.append(literal_chunk)
                 break
 
-            # Serialise the projected value (use EmptyValue to allow defaults)
-            serialised_value = field(provided_value or EmptyValue(), action, validator)
+            # Reuse an already-serialised value to avoid re-triggering generators
+            if key in pre_serialised:
+                serialised_value = pre_serialised[key]
+            else:
+                serialised_value = field(provided_value or EmptyValue(), action, validator)
             serialised_text = serialised_value if serialised_value else ''
 
             # Append literal + substituted value

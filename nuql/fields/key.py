@@ -59,7 +59,9 @@ class Key(resources.FieldBase):
             self,
             value: Any,
             action: 'types.SerialisationType',
-            validator: 'resources.Validator'
+            validator: 'resources.Validator',
+            pre_serialised: Dict[str, Any] | None = None,
+            **_kwargs
     ) -> Any:
         """
         Internal serialisation override.
@@ -67,9 +69,10 @@ class Key(resources.FieldBase):
         :arg value: Value to serialise.
         :arg action: Serialisation action.
         :arg validator: Validator instance.
+        :param pre_serialised: Already-serialised field values to reuse.
         :return: Serialised value.
         """
-        serialised = self.serialise_template(value, action, validator)
+        serialised = self.serialise_template(value, action, validator, pre_serialised=pre_serialised)
         if serialised['is_partial']:
             validator.partial_keys.append(self.name)
         return serialised['value']
@@ -78,7 +81,8 @@ class Key(resources.FieldBase):
             self,
             key_dict: Dict[str, Any],
             action: 'types.SerialisationType',
-            validator: 'resources.Validator'
+            validator: 'resources.Validator',
+            pre_serialised: Dict[str, Any] | None = None
     ) -> Dict[str, Any]:
         """
         Serialises the key dict to a string.
@@ -86,6 +90,7 @@ class Key(resources.FieldBase):
         :arg key_dict: Dict to serialise.
         :arg action: Serialisation type.
         :arg validator: Validator instance.
+        :param pre_serialised: Already-serialised field values to reuse.
         :return: Serialised representation.
         """
         output = ''
@@ -93,6 +98,9 @@ class Key(resources.FieldBase):
 
         if key_dict is None:
             key_dict = {}
+
+        if pre_serialised is None:
+            pre_serialised = {}
 
         is_partial = False
 
@@ -110,7 +118,12 @@ class Key(resources.FieldBase):
                     )
 
                 projected_value = key_dict.get(projected_name) or EmptyValue()
-                serialised_value = projected_field(projected_value, action, validator)
+
+                # Reuse an already-serialised value to avoid re-triggering generators
+                if projected_name in pre_serialised:
+                    serialised_value = pre_serialised[projected_name]
+                else:
+                    serialised_value = projected_field(projected_value, action, validator)
 
                 is_partial = (is_partial or
                               (projected_name not in key_dict and not projected_field.is_fixed) or

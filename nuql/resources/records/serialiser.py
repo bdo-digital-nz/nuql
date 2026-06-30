@@ -65,10 +65,15 @@ class Serialiser:
             if field.immutable and action == 'update':
                 continue
 
-            # Skip serialisation for projected fields as this is to be handled at
-            # the end of the serialisation process
+            # Skip key/template serialisation for projected fields as this is to be
+            # handled at the end of the serialisation process, but pre-serialise the
+            # projected field's own value so it is available in pre_serialised for
+            # key/template fields to reuse without re-triggering generators.
             if field.projected_from:
                 projections.add(key, deserialised_value)
+                serialised_value = field(deserialised_value, action, validator)
+                if serialised_value:
+                    output[key] = serialised_value
             else:
                 serialised_value = field(deserialised_value, action, validator)
                 output[key] = serialised_value
@@ -80,6 +85,18 @@ class Serialiser:
                 continue
 
             if field.projected_from:
+                # Pre-serialise projected fields that have generators so the generated
+                # value is computed once and reused by all key/template fields that
+                # reference this field, rather than re-triggering the generator each time.
+                has_generator = (
+                    (action == 'create' and field.on_create) or
+                    (action == 'update' and field.on_update) or
+                    field.on_write
+                )
+                if has_generator:
+                    serialised_value = field(resources.EmptyValue(), action, validator)
+                    if serialised_value:
+                        output[name] = serialised_value
                 continue
 
             serialised_value = field(resources.EmptyValue(), action, validator)
