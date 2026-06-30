@@ -31,7 +31,8 @@ class List(FieldBase):
             self,
             value: Any,
             action: 'types.SerialisationType',
-            validator: 'resources.Validator'
+            validator: 'resources.Validator',
+            **_kwargs: Any
     ) -> Any:
         """Internal serialisation"""
         if not isinstance(value, list):
